@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import TrustDownloadButton from '../components/TrustDownloadButton';
 import DemoAnimation from '../components/DemoAnimation';
 import DonateButton from './DonateButton';
+import Reviews from '../components/Reviews';
 
 // Inline SVG icon components — no emojis
 const ShieldIcon = () => (
@@ -190,6 +191,9 @@ const Home: React.FC = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Community Reviews Section */}
+            <Reviews />
 
             {/* Roadmap — What We're Working On */}
             <section className="section roadmap-section">
