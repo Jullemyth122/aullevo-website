@@ -1,0 +1,28 @@
+// Premium 'Deep Space' Palette
+$bg-main: #05050A; // Almost pure black, slight blue tint
+$bg-secondary: #0A0F1F; // Deep navy for sections
+$bg-card: rgba(20, 25, 40, 0.7); // Glassmorphic card base
+$bg-card-hover: rgba(30, 35, 60, 0.8);
+
+// Accents - 'Cyber Professional'
+$primary: #3B82F6; // Core Blue
+$accent-glow: #6366F1; // Indigo Glow
+$accent-pop: #10B981; // Success/Action Green
+$text-gradient: linear-gradient(135deg, #E2E8F0 0%, #94A3B8 100%);
+$brand-gradient: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%);
+
+$text-main: #FFFFFF; // Pure white for headings
+$text-muted: #94A3B8; // Slate 400 for body
+$text-dark: #0F172A; // Dark text for buttons
+
+$border-glass: rgba(255, 255, 255, 0.08);
+$border-glass-hover: rgba(255, 255, 255, 0.15);
+
+// Typography
+$font-stack: 'Inter', system-ui, -apple-system, sans-serif;
+$nav-height: 5rem;
+
+// Effects
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+$shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+$glass-blur: 12px;
