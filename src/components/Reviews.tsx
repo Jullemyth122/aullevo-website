@@ -13,7 +13,7 @@ import {
     QueryDocumentSnapshot,
     type DocumentData
 } from 'firebase/firestore';
-import { signInAnonymously, onAuthStateChanged, type User } from 'firebase/auth';
+import { signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
 interface Review {
     id: string;
@@ -50,7 +50,6 @@ const Reviews: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [hasMore, setHasMore] = useState(true);
-    const [user, setUser] = useState<User | null>(null);
 
     // Form state
     const [username, setUsername] = useState('');
@@ -61,13 +60,9 @@ const Reviews: React.FC = () => {
     const [submitMessage, setSubmitMessage] = useState({ type: '', text: '' });
 
     useEffect(() => {
-        // Authenticate anonymously for spam prevention (1 review per UID)
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            if (currentUser) {
-                setUser(currentUser);
-            } else {
-                signInAnonymously(auth).catch(console.error);
-            }
+        // Track currentUser state (but don't auto-sign in anonymously on visit)
+        const unsubscribe = onAuthStateChanged(auth, () => {
+            // Unused state removed
         });
 
         fetchReviews();
@@ -121,7 +116,21 @@ const Reviews: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!user) return;
+        
+        let currentUser = auth.currentUser;
+        if (!currentUser) {
+            setSubmitting(true);
+            try {
+                const cred = await signInAnonymously(auth);
+                currentUser = cred.user;
+            } catch (err) {
+                console.error("Anonymous authentication failed:", err);
+                setSubmitMessage({ type: 'error', text: 'Authentication failed. Please try again.' });
+                setSubmitting(false);
+                return;
+            }
+        }
+
         if (!username.trim() || !feedback.trim()) {
             setSubmitMessage({ type: 'error', text: 'Please fill in all fields.' });
             return;
@@ -132,7 +141,7 @@ const Reviews: React.FC = () => {
 
         try {
             // Using setDoc with user.uid ensures 1 review per user, serving as our anti-spam rate limiter
-            await setDoc(doc(db, 'reviews', user.uid), {
+            await setDoc(doc(db, 'reviews', currentUser.uid), {
                 username: username.trim().substring(0, 50),
                 rating,
                 feedback: feedback.trim().substring(0, 1000),
@@ -143,7 +152,7 @@ const Reviews: React.FC = () => {
 
             // Format for immediate optimistic UI update
             const newReview: Review = {
-                id: user.uid,
+                id: currentUser.uid,
                 username: username.trim(),
                 rating,
                 feedback: feedback.trim(),
@@ -152,7 +161,7 @@ const Reviews: React.FC = () => {
 
             // Replace existing review if they updated, or add to top
             setReviews(prev => {
-                const filtered = prev.filter(r => r.id !== user.uid);
+                const filtered = prev.filter(r => r.id !== currentUser.uid);
                 return [newReview, ...filtered];
             });
 
@@ -256,19 +265,21 @@ const Reviews: React.FC = () => {
                         ) : (
                             <div className="reviews-grid">
                                 {reviews.map((review) => (
-                                    <div key={review.id} className="review-card glass-card">
-                                        <div className="review-card-header">
-                                            <div className="review-avatar">
-                                                {review.username.charAt(0).toUpperCase()}
+                                    <div key={review.id} className="review-card">
+                                        <div className="review-content-wrapper">
+                                            <div className="review-card-header">
+                                                <div className="review-avatar">
+                                                    {review.username.charAt(0).toUpperCase()}
+                                                </div>
+                                                <div className="review-meta">
+                                                    <h4>{review.username}</h4>
+                                                    {renderStars(review.rating)}
+                                                </div>
                                             </div>
-                                            <div className="review-meta">
-                                                <h4>{review.username}</h4>
-                                                {renderStars(review.rating)}
-                                            </div>
+                                            <p className="review-body">
+                                                {review.feedback}
+                                            </p>
                                         </div>
-                                        <p className="review-body">
-                                            "{review.feedback}"
-                                        </p>
                                     </div>
                                 ))}
                             </div>

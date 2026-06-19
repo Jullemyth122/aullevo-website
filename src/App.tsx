@@ -6,6 +6,8 @@ import Features from './pages/Features';
 import HowItWorks from './pages/HowItWorks';
 import Documentation from './pages/Documentation';
 import About from './pages/About';
+import Login from './pages/Login';
+import { ThemeProvider } from './context/ThemeContext';
 import './styles/main.scss';
 
 
@@ -20,13 +22,18 @@ const App: React.FC = () => {
         { path: 'how-it-works', element: <HowItWorks /> },
         { path: 'docs', element: <Documentation /> },
         { path: 'about', element: <About /> },
+        { path: 'login', element: <Login /> },
       ],
     },
   ])
 
   return (
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   );
 };
 
 export default App;
+
+

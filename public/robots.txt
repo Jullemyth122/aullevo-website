@@ -1,0 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+Sitemap: https://aullevo-web.vercel.app/sitemap.xml

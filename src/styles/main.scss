@@ -12,8 +12,13 @@
 @use "trust-modal";
 @use "donate";
 @use "reviews";
+@use "login";
 :root {
   color-scheme: dark;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
 }
 
 html {
@@ -27,12 +32,12 @@ body {
   background-image:
     radial-gradient(
       circle at 15% 50%,
-      rgba(59, 130, 246, 0.08),
+      var(--body-glow-1),
       transparent 25%
     ),
     radial-gradient(
       circle at 85% 30%,
-      rgba(139, 92, 246, 0.08),
+      var(--body-glow-2),
       transparent 25%
     );
   color: $text-main;
@@ -52,7 +57,7 @@ h3 {
 
 h1 {
   font-size: 3.5rem;
-  background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+  background: $text-gradient;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -116,7 +121,7 @@ a {
     background: $bg-card-hover;
     border-color: $border-glass-hover;
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--glass-card-shadow);
   }
 }
 
@@ -156,23 +161,23 @@ a {
   &-primary {
     background: $brand-gradient;
     color: white;
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    box-shadow: var(--btn-primary-shadow);
 
     &:hover {
-      box-shadow: 0 6px 30px rgba(139, 92, 246, 0.5);
+      box-shadow: var(--btn-primary-shadow-hover);
       transform: translateY(-2px);
     }
   }
 
   &-secondary {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-input);
     border: 1px solid $border-glass;
     color: $text-main;
     backdrop-filter: blur(4px);
 
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: white;
+      background: var(--border-glass-hover);
+      border-color: var(--text-main);
       transform: translateY(-2px);
     }
   }
@@ -197,8 +202,8 @@ a {
   height: 500px;
   background: radial-gradient(
     circle,
-    rgba(59, 130, 246, 0.15) 0%,
-    rgba(0, 0, 0, 0) 70%
+    var(--mesh-glow-1) 0%,
+    transparent 70%
   );
   border-radius: 50%;
   pointer-events: none;

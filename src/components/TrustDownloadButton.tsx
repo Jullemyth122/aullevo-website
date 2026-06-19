@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { logEvent } from '../utils/analytics';
+
 
 // SVG Icons
 const ShieldIcon = () => (
@@ -94,10 +96,16 @@ const TrustDownloadButton: React.FC<Props> = ({ className, style, children }) =>
                     <div className="trust-btns">
                         <button className="trust-btn-cancel" onClick={() => setIsOpen(false)}>Cancel</button>
                         <a
-                            href="/download/aullevo-extension.zip"
+                            href="/aullevo-extension.zip"
                             download
                             className="trust-btn-confirm"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => {
+                                logEvent('download_extension', {
+                                    method: 'trust_button',
+                                    file_name: 'aullevo-extension.zip'
+                                });
+                                setIsOpen(false);
+                            }}
                         >
                             I Understand, Download
                         </a>

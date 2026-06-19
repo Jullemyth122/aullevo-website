@@ -2,12 +2,12 @@
 
 /* ─────────────────────────────────────────────────
    OVERLAY — must beat navbar z-index:100
-─────────────────────────────────────────────────── */
+   ─────────────────────────────────────────────────── */
 .trust-overlay {
     position: fixed;
     inset: 0;
     z-index: 99999;
-    background: rgba(0, 0, 0, 0.75);
+    background: var(--bg-mobile-nav);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     display: flex;
@@ -29,18 +29,18 @@
 
 /* ─────────────────────────────────────────────────
    DIALOG
-─────────────────────────────────────────────────── */
+   ─────────────────────────────────────────────────── */
 .trust-dialog {
     position: relative;
     width: 100%;
     max-width: 520px;
-    background: #0d1224;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-modal);
+    border: 1px solid var(--border-glass);
     border-radius: 16px;
     overflow: hidden;
     box-shadow:
-        0 24px 48px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.04);
+        var(--shadow-sm),
+        0 0 0 1px var(--border-glass);
     animation: trustSlideUp 0.25s ease;
 }
 
@@ -50,9 +50,9 @@
     top: 1rem;
     right: 1rem;
     z-index: 2;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #64748b;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    color: $text-muted;
     width: 30px;
     height: 30px;
     border-radius: 8px;
@@ -63,8 +63,8 @@
     transition: all 0.15s;
 
     &:hover {
-        color: #e2e8f0;
-        background: rgba(255, 255, 255, 0.08);
+        color: var(--text-main);
+        background: var(--border-glass-hover);
     }
 }
 
@@ -77,9 +77,9 @@
         width: 48px;
         height: 48px;
         margin: 0 auto 1rem;
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        color: #10B981;
+        background: var(--bg-badge-live);
+        border: 1px solid var(--border-badge-live);
+        color: $accent-pop;
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -89,17 +89,17 @@
     h3 {
         font-size: 1.25rem;
         font-weight: 700;
-        color: #f8fafc;
+        color: var(--text-main);
         margin: 0 0 0.5rem;
     }
 
     > p {
-        color: #94a3b8;
+        color: $text-muted;
         font-size: 0.9rem;
         line-height: 1.55;
         margin: 0;
 
-        strong { color: #e2e8f0; }
+        strong { color: var(--text-main); }
     }
 }
 
@@ -115,39 +115,39 @@
     display: flex;
     gap: 0.85rem;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.025);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
     border-radius: 10px;
 
     .trust-card-icon {
         width: 36px;
         height: 36px;
         border-radius: 8px;
-        background: rgba(59, 130, 246, 0.1);
-        border: 1px solid rgba(59, 130, 246, 0.15);
-        color: #60a5fa;
+        background: var(--bg-badge-live);
+        border: 1px solid var(--border-badge-live);
+        color: $primary;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
 
         &.green {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.15);
-            color: #34d399;
+            background: var(--bg-badge-live);
+            border-color: var(--border-badge-live);
+            color: $accent-pop;
         }
     }
 
     h4 {
         font-size: 0.9rem;
         font-weight: 600;
-        color: #f1f5f9;
+        color: var(--text-main);
         margin: 0 0 0.2rem;
     }
 
     p {
         font-size: 0.8rem;
-        color: #94a3b8;
+        color: $text-muted;
         line-height: 1.45;
         margin: 0;
     }
@@ -159,8 +159,8 @@
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2.25rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--bg-input);
+    border-top: 1px solid var(--border-glass);
 
     @media (max-width: 480px) {
         flex-direction: column;
@@ -172,13 +172,13 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: #64748b;
+    color: $text-muted;
     font-size: 0.8rem;
     font-weight: 500;
     transition: color 0.15s;
     white-space: nowrap;
 
-    &:hover { color: #cbd5e1; }
+    &:hover { color: var(--text-main); }
 }
 
 .trust-btns {
@@ -195,9 +195,9 @@
 .trust-btn-cancel {
     padding: 0.55rem 1.1rem;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #94a3b8;
+    background: var(--bg-input);
+    border: 1px solid var(--border-glass);
+    color: $text-muted;
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
@@ -205,8 +205,8 @@
     font-family: inherit;
 
     &:hover {
-        color: #e2e8f0;
-        background: rgba(255, 255, 255, 0.08);
+        color: var(--text-main);
+        background: var(--border-glass-hover);
     }
 }
 
@@ -216,15 +216,15 @@
     padding: 0.55rem 1.25rem;
     border-radius: 8px;
     background: $brand-gradient;
-    color: white;
+    color: var(--text-on-gradient);
     font-size: 0.85rem;
     font-weight: 600;
     white-space: nowrap;
     transition: all 0.2s;
-    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.35);
+    box-shadow: var(--btn-primary-shadow);
 
     &:hover {
-        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+        box-shadow: var(--shadow-glow);
         transform: translateY(-1px);
     }
 }

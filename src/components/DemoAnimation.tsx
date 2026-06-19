@@ -139,10 +139,10 @@ const DemoAnimation: React.FC = () => {
                     <div className="dot-g" />
                 </div>
                 <div className="browser-url-bar">
-                    <span style={{ color: '#64748b', marginRight: 4 }}>
+                    <span style={{ color: 'var(--text-muted)', marginRight: 4 }}>
                         {isExtensionView ? '' : 'https://'}
                     </span>
-                    <span style={{ color: '#cbd5e1' }}>
+                    <span style={{ color: 'var(--text-main)' }}>
                         {isExtensionView ? 'chrome://extensions' : 'apply.company.com/engineering'}
                     </span>
                 </div>
@@ -199,7 +199,7 @@ const DemoAnimation: React.FC = () => {
                                 {/* Aullevo card — appears after step 4 */}
                                 <div className={`ext-card ${isExtLoaded ? 'fade-in' : 'hidden'}`}>
                                     <div className="ext-card-header">
-                                        <div className="ext-card-icon" style={{ background: 'linear-gradient(135deg, #5535d4, #3d22b0)', color: '#f0bc30' }}>
+                                        <div className="ext-card-icon" style={{ background: 'var(--brand-gradient)', color: 'var(--accent-gold)' }}>
                                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
                                         </div>
                                         <div className="ext-card-info">
@@ -216,7 +216,7 @@ const DemoAnimation: React.FC = () => {
                                 {/* Other extensions */}
                                 <div className="ext-card fade-in">
                                     <div className="ext-card-header">
-                                        <div className="ext-card-icon" style={{ background: '#1a73e8', color: '#fff' }}>
+                                        <div className="ext-card-icon" style={{ background: 'var(--primary)', color: 'var(--text-on-gradient)' }}>
                                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 15h14M5 9h14M9 20h6" /></svg>
                                         </div>
                                         <div className="ext-card-info">
@@ -232,7 +232,7 @@ const DemoAnimation: React.FC = () => {
 
                                 <div className="ext-card fade-in">
                                     <div className="ext-card-header">
-                                        <div className="ext-card-icon" style={{ background: '#34a853', color: '#fff', fontSize: '20px', fontWeight: 700 }}>G</div>
+                                        <div className="ext-card-icon" style={{ background: 'var(--accent-pop)', color: 'var(--text-on-gradient)', fontSize: '20px', fontWeight: 700 }}>G</div>
                                         <div className="ext-card-info">
                                             <h3>Google Translate <span className="ext-version">2.0.16</span></h3>
                                             <p>View translations easily as you browse the web.</p>
@@ -332,7 +332,7 @@ const DemoAnimation: React.FC = () => {
                                     </div>
                                     <div className="av-demo-card av-demo-file-badge">
                                         <div className="av-demo-file-badge__left">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: '#8066f0', flexShrink: 0 }}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--accent-glow)', flexShrink: 0 }}>
                                                 <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
                                             </svg>
                                             <div>
@@ -340,7 +340,7 @@ const DemoAnimation: React.FC = () => {
                                                 <div className="av-demo-file-badge__hint">Manage in My Profile →</div>
                                             </div>
                                         </div>
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: '#8066f0' }}>
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: 'var(--accent-glow)' }}>
                                             <polyline points="9 18 15 12 9 6" />
                                         </svg>
                                     </div>
@@ -399,11 +399,11 @@ const DemoAnimation: React.FC = () => {
                                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: 'rotate(180deg)' }}><polyline points="6 9 12 15 18 9" /></svg>
                                     </div>
                                     <div className="av-demo-section-body">
-                                        <div style={{ display: 'flex', gap: 8, alignItems: 'center', background: '#141225', padding: 8, borderRadius: 6, border: '1px solid #302b50' }}>
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8066f0" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
+                                        <div style={{ display: 'flex', gap: 8, alignItems: 'center', background: 'var(--bg-main)', padding: 8, borderRadius: 6, border: '1px solid var(--border-glass)' }}>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-glow)" strokeWidth="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" /></svg>
                                             <div style={{ flex: 1, display: 'flex', flexDirection: 'column' as const }}>
-                                                <span style={{ fontSize: 11, color: '#eeeaff' }}>Julian_Mythic_Resume.pdf</span>
-                                                <span style={{ fontSize: 9, color: '#10b981', display: 'flex', alignItems: 'center', gap: 2, fontWeight: 'bold' }}>
+                                                <span style={{ fontSize: 11, color: 'var(--text-main)' }}>Julian_Mythic_Resume.pdf</span>
+                                                <span style={{ fontSize: 9, color: 'var(--accent-pop)', display: 'flex', alignItems: 'center', gap: 2, fontWeight: 'bold' }}>
                                                     <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><polyline points="20 6 9 17 4 12" /></svg>
                                                     Matches: Resume
                                                 </span>
@@ -424,8 +424,8 @@ const DemoAnimation: React.FC = () => {
                             {activeTab === 'settings' && (
                                 <>
                                     <div className="av-demo-section-body">
-                                        <div style={{ fontSize: 13, fontWeight: 'bold', color: '#eeeaff', margin: '4px 0' }}>Gemini API Key</div>
-                                        <p style={{ fontSize: 10, color: '#7870a0', lineHeight: 1.4, marginBottom: 8 }}>
+                                        <div style={{ fontSize: 13, fontWeight: 'bold', color: 'var(--text-main)', margin: '4px 0' }}>Gemini API Key</div>
+                                        <p style={{ fontSize: 10, color: 'var(--text-muted)', lineHeight: 1.4, marginBottom: 8 }}>
                                             Your key is stored locally and never sent to any server. Get yours free at aistudio.google.com.
                                         </p>
                                         <div className="av-demo-input-group">
@@ -441,7 +441,7 @@ const DemoAnimation: React.FC = () => {
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" /></svg>
                                         <div><strong>Privacy-first</strong> — Gemini only sees form field labels, never the data you type into fields.</div>
                                     </div>
-                                    <div style={{ height: '1.5px', background: '#302b50', margin: 14 }} />
+                                    <div style={{ height: '1.5px', background: 'var(--border-glass)', margin: 14 }} />
                                     <div className="av-demo-toggle-row">
                                         <div className="label-col">
                                             <span className="label">Appearance</span>

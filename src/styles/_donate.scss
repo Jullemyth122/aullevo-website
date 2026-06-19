@@ -1,5 +1,6 @@
 @use "variables" as *;
-// ── Donate Button ──
+
+// ── Donate Button Trigger ──
 .btn-donate {
   display: inline-flex;
   align-items: center;
@@ -15,218 +16,246 @@
   transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   overflow: hidden;
-  // Warm gradient — distinguishes from the blue primary CTA
   background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #fb923c 100%);
   color: #fff;
-  box-shadow:
-    0 4px 20px rgba(244, 63, 94, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  // Shimmer layer
+  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+
   &::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: linear-gradient(
-      105deg,
-      transparent 30%,
-      rgba(255, 255, 255, 0.15) 45%,
-      rgba(255, 255, 255, 0.25) 50%,
-      rgba(255, 255, 255, 0.15) 55%,
-      transparent 70%
-    );
+    background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0.15) 55%, transparent 70%);
     background-size: 250% 100%;
     animation: donateShimmer 4s ease-in-out infinite;
     pointer-events: none;
   }
+
   &:hover {
     transform: translateY(-2px);
-    box-shadow:
-      0 8px 32px rgba(244, 63, 94, 0.45),
-      0 4px 16px rgba(251, 146, 60, 0.25),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(244, 63, 94, 0.45), 0 4px 16px rgba(251, 146, 60, 0.25);
     filter: brightness(1.08);
   }
+
   &:active {
     transform: translateY(0);
-    box-shadow: 0 2px 10px rgba(244, 63, 94, 0.3);
-  }
-  &.btn-lg {
-    padding: 1rem 2.5rem;
-    font-size: 1.125rem;
-  }
-}
-// Heart icon
-.donate-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.3s ease;
-  svg {
-    stroke: rgba(255, 255, 255, 0.9);
-    fill: rgba(255, 255, 255, 0.15);
-    transition: fill 0.3s ease;
-  }
-  .btn-donate:hover & svg {
-    fill: rgba(255, 255, 255, 0.35);
-  }
-}
-// Heart beat animation on hover
-.donate-icon--beat {
-  animation: heartBeat 0.6s ease-in-out;
-}
-@keyframes heartBeat {
-  0% {
-    transform: scale(1);
-  }
-  15% {
-    transform: scale(1.25);
-  }
-  30% {
-    transform: scale(1);
-  }
-  45% {
-    transform: scale(1.15);
-  }
-  60% {
-    transform: scale(1);
-  }
-}
-@keyframes donateShimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-// Mobile — stack on small screens
-@media (max-width: 640px) {
-  .btn-donate.btn-lg {
-    padding: 0.875rem 2rem;
-    font-size: 1rem;
   }
 }
 
-/* ─────────────────────────────────────────────────
-   DONATE MODAL STYLES
-─────────────────────────────────────────────────── */
+.donate-icon {
+  display: flex;
+  align-items: center;
+
+  svg {
+    stroke: rgba(255, 255, 255, 0.9);
+    fill: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.donate-icon--beat {
+  animation: heartBeat 0.6s ease-in-out;
+}
+
+// ── Overlay & Dialog Container ──
 .donate-overlay {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(5, 5, 10, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  animation: trustFadeIn 0.2s ease;
 }
 
 .donate-dialog {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  background: #0d1224;
+  max-width: 440px;
+  background: var(--bg-modal);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow:
-    0 24px 48px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(255, 255, 255, 0.04);
-  animation: trustSlideUp 0.25s ease;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
 }
 
 .donate-close {
   position: absolute;
   top: 1.25rem;
   right: 1.25rem;
-  z-index: 2;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #64748b;
-  width: 32px;
-  height: 32px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-glass);
+  color: var(--text-muted);
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: #e2e8f0;
-    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-main);
+    background: var(--border-glass-hover);
     transform: rotate(90deg);
   }
 }
 
 .donate-head {
-  padding: 2.5rem 2rem 1rem;
+  padding: 3rem 2rem 1.5rem;
   text-align: center;
 
   .donate-shield {
-    width: 56px;
-    height: 56px;
+    width: 60px;
+    height: 60px;
     margin: 0 auto 1.25rem;
-    background: linear-gradient(
-      135deg,
-      rgba(244, 63, 94, 0.15) 0%,
-      rgba(251, 146, 60, 0.1) 100%
-    );
-    border: 1px solid rgba(244, 63, 94, 0.25);
+    background: linear-gradient(135deg, rgba(244, 63, 94, 0.18) 0%, rgba(251, 146, 60, 0.1) 100%);
+    border: 1px solid rgba(244, 63, 94, 0.3);
     color: #f43f5e;
-    border-radius: 16px;
+    border-radius: 18px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(244, 63, 94, 0.15);
+    box-shadow: 0 8px 24px rgba(244, 63, 94, 0.15);
   }
 
   h3 {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #f8fafc;
-    margin: 0 0 0.75rem;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
   }
 
-  > p {
-    color: #94a3b8;
+  p {
+    color: var(--text-muted);
     font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 0;
+    line-height: 1.5;
   }
 }
 
+// ── Auth Prompts State ──
+.modal-auth-prompt {
+  padding: 0 2rem 2.5rem;
+}
+
+.donate-status-info {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  background: rgba(217, 119, 6, 0.12);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  padding: 1rem;
+  border-radius: 14px;
+
+  .status-icon {
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    color: #fcd34d; // Accessible High Contrast Amber/Yellow text
+    font-weight: 400;
+  }
+}
+
+// High Contrast Google Sign-In
+.btn-google-login {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f3f4f6;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ── Logged In Options State ──
 .donate-cards {
-  padding: 1rem 2rem 2rem;
+  padding: 0 1.5rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+.donate-logged-in {
+  display: block; // Swapped from flex to block for proper text wrapping
+  text-align: center;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  margin-bottom: 0.5rem;
+
+  .success-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: var(--accent-pop);
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+
+    strong {
+      color: var(--text-main);
+      word-break: break-word; // Ensures long emails don't break the container
+    }
+  }
 }
 
 .donate-option-card {
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  padding: 1rem; // Reduced from 1.25rem for mobile breathing room
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--border-glass-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 
     .donate-arrow {
       transform: translateX(4px);
-      color: #60a5fa;
+      color: var(--primary);
     }
   }
 
@@ -234,83 +263,118 @@
     width: 44px;
     height: 44px;
     border-radius: 10px;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    color: #60a5fa;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 
-    &.green {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.2);
-      color: #34d399;
+    &--kofi {
+      background: rgba(255, 94, 91, 0.12);
+      color: #ff5e5b;
+    }
+
+    &--paymongo {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
     }
   }
 
   .donate-card-text {
     flex: 1;
+    min-width: 0; // The magic bullet for flexbox text truncation issues
 
     h4 {
       font-size: 1rem;
       font-weight: 600;
-      color: #f1f5f9;
+      color: var(--text-main);
       margin: 0 0 0.25rem;
     }
 
     p {
       font-size: 0.85rem;
-      color: #94a3b8;
+      color: var(--text-muted);
       margin: 0;
     }
   }
 
   .donate-arrow {
-    color: #475569;
+    color: var(--text-muted);
     font-size: 1.25rem;
-    transition:
-      transform 0.2s ease,
-      color 0.2s ease;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
   }
 }
 
+// ── Sleek Modal Footer ──
 .donate-foot {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 2rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid var(--border-glass);
 
   @media (max-width: 480px) {
     flex-direction: column-reverse;
-    gap: 1rem;
+    justify-content: center;
+    text-align: center;
   }
 }
 
 .donate-btn-cancel {
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
+  padding: 0.5rem 1rem;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
+  border: none;
+  color: var(--text-muted);
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s;
-  font-family: inherit;
+  transition: color 0.15s ease;
 
   &:hover {
-    color: #e2e8f0;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
   }
 }
 
 .donate-secure-text {
-  font-size: 0.75rem;
-  color: #64748b;
+  font-size: 0.8rem;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   margin: 0;
+}
+
+// Keyframes
+@keyframes heartBeat {
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  15% {
+    transform: scale(1.2);
+  }
+
+  30% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes donateShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import SEO from '../components/SEO';
 
 // SVG Icons
 const BrainIcon = () => (
@@ -45,6 +46,11 @@ const Features: React.FC = () => {
 
     return (
         <div className="features-page animate-fade-in">
+            <SEO 
+                title="Aullevo Features | AI Form Autofill Technology"
+                description="Explore Aullevo's contextual AI mapping engine, AES-256 local storage vault, human-mimic input injection, and advanced iframe penetrator features."
+                keywords="ai form filler features, local encryption vault, domestic iframe scan, autofill engineering, human-mimic form inject"
+            />
             {/* Features Hero */}
             <section className="features-hero">
                 <div className="container">

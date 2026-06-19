@@ -1,5 +1,6 @@
 import React from 'react';
 import TrustDownloadButton from '../components/TrustDownloadButton';
+import SEO from '../components/SEO';
 
 const HowItWorks: React.FC = () => {
     const steps = [
@@ -61,6 +62,11 @@ const HowItWorks: React.FC = () => {
 
     return (
         <div className="how-it-works-page animate-fade-in">
+            <SEO 
+                title="How Aullevo Works | AI-Powered Web Form Filling"
+                description="Learn how to install, set up your Gemini API key, configure your encrypted profiles, and automate forms on Workday or Greenhouse in 2 minutes."
+                keywords="how to automate forms, gemini api key setup, local file vault, chrome extension setup, browser automation"
+            />
             {/* Hero Section */}
             <section className="hiw-hero">
                 <div className="container">
@@ -99,8 +105,8 @@ const HowItWorks: React.FC = () => {
             {/* CTA */}
             <section className="hiw-cta section">
                 <div className="container text-center">
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem', color: '#f8fafc' }}>Ready to stop typing?</h2>
-                    <p style={{ color: '#94a3b8', fontSize: '1.2rem', marginBottom: '2.5rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
+                    <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to stop typing?</h2>
+                    <p style={{ fontSize: '1.2rem', marginBottom: '2.5rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
                         Download the source and load it into your Chrome browser today. Time is your most valuable asset.
                     </p>
                     <TrustDownloadButton className="btn btn-primary btn-lg">

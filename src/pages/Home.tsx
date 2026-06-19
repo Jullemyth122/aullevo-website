@@ -4,6 +4,7 @@ import TrustDownloadButton from '../components/TrustDownloadButton';
 import DemoAnimation from '../components/DemoAnimation';
 import DonateButton from './DonateButton';
 import Reviews from '../components/Reviews';
+import SEO from '../components/SEO';
 
 // Inline SVG icon components — no emojis
 const ShieldIcon = () => (
@@ -86,8 +87,35 @@ const Home: React.FC = () => {
         },
     ];
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'Aullevo',
+        'operatingSystem': 'Windows, macOS, Linux',
+        'applicationCategory': 'BrowserExtension',
+        'offers': {
+            '@type': 'Offer',
+            'price': '0.00',
+            'priceCurrency': 'USD'
+        },
+        'description': 'Aullevo is an AI-powered form automation browser extension that instantly fills forms, applications, and repetitive data entries. It runs locally and encrypts data on-device.',
+        'aggregateRating': {
+            '@type': 'AggregateRating',
+            'ratingValue': '4.9',
+            'ratingCount': '100'
+        }
+    };
+
     return (
         <div className="home-page">
+            <SEO 
+                title="Aullevo | AI-Powered Form Automation & Auto-Fill Extension"
+                description="Automate form filling with Aullevo. The secure, local AI autofill extension powered by Gemini. Fill Workday job applications, surveys, and forms in 3 seconds."
+                keywords="ai form filler, autofill browser extension, workday autofill, job application automator, gemini form filler, secure local autofill, form automation"
+            />
+            <script type="application/ld+json">
+                {JSON.stringify(jsonLd)}
+            </script>
 
             {/* Animated Mesh Background */}
             <div className="mesh-gradient">
@@ -204,10 +232,65 @@ const Home: React.FC = () => {
                     </p>
 
                     <div className="roadmap-grid">
-                        <div className="roadmap-card roadmap-card--active">
+                        <div className="roadmap-card roadmap-card--completed">
                             <div className="roadmap-status">
-                                <span className="roadmap-status-dot roadmap-status-dot--progress"></span>
-                                In Progress
+                                <span className="roadmap-status-dot roadmap-status-dot--done"></span>
+                                Completed
+                            </div>
+                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-pop)' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                            </div>
+                            <h3>Multiple Profile Types</h3>
+                            <p>
+                                Create, edit, and switch between specialized profile categories on the fly
+                                (Job Applications, Medical Forms, Surveys, and more). Full local storage with AES-256-GCM encryption.
+                            </p>
+                        </div>
+
+                        <div className="roadmap-card roadmap-card--completed">
+                            <div className="roadmap-status">
+                                <span className="roadmap-status-dot roadmap-status-dot--done"></span>
+                                Completed
+                            </div>
+                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-pop)' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" />
+                                </svg>
+                            </div>
+                            <h3>Gemini AI Integration</h3>
+                            <p>
+                                Powered by Google's Gemini models for intelligent form analysis, context matching, 
+                                and automated Q&A answering. Private and secure.
+                            </p>
+                        </div>
+
+                        <div className="roadmap-card roadmap-card--completed">
+                            <div className="roadmap-status">
+                                <span className="roadmap-status-dot roadmap-status-dot--done"></span>
+                                Completed
+                            </div>
+                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-pop)' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                                    <path d="M9 3v18M3 9h18" />
+                                </svg>
+                            </div>
+                            <h3>Advanced DOM & iFrame Filler</h3>
+                            <p>
+                                Deep DOM scanning, field detection, and automation filler that works on complex 
+                                nested elements, web components, and cross-origin iFrames.
+                            </p>
+                        </div>
+
+                        <div className="roadmap-card">
+                            <div className="roadmap-status">
+                                <span className="roadmap-status-dot roadmap-status-dot--planned"></span>
+                                Planned
                             </div>
                             <div className="roadmap-icon">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -218,35 +301,15 @@ const Home: React.FC = () => {
                             </div>
                             <h3>Local-AI Only Mode</h3>
                             <p>
-                                We're currently working on a fully local-AI mode — no cloud calls at all.
-                                It requires a bit more setup on your extension, but your data never leaves your machine.
+                                We're planning a fully local-AI mode running on-device models directly in your browser. 
+                                Complete privacy with zero external API/cloud calls.
                             </p>
                         </div>
 
-                        <div className="roadmap-card roadmap-card--completed">
+                        <div className="roadmap-card">
                             <div className="roadmap-status">
-                                <span className="roadmap-status-dot roadmap-status-dot--done"></span>
-                                Completed
-                            </div>
-                            <div className="roadmap-icon" style={{ background: 'rgba(16, 185, 129, 0.08)', color: '#10B981' }}>
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
-                            </div>
-                            <h3>Multi-Resume Profiles</h3>
-                            <p>
-                                Create, edit, delete, and switch between multiple encrypted profiles on the fly.
-                                Full import/export support with AES-256-GCM encryption. Now live in the Options page.
-                            </p>
-                        </div>
-
-                        <div className="roadmap-card roadmap-card--active">
-                            <div className="roadmap-status">
-                                <span className="roadmap-status-dot roadmap-status-dot--progress"></span>
-                                In Progress
+                                <span className="roadmap-status-dot roadmap-status-dot--planned"></span>
+                                Planned
                             </div>
                             <div className="roadmap-icon">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -258,8 +321,8 @@ const Home: React.FC = () => {
                             </div>
                             <h3>AI Cover Letter Generator</h3>
                             <p>
-                                Generate tailored cover letters from your profile data and the job description.
-                                The AI engine is built — sidebar integration is coming soon.
+                                Automatically generate tailored cover letters within the extension's sidebar using 
+                                your active profile info and the job description.
                             </p>
                         </div>
 

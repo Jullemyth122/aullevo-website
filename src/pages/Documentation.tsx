@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
+import { logEvent } from '../utils/analytics';
+
 
 const Documentation: React.FC = () => {
     const [activeSection, setActiveSection] = useState('what-is-aullevo');
+    const [installMethod, setInstallMethod] = useState<'standard' | 'developer'>('standard');
 
     // Smooth scroll and spy functionality
     useEffect(() => {
@@ -35,11 +39,16 @@ const Documentation: React.FC = () => {
 
     return (
         <div className="documentation-page animate-fade-in">
+            <SEO
+                title="Aullevo Documentation | Developer & User Guide"
+                description="Read the complete guide to setup, configure, and automate forms with Aullevo. Learn about our local storage schema, security models, and how Aullevo handles modal frames."
+                keywords="aullevo guide, developer docs, form autofill instructions, iframe integration, open source extension, local privacy schema"
+            />
             {/* Docs Header */}
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v1.1.0</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.4.0</span>
                     </div>
                     <h1 className="docs-title">Developer & User Guide</h1>
                     <p className="docs-subtitle">Everything you need to set up, configure, and automate with Aullevo.</p>
@@ -99,27 +108,97 @@ const Documentation: React.FC = () => {
 
                     <section id="installation" className="docs-section">
                         <h2>2. Installation & Setup</h2>
-                        <p>Aullevo is distributed as an unpacked extension. Follow these terminal-like instructions to load it into Chrome.</p>
+                        <p>Choose the installation path that matches your preference. For most users, we recommend the Standard installation.</p>
 
-                        <div className="code-block">
-                            <div className="code-header">
-                                <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
-                                <span className="filename">Setup Process</span>
-                            </div>
-                            <pre><code>
-                                <span className="comment"># 1. Download the latest release from the homepage</span>
-                                <span className="keyword">curl</span> -O https://aullevo.dev/download/aullevo-extension.zip
-
-                                <span className="comment"># 2. Extract the archive</span>
-                                <span className="keyword">unzip</span> aullevo-extension.zip -d aullevo-extension
-
-                                <span className="comment"># 3. Open Chrome and navigate to Extensions</span>
-                                <span className="string">chrome://extensions</span>
-
-                                <span className="comment"># 4. Enable "Developer mode" in the top right</span>
-                                <span className="comment"># 5. Click "Load unpacked" and select the extracted folder</span>
-                            </code></pre>
+                        <div className="docs-tabs-header">
+                            <button
+                                type="button"
+                                className={`docs-tab-btn ${installMethod === 'standard' ? 'active' : ''}`}
+                                onClick={() => setInstallMethod('standard')}
+                            >
+                                Standard Installation
+                            </button>
+                            <button
+                                type="button"
+                                className={`docs-tab-btn ${installMethod === 'developer' ? 'active' : ''}`}
+                                onClick={() => setInstallMethod('developer')}
+                            >
+                                Developer CLI (Advanced)
+                            </button>
                         </div>
+
+                        {installMethod === 'standard' ? (
+                            <div className="process-timeline" style={{ marginTop: '1.5rem' }}>
+                                <div className="process-step">
+                                    <div className="step-point">1</div>
+                                    <div className="step-text">
+                                        <strong>Download and Extract</strong>
+                                        First, download the extension ZIP file: <a
+                                            href="/aullevo-extension.zip"
+                                            download
+                                            className="external-link"
+                                            style={{ fontWeight: 600, color: 'var(--primary)' }}
+                                            onClick={() => {
+                                                logEvent('download_extension', {
+                                                    method: 'docs_link',
+                                                    file_name: 'aullevo-extension.zip'
+                                                });
+                                            }}
+                                        >aullevo-extension.zip</a>. Once downloaded, extract it by right-clicking the ZIP file and selecting <strong>"Extract All..."</strong> (on Windows) or double-clicking it (on macOS). This will produce a folder containing a <code>dist</code> subfolder.
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">2</div>
+                                    <div className="step-text">
+                                        <strong>Open the Extensions Dashboard</strong>
+                                        Open a new tab in your web browser (Chrome, Brave, Edge, or Opera) and navigate to the extensions page by typing the following into your address bar and pressing Enter:
+                                        <ul className="docs-list" style={{ margin: '0.5rem 0 0', paddingLeft: '1.25rem' }}>
+                                            <li>Google Chrome: <code>chrome://extensions</code></li>
+                                            <li>Brave Browser: <code>brave://extensions</code></li>
+                                            <li>Microsoft Edge: <code>edge://extensions</code></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">3</div>
+                                    <div className="step-text">
+                                        <strong>Enable Developer Mode</strong>
+                                        Locate the <strong>"Developer mode"</strong> toggle in the top-right corner of the Extensions dashboard and switch it to the <strong>ON</strong> position. This enables your browser to load local unpackaged folders.
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">4</div>
+                                    <div className="step-text">
+                                        <strong>Load Unpacked Folder</strong>
+                                        Click the <strong>"Load unpacked"</strong> button in the top-left corner. In the file explorer, navigate to the folder you extracted in Step 1, select the <code>dist</code> folder (the one containing <code>manifest.json</code>), and click <strong>"Select Folder"</strong> or <strong>"Open"</strong>. Aullevo is now installed and ready to fill!
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="code-block">
+                                <div className="code-header">
+                                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
+                                    <span className="filename">Setup Process</span>
+                                </div>
+                                <pre><code>
+                                    <span className="comment"># 1. Download the latest release archive</span>
+                                    <br />
+                                    <span className="keyword">curl</span> -O https://aullevo-web.vercel.app/aullevo-extension.zip
+                                    <br />
+                                    <span className="comment"># 2. Extract the archive</span>
+                                    <br />
+                                    <span className="keyword">unzip</span> aullevo-extension.zip -d aullevo-extension
+                                    <br />
+                                    <span className="comment"># 3. Open Chrome Extensions Dashboard</span>
+                                    <br />
+                                    <span className="string">chrome://extensions</span>
+                                    <br />
+                                    <span className="comment"># 4. Enable "Developer mode" in the top right</span>
+                                    <br />
+                                    <span className="comment"># 5. Click "Load unpacked" and select the 'dist' subfolder</span>
+                                </code></pre>
+                            </div>
+                        )}
                     </section>
 
                     <section id="api-key" className="docs-section">
