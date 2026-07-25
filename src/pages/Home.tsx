@@ -42,10 +42,42 @@ const SlidersIcon = () => (
     </svg>
 );
 
+const FolderUserIcon = () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="13" r="2" />
+        <path d="M8 18a4 4 0 0 1 8 0" />
+    </svg>
+);
+
+const LinkIcon = () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+        <line x1="8" y1="16" x2="16" y2="8" />
+    </svg>
+);
+
+const LightningIcon = () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+);
+
+const LockShieldIcon = () => (
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <rect x="9" y="11" width="6" height="4" rx="1" />
+        <path d="M10 11V9a2 2 0 1 1 4 0v2" />
+    </svg>
+);
+
 const Home: React.FC = () => {
     const cardsRef = useRef<HTMLDivElement>(null);
+    const guidesRef = useRef<HTMLDivElement>(null);
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        const cards = cardsRef.current?.querySelectorAll('.glow-card') as NodeListOf<HTMLElement>;
+        const target = e.currentTarget;
+        const cards = target.querySelectorAll('.glow-card') as NodeListOf<HTMLElement>;
         if (!cards) return;
         cards.forEach((card) => {
             const rect = card.getBoundingClientRect();
@@ -59,10 +91,10 @@ const Home: React.FC = () => {
     const features = [
         {
             icon: <ZapIcon />,
-            title: 'Fill Any Form in Under 3 Seconds',
-            desc: 'From complex Workday applications to simple contact forms — Aullevo detects every field type and fills them instantly with context-aware AI.',
+            title: 'Dual-Engine Autofill',
+            desc: 'Choose between instant local heuristics (under 0.1s) for standard fields, or advanced AI mapping (4-8s) to answer complex context-specific questions.',
             color: 'blue',
-            metric: '2x faster than manual entry'
+            metric: 'Instant or Deep AI modes'
         },
         {
             icon: <FolderIcon />,
@@ -108,7 +140,7 @@ const Home: React.FC = () => {
 
     return (
         <div className="home-page">
-            <SEO 
+            <SEO
                 title="Aullevo | AI-Powered Form Automation & Auto-Fill Extension"
                 description="Automate form filling with Aullevo. The secure, local AI autofill extension powered by Gemini. Fill Workday job applications, surveys, and forms in 3 seconds."
                 keywords="ai form filler, autofill browser extension, workday autofill, job application automator, gemini form filler, secure local autofill, form automation"
@@ -148,7 +180,7 @@ const Home: React.FC = () => {
                                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                                     <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
                                 </svg>
-                                Read Documentation
+                                Guides & Docs
                             </Link>
                             <DonateButton className="btn-lg" />
                         </div>
@@ -202,20 +234,133 @@ const Home: React.FC = () => {
                         Lightweight, private, and built to cut hours off your daily workflow.
                     </p>
 
-                    <div className="grid grid-4" ref={cardsRef} onMouseMove={handleMouseMove}>
+                    <div className="grid grid-2" ref={cardsRef} onMouseMove={handleMouseMove}>
                         {features.map((card, i) => (
-                            <div key={i} className={`glass-card glow-card animate-fade-in delay-${i + 1}`}>
+                            <div key={i} className={`glass-card glow-card glow-card--${card.color} animate-fade-in delay-${i + 1}`}>
                                 <div className="glow-card-border"></div>
-                                <div className="glow-card-content">
-                                    <div className={`feature-icon-box feature-icon-box--${card.color}`}>
+                                <div className="glow-card-content" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                                    <div className={`feature-icon-box feature-icon-box--${card.color}`} style={{ flexShrink: 0, margin: 0 }}>
                                         {card.icon}
                                     </div>
-                                    <h3>{card.title}</h3>
-                                    <p>{card.desc}</p>
-                                    <span className="feature-metric">{card.metric}</span>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                                        <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>{card.title}</h3>
+                                        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>{card.desc}</p>
+                                        <span className="feature-metric" style={{ alignSelf: 'flex-start', marginTop: '0.5rem' }}>{card.metric}</span>
+                                    </div>
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Quick Guides & Basics */}
+            <section className="section home-quick-docs" style={{ borderTop: '1px solid var(--border-glass)', padding: '6rem 0' }}>
+                <div className="container">
+                    <div className="section-title">Guides & Basics at a Glance</div>
+                    <p className="section-description">
+                        No complex jargon. Here is how Aullevo makes form filling simple and secure.
+                    </p>
+
+                    <div className="grid grid-2" ref={guidesRef} onMouseMove={handleMouseMove} style={{ marginBottom: '3rem' }}>
+                        <div className="glass-card glow-card glow-card--green animate-fade-in delay-1">
+                            <div className="glow-card-border"></div>
+                            <div className="glow-card-content" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                                <div className="feature-icon-box feature-icon-box--green" style={{ flexShrink: 0, margin: 0 }}>
+                                    <FolderUserIcon />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>Save Form Profiles</h3>
+                                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+                                        Build specialized profiles for Job Applications, School Surveys, or Government forms. Switch between different sets of answers in a single click.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="glass-card glow-card glow-card--blue animate-fade-in delay-2">
+                            <div className="glow-card-border"></div>
+                            <div className="glow-card-content" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                                <div className="feature-icon-box feature-icon-box--blue" style={{ flexShrink: 0, margin: 0 }}>
+                                    <LinkIcon />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>Public Link Support</h3>
+                                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+                                        Works seamlessly on open public forms. There is no need to create accounts or log in on the form site — Aullevo works directly on any link.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="glass-card glow-card glow-card--purple animate-fade-in delay-3">
+                            <div className="glow-card-border"></div>
+                            <div className="glow-card-content" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                                <div className="feature-icon-box feature-icon-box--purple" style={{ flexShrink: 0, margin: 0 }}>
+                                    <LightningIcon />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>Dual-Engine Speeds</h3>
+                                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+                                        Heuristics map standard fields instantly (under 0.1s). AI Mode takes 4-8s to process context, allowing it to write custom essay answers.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="glass-card glow-card glow-card--red animate-fade-in delay-4">
+                            <div className="glow-card-border"></div>
+                            <div className="glow-card-content" style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+                                <div className="feature-icon-box feature-icon-box--red" style={{ flexShrink: 0, margin: 0 }}>
+                                    <LockShieldIcon />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
+                                    <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>Zero-Knowledge Privacy</h3>
+                                    <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+                                        Your personal data is encrypted on your machine. Gemini AI only scans the blank form questions so your real info is never exposed.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Quick Pros and Cons */}
+                    <div style={{ marginTop: '4rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                        <div className="section-title" style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>Pros & Cons Overview</div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+                            <div style={{ background: 'var(--card-gradient-pos)', border: '1px solid rgba(16, 185, 129, 0.15)', padding: '2rem', borderRadius: '16px' }}>
+                                <h4 style={{ color: 'var(--accent-pop)', display: 'flex', alignItems: 'center', gap: '8px', margin: '0 0 1rem 0', fontSize: '1.2rem' }}>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                                    Pros (Advantages)
+                                </h4>
+                                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Massive Time Savings:</strong> Fills forms in seconds.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Local Encryption:</strong> Bank-grade AES-256 security on-device.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Dual matching options:</strong> Choose between instant keywords or deep AI mode.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Unauthenticated forms:</strong> Works on forms without signing up.</li>
+                                </ul>
+                            </div>
+
+                            <div style={{ background: 'var(--card-gradient-neg)', border: '1px solid rgba(239, 68, 68, 0.15)', padding: '2rem', borderRadius: '16px' }}>
+                                <h4 style={{ color: 'var(--accent-danger)', display: 'flex', alignItems: 'center', gap: '8px', margin: '0 0 1rem 0', fontSize: '1.2rem' }}>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                                    Cons (Limitations)
+                                </h4>
+                                <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>AI Speed Trade-off:</strong> AI mode takes 4-8 seconds to process.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Developer Mode Required:</strong> Needs to be loaded unpacked in Chrome.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Manual CAPTCHAs:</strong> Auto-pauses so you can solve puzzles manually.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Highly Custom Inputs:</strong> Shadow DOMs may require manual custom fields.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style={{ textAlign: 'center', marginTop: '3.5rem' }}>
+                        <Link to="/docs" className="btn btn-secondary btn-lg" style={{ textDecoration: 'none' }}>
+                            View Full Guides & Docs
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -264,7 +409,7 @@ const Home: React.FC = () => {
                             </div>
                             <h3>Gemini AI Integration</h3>
                             <p>
-                                Powered by Google's Gemini models for intelligent form analysis, context matching, 
+                                Powered by Google's Gemini models for intelligent form analysis, context matching,
                                 and automated Q&A answering. Private and secure.
                             </p>
                         </div>
@@ -282,8 +427,27 @@ const Home: React.FC = () => {
                             </div>
                             <h3>Advanced DOM & iFrame Filler</h3>
                             <p>
-                                Deep DOM scanning, field detection, and automation filler that works on complex 
+                                Deep DOM scanning, field detection, and automation filler that works on complex
                                 nested elements, web components, and cross-origin iFrames.
+                            </p>
+                        </div>
+
+                        <div className="roadmap-card roadmap-card--active">
+                            <div className="roadmap-status">
+                                <span className="roadmap-status-dot roadmap-status-dot--progress"></span>
+                                In Development (Soon)
+                            </div>
+                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-glow)' }}>
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                                    <polyline points="14 2 14 8 20 8" />
+                                    <line x1="16" y1="13" x2="8" y2="13" />
+                                    <line x1="16" y1="17" x2="8" y2="17" />
+                                </svg>
+                            </div>
+                            <h3>PDF & Docx Scan Extraction</h3>
+                            <p>
+                                Upload your PDF/DOCX resumes or documents directly, and have our parsing system automatically extract them into your locally saved profiles.
                             </p>
                         </div>
 
@@ -301,7 +465,7 @@ const Home: React.FC = () => {
                             </div>
                             <h3>Local-AI Only Mode</h3>
                             <p>
-                                We're planning a fully local-AI mode running on-device models directly in your browser. 
+                                We're planning a fully local-AI mode running on-device models directly in your browser.
                                 Complete privacy with zero external API/cloud calls.
                             </p>
                         </div>
@@ -321,7 +485,7 @@ const Home: React.FC = () => {
                             </div>
                             <h3>AI Cover Letter Generator</h3>
                             <p>
-                                Automatically generate tailored cover letters within the extension's sidebar using 
+                                Automatically generate tailored cover letters within the extension's sidebar using
                                 your active profile info and the job description.
                             </p>
                         </div>

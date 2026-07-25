@@ -13,7 +13,7 @@
   box-shadow:
     0 25px 60px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 80px -20px rgba(85, 53, 212, 0.12);
+    0 0 80px -20px rgba(59, 130, 246, 0.15);
   font-family: "Inter", sans-serif;
 }
 
@@ -79,11 +79,11 @@
       transition: all 0.2s;
 
       &.aullevo-icon {
-        color: #8066f0;
-        background: rgba(85, 53, 212, 0.15);
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.15);
       }
       &.active {
-        box-shadow: 0 0 12px rgba(85, 53, 212, 0.5);
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.5);
         transform: scale(1.05);
       }
     }
@@ -170,9 +170,9 @@
       }
 
       &.filled {
-        background: rgba(85, 53, 212, 0.08);
-        border-color: rgba(85, 53, 212, 0.35);
-        box-shadow: 0 0 12px rgba(85, 53, 212, 0.1);
+        background: rgba(59, 130, 246, 0.08);
+        border-color: rgba(59, 130, 246, 0.35);
+        box-shadow: 0 0 12px rgba(59, 130, 246, 0.1);
 
         .val {
           opacity: 1;
@@ -182,8 +182,8 @@
         .tag {
           opacity: 1;
           transform: scale(1);
-          background: rgba(85, 53, 212, 0.2);
-          color: #8066f0;
+          background: rgba(59, 130, 246, 0.2);
+          color: #60a5fa;
 
           &.green {
             background: rgba(16, 185, 129, 0.2);
@@ -193,8 +193,8 @@
       }
 
       &.scanning {
-        border-color: rgba(128, 102, 240, 0.5);
-        box-shadow: 0 0 10px rgba(128, 102, 240, 0.2);
+        border-color: rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
         &::after {
           content: "";
           position: absolute;
@@ -205,7 +205,7 @@
           background: linear-gradient(
             90deg,
             transparent,
-            rgba(128, 102, 240, 0.3),
+            rgba(59, 130, 246, 0.3),
             transparent
           );
           animation: scan 1s linear infinite;
@@ -223,12 +223,12 @@
 
 /* ═══════════════════════════════════════════════════════════
    SIDEBAR  — Matches real Aullevo extension
-   Palette: Deep Violet (#5535d4) + Amber Yellow (#e8a80c)
+   Palette: Blue (#3B82F6) + Dark Navy (#0c1222) + White
    ═══════════════════════════════════════════════════════════ */
 .demo-sidebar {
   width: 300px;
-  background: #100e1f;
-  border-left: 1.5px solid #302b50;
+  background: #0c1222;
+  border-left: 1.5px solid #1e293b;
   box-shadow: -8px 0 30px rgba(0, 0, 0, 0.4);
   position: absolute;
   right: -320px;
@@ -251,8 +251,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  background: #1a1730;
-  border-bottom: 1.5px solid #302b50;
+  background: #111827;
+  border-bottom: 1.5px solid #1e293b;
   flex-shrink: 0;
 }
 
@@ -265,13 +265,13 @@
 .av-demo-logo {
   width: 26px;
   height: 26px;
-  background: linear-gradient(135deg, #5535d4, #3d22b0);
+  background: linear-gradient(135deg, #1e3a5f, #0f2442);
   border-radius: 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #f0bc30;
-  box-shadow: 0 2px 8px rgba(85, 53, 212, 0.3);
+  color: #60a5fa;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
   flex-shrink: 0;
 }
 
@@ -285,7 +285,7 @@
 
 .av-demo-brand-sub {
   font-size: 9px;
-  color: #7870a0;
+  color: #64748b;
   font-weight: 500;
   margin-top: 1px;
 }
@@ -305,8 +305,8 @@
 /* ── Tabs ── */
 .av-demo-tabs {
   display: flex;
-  background: #1a1730;
-  border-bottom: 1.5px solid #302b50;
+  background: #111827;
+  border-bottom: 1.5px solid #1e293b;
   flex-shrink: 0;
 }
 
@@ -316,14 +316,14 @@
   text-align: center;
   font-size: 11px;
   font-weight: 500;
-  color: #7870a0;
+  color: #64748b;
   border-bottom: 2px solid transparent;
   transition: all 0.15s;
   cursor: default;
 
   &--active {
-    border-bottom-color: #8066f0;
-    color: #8066f0;
+    border-bottom-color: #3b82f6;
+    color: #60a5fa;
     font-weight: 700;
   }
 }
@@ -344,15 +344,15 @@
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #302b50;
+    background: #1e293b;
     border-radius: 3px;
   }
 }
 
 /* ── Card base ── */
 .av-demo-card {
-  background: #1a1730;
-  border: 1.5px solid #302b50;
+  background: #111827;
+  border: 1.5px solid #1e293b;
   border-radius: 10px;
   padding: 12px 14px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -365,11 +365,11 @@
   justify-content: center;
   gap: 6px;
   padding: 10px 12px;
-  background: #1a1730;
-  border: 1.5px dashed #302b50;
+  background: #111827;
+  border: 1.5px dashed #1e293b;
   border-radius: 9px;
   font-size: 11px;
-  color: #c0b8e8;
+  color: #94a3b8;
   font-weight: 500;
   cursor: default;
   transition: border-color 0.2s;
@@ -391,12 +391,12 @@
   &__count {
     font-size: 10px;
     font-weight: 600;
-    color: #eeeaff;
+    color: #f1f5f9;
   }
 
   &__hint {
     font-size: 8px;
-    color: #7870a0;
+    color: #64748b;
   }
 }
 
@@ -409,7 +409,7 @@
   &__eyebrow {
     font-size: 8px;
     font-weight: 700;
-    color: #7870a0;
+    color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.7px;
     margin-bottom: 2px;
@@ -420,7 +420,7 @@
     font-weight: 900;
     line-height: 1;
     letter-spacing: -1px;
-    color: #8066f0;
+    color: #3b82f6;
     transition: all 0.3s;
 
     &.scanning {
@@ -447,11 +447,11 @@
 
 .av-demo-rescan {
   padding: 6px 10px;
-  background: #2a2248;
-  border: 1px solid rgba(85, 53, 212, 0.2);
+  background: #1e293b;
+  border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 6px;
   font-size: 10px;
-  color: #8066f0;
+  color: #60a5fa;
   font-weight: 600;
   cursor: default;
   display: inline-flex;
@@ -463,10 +463,10 @@
 /* ── Fill CTA Button — Yellow/Amber gradient ── */
 .av-demo-fill-btn {
   padding: 12px 16px;
-  background: linear-gradient(135deg, #e8a80c, #b07e00);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
   border: none;
   border-radius: 10px;
-  color: #1e1500;
+  color: #ffffff;
   font-size: 13px;
   font-weight: 800;
   cursor: default;
@@ -474,14 +474,14 @@
   align-items: center;
   justify-content: center;
   gap: 7px;
-  box-shadow: 0 3px 14px rgba(232, 168, 12, 0.35);
+  box-shadow: 0 3px 14px rgba(59, 130, 246, 0.35);
   transition: all 0.2s;
   font-family: inherit;
   letter-spacing: -0.2px;
 
   &.btn-pressing {
     transform: scale(0.96);
-    box-shadow: 0 1px 6px rgba(232, 168, 12, 0.2);
+    box-shadow: 0 1px 6px rgba(59, 130, 246, 0.2);
   }
 
   &.btn-success {
@@ -495,8 +495,8 @@
   display: inline-block;
   width: 12px;
   height: 12px;
-  border: 2px solid rgba(30, 21, 0, 0.2);
-  border-top-color: #1e1500;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: #ffffff;
   border-radius: 50%;
   animation: av-spin 0.7s linear infinite;
   flex-shrink: 0;
@@ -542,7 +542,7 @@
   &__title {
     font-size: 8px;
     font-weight: 700;
-    color: #7870a0;
+    color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.7px;
     margin-bottom: 7px;
@@ -560,9 +560,9 @@
 
     code {
       font-size: 9px;
-      background: #2a2200;
-      color: #c49010;
-      border: 1px solid rgba(232, 168, 12, 0.2);
+      background: #0c1e36;
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.2);
       border-radius: 4px;
       padding: 1px 6px;
       font-weight: 700;
@@ -571,7 +571,7 @@
 
     span {
       font-size: 10px;
-      color: #7870a0;
+      color: #64748b;
     }
   }
 }
@@ -579,8 +579,8 @@
 /* ── Footer ── */
 .av-demo-footer {
   padding: 7px 12px;
-  border-top: 1.5px solid #302b50;
-  background: #1a1730;
+  border-top: 1.5px solid #1e293b;
+  background: #111827;
   flex-shrink: 0;
   display: flex;
   justify-content: space-between;
@@ -588,7 +588,7 @@
 
   span {
     font-size: 8px;
-    color: #7870a0;
+    color: #64748b;
   }
 }
 
@@ -909,11 +909,11 @@
   display: flex;
   justify-content: space-between;
   padding: 10px 14px;
-  background: #141225;
-  border-bottom: 1px solid #2a2540;
+  background: #0f172a;
+  border-bottom: 1px solid #1e293b;
   font-size: 11px;
   font-weight: 600;
-  color: #eeeaff;
+  color: #f1f5f9;
 }
 
 .av-demo-section-body {
@@ -936,17 +936,17 @@
 
   label {
     font-size: 9px;
-    color: #7870a0;
+    color: #64748b;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
 
   .av-demo-input {
-    background: #141225;
-    border: 1px solid #302b50;
+    background: #0f172a;
+    border: 1px solid #1e293b;
     border-radius: 6px;
     padding: 6px 10px;
-    color: #eeeaff;
+    color: #f1f5f9;
     font-size: 11px;
     height: 28px;
     display: flex;
@@ -958,7 +958,7 @@
       color: transparent;
       &::after {
         content: "••••••••••••••••••••";
-        color: #eeeaff;
+        color: #f1f5f9;
         position: absolute;
         left: 10px;
       }
@@ -970,9 +970,9 @@
 .av-demo-settings-save {
   margin: 10px 14px;
   padding: 10px;
-  background: #2a2248;
-  border: 1px solid rgba(85, 53, 212, 0.4);
-  color: #8066f0;
+  background: #1e293b;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: #60a5fa;
   border-radius: 8px;
   font-weight: 600;
   font-size: 11px;
@@ -1018,19 +1018,19 @@
     gap: 2px;
     .label {
       font-size: 11px;
-      color: #eeeaff;
+      color: #f1f5f9;
       font-weight: 600;
     }
     .hint {
       font-size: 9px;
-      color: #7870a0;
+      color: #64748b;
     }
   }
 
   .toggle-switch {
     width: 32px;
     height: 18px;
-    background: #8066f0;
+    background: #3b82f6;
     border-radius: 10px;
     position: relative;
     &::after {

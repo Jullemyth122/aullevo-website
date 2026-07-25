@@ -485,3 +485,90 @@
     }
   }
 }
+
+/* Pros & Cons Section */
+.pros-cons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.pc-card {
+  padding: 2rem;
+  border-radius: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-glass-hover);
+  }
+
+  h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem 0;
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  &.pros {
+    background: var(--card-gradient-pos);
+    border-color: rgba(16, 185, 129, 0.15);
+
+    h4 {
+      color: var(--accent-pop);
+    }
+    
+    &:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      box-shadow: 0 10px 30px rgba(16, 185, 129, 0.04);
+    }
+  }
+
+  &.cons {
+    background: var(--card-gradient-neg);
+    border-color: rgba(239, 68, 68, 0.15);
+
+    h4 {
+      color: var(--accent-danger);
+    }
+
+    &:hover {
+      border-color: rgba(239, 68, 68, 0.3);
+      box-shadow: 0 10px 30px rgba(239, 68, 68, 0.04);
+    }
+  }
+
+  ul.docs-list {
+    margin: 0;
+    padding-left: 1.25rem;
+
+    li {
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-muted);
+
+      strong {
+        color: var(--text-main);
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+

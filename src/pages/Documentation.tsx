@@ -63,6 +63,8 @@ const Documentation: React.FC = () => {
                             <h4>Getting Started</h4>
                             <ul>
                                 <li><a href="#what-is-aullevo" className={activeSection === 'what-is-aullevo' ? 'active' : ''} onClick={(e) => scrollTo('what-is-aullevo', e)}>What is Aullevo?</a></li>
+                                <li><a href="#beginner-guide" className={activeSection === 'beginner-guide' ? 'active' : ''} onClick={(e) => scrollTo('beginner-guide', e)}>Aullevo for Beginners</a></li>
+                                <li><a href="#pros-and-cons" className={activeSection === 'pros-and-cons' ? 'active' : ''} onClick={(e) => scrollTo('pros-and-cons', e)}>Pros & Cons Comparison</a></li>
                                 <li><a href="#installation" className={activeSection === 'installation' ? 'active' : ''} onClick={(e) => scrollTo('installation', e)}>Installation & Setup</a></li>
                                 <li><a href="#api-key" className={activeSection === 'api-key' ? 'active' : ''} onClick={(e) => scrollTo('api-key', e)}>Creating an API Key</a></li>
                             </ul>
@@ -106,8 +108,138 @@ const Documentation: React.FC = () => {
                         </div>
                     </section>
 
+                    <section id="beginner-guide" className="docs-section">
+                        <h2>2. Beginner's Guide (Simple Guide)</h2>
+                        <p>
+                            Welcome! If you are new to Aullevo, this section is designed to explain everything in plain English, with no developer jargon.
+                        </p>
+
+                        <h3>How does Aullevo help me?</h3>
+                        <p>
+                            Aullevo is a helper that lives in your web browser. Instead of typing your name, email, work history, and answers to surveys over and over, Aullevo remembers them and fills them in for you with one click.
+                        </p>
+
+                        <div className="docs-card-grid" style={{ margin: '2rem 0' }}>
+                            <div className="docs-minicard" style={{ margin: 0 }}>
+                                <div className="minicard-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                        <polyline points="14 2 14 8 20 8" />
+                                    </svg>
+                                </div>
+                                <h4>Save Any Form Profile</h4>
+                                <p>
+                                    Whether it's for <strong>Job Applications</strong>, <strong>School Surveys</strong>, <strong>Government Forms</strong>, or simple surveys, you can save your typical answers in one place and switch between different profiles easily.
+                                </p>
+                            </div>
+                            <div className="docs-minicard" style={{ margin: 0 }}>
+                                <div className="minicard-icon">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M10 13a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                        <path d="M14 11a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.71 1.71" />
+                                        <line x1="8" y1="16" x2="16" y2="8" />
+                                    </svg>
+                                </div>
+                                <h4>Works on Public Links</h4>
+                                <p>
+                                    You don't need a special login on form pages. Aullevo works directly on unauthenticated public links. As long as there is a form, Aullevo can scan and fill it automatically.
+                                </p>
+                            </div>
+                        </div>
+
+                        <h3>Dual Engine: Heuristics vs. AI Mode</h3>
+                        <p>
+                            Aullevo has two ways of filling out forms, depending on what you need:
+                        </p>
+                        
+                        <div className="docs-table-wrapper" style={{ marginTop: '1rem' }}>
+                            <table className="docs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Filling Mode</th>
+                                        <th>How it Works</th>
+                                        <th>Speed</th>
+                                        <th>Best For</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Heuristic Mode (No AI)</strong></td>
+                                        <td>Matches fields using direct labels and keywords (e.g., matching the word "Email" to your email address).</td>
+                                        <td><strong>Near-Instant</strong> (under 0.1 seconds)</td>
+                                        <td>Simple forms, standard inputs (names, phone numbers, addresses).</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AI-Assisted Mode (Gemini)</strong></td>
+                                        <td>Reads the surrounding context of the form to understand complex, non-standard questions (e.g., "Describe a time you solved a problem").</td>
+                                        <td><strong>Takes 4-8 seconds</strong> (to process and analyze the page structure).</td>
+                                        <td>Complex job applications, essay questions, multi-step wizards.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3>Context-Only Data (Safe and Private)</h3>
+                        <p>
+                            Unlike other tools that send your personal resumes and private details directly to external databases, Aullevo keeps your profiles 100% encrypted in your local browser vault.
+                        </p>
+                        <div className="docs-note" style={{ margin: '1.5rem 0' }}>
+                            <div className="note-content">
+                                <strong>How AI Context works:</strong> Aullevo only sends the <strong>blank layout and questions</strong> of the form to Google's Gemini AI to figure out how to match them. Once the AI answers where the data goes, the actual insertion happens <strong>locally inside your browser</strong> using your private key. Your real personal details are never sent to the cloud for AI training.
+                            </div>
+                        </div>
+
+                        <h3>Upcoming Feature: Drag-and-Drop Resume Scanner</h3>
+                        <div className="docs-note" style={{ margin: '1.5rem 0', borderLeftColor: 'var(--accent-glow)', background: 'var(--bg-badge-live)' }}>
+                            <div className="note-content">
+                                🚀 <strong>Under Development:</strong> We are currently building a feature to extract data directly from PDF/DOCX resume files or template scans. Soon, instead of typing your profile manually, you can simply upload your documents and Aullevo will build your profiles instantly.
+                            </div>
+                        </div>
+
+                        <h3>Premium Accounts</h3>
+                        <p>
+                            Aullevo is fully local-first and free to use with your own API key. However, we offer an optional <strong>Premium Account</strong> that unlocks features like securely syncing your profiles across multiple devices, accessing premium templates, and getting high-speed priority AI analysis credits.
+                        </p>
+                    </section>
+
+                    <section id="pros-and-cons" className="docs-section">
+                        <h2>3. Extension Pros & Cons</h2>
+                        <p>
+                            We believe in transparency. Here is a clear breakdown of the advantages and limitations of using Aullevo:
+                        </p>
+
+                        <div className="pros-cons-grid">
+                            <div className="pc-card pros">
+                                <h4>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    Pros (Advantages)
+                                </h4>
+                                <ul className="docs-list">
+                                    <li><strong>Massive Time Savings:</strong> Autofill lengthy applications, government pages, and school surveys in a fraction of the time.</li>
+                                    <li><strong>Absolute Security:</strong> Your profile data is secured locally on your computer with bank-grade AES-256-GCM encryption.</li>
+                                    <li><strong>Dual-Engine Flexibility:</strong> Switch between instant local heuristics (under 0.1s) and smart AI understanding.</li>
+                                    <li><strong>No Authentication Required on forms:</strong> Automate data entry on any public form link without registering accounts.</li>
+                                    <li><strong>Robust iFrame Scanner:</strong> Fills fields that are nested inside deep, cross-domain frames where standard autofillers give up.</li>
+                                </ul>
+                            </div>
+
+                            <div className="pc-card cons">
+                                <h4>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    Cons (Limitations)
+                                </h4>
+                                <ul className="docs-list">
+                                    <li><strong>AI Thinking Speed:</strong> AI mode takes a few seconds longer (4-8 seconds) compared to direct, instant keyword matching.</li>
+                                    <li><strong>Manual Installation Required:</strong> Because it's loaded as an unpacked folder, you must enable "Developer Mode" in your browser.</li>
+                                    <li><strong>CAPTCHAs Still Exist:</strong> Security puzzle challenges cannot be bypassed. Aullevo pauses automatically for you to solve them manually.</li>
+                                    <li><strong>Highly Custom Forms:</strong> Extremely non-standard layouts or closed shadow-roots might require manually defining Custom Fields.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
                     <section id="installation" className="docs-section">
-                        <h2>2. Installation & Setup</h2>
+                        <h2>4. Installation & Setup</h2>
                         <p>Choose the installation path that matches your preference. For most users, we recommend the Standard installation.</p>
 
                         <div className="docs-tabs-header">
@@ -202,7 +334,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="api-key" className="docs-section">
-                        <h2>3. Creating a Gemini API Key</h2>
+                        <h2>5. Creating a Gemini API Key</h2>
                         <p>Because Aullevo connects directly to Google's Gemini models from your browser securely, you need to provide your own API key. Google currently offers a generous free tier for Gemini Flash.</p>
 
                         <div className="process-timeline">
@@ -238,7 +370,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="profiles-vault" className="docs-section">
-                        <h2>4. Profiles & Vault</h2>
+                        <h2>6. Profiles & Vault</h2>
                         <p>
                             The core of Aullevo is built on your <strong>Profile</strong> and <strong>Vault</strong>.
                             These data structures represent your entity model when filling forms.
@@ -259,7 +391,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="filling-process" className="docs-section">
-                        <h2>5. How Filling Works</h2>
+                        <h2>7. How Filling Works</h2>
                         <p>Once setup is complete, Aullevo automates data entry through an intelligent DOM traversal engine.</p>
 
                         <div className="process-timeline">
@@ -295,7 +427,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="privacy" className="docs-section">
-                        <h2>6. Privacy & Security</h2>
+                        <h2>8. Privacy & Security</h2>
                         <p>We take privacy seriously. Aullevo is engineered on a zero-knowledge trust model.</p>
 
                         <div className="docs-table-wrapper">
@@ -330,7 +462,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="capabilities-limitations" className="docs-section">
-                        <h2>7. Updates: Edge Cases & Boundaries</h2>
+                        <h2>9. Updates: Edge Cases & Boundaries</h2>
                         <p>Aullevo is a robust application natively out-of-the-box, but as with any advanced DOM automation tool, there are specific things it can and cannot do. Here is a breakdown of its absolute boundaries based on our deep codebase scans:</p>
 
                         <h3>1. Pop-up Modals (e.g., LinkedIn Easy Apply)</h3>
