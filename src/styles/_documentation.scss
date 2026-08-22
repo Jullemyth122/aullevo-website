@@ -572,3 +572,83 @@
   }
 }
 
+/* Feature Badges & Tier Tags */
+.tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+
+  &.free {
+    background: rgba(99, 102, 241, 0.12);
+    color: #818cf8;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+  }
+
+  &.pro {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.18), rgba(168, 85, 247, 0.18));
+    color: #f472b6;
+    border: 1px solid rgba(236, 72, 153, 0.35);
+  }
+}
+
+/* Use Case Cards */
+.use-case-badge {
+  display: inline-block;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-badge-live);
+  color: $primary;
+  border: 1px solid var(--border-badge-live);
+  margin-bottom: 0.75rem;
+}
+
+.use-case-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  padding: 1.75rem;
+  transition: all 0.25s ease;
+
+  &:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-glass-hover);
+    transform: translateY(-2px);
+  }
+
+  .use-case-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    h4 {
+      font-size: 1.2rem;
+      color: var(--text-main);
+      margin: 0;
+    }
+  }
+
+  .use-case-problem,
+  .use-case-solution {
+    font-size: 0.95rem;
+    line-height: 1.63;
+    margin-bottom: 0.85rem;
+    color: $text-muted;
+
+    strong {
+      color: var(--text-main);
+    }
+  }
+}
+
+

@@ -48,7 +48,7 @@ const Documentation: React.FC = () => {
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.4.0</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.8.3</span>
                     </div>
                     <h1 className="docs-title">Developer & User Guide</h1>
                     <p className="docs-subtitle">Everything you need to set up, configure, and automate with Aullevo.</p>
@@ -64,6 +64,8 @@ const Documentation: React.FC = () => {
                             <ul>
                                 <li><a href="#what-is-aullevo" className={activeSection === 'what-is-aullevo' ? 'active' : ''} onClick={(e) => scrollTo('what-is-aullevo', e)}>What is Aullevo?</a></li>
                                 <li><a href="#beginner-guide" className={activeSection === 'beginner-guide' ? 'active' : ''} onClick={(e) => scrollTo('beginner-guide', e)}>Aullevo for Beginners</a></li>
+                                <li><a href="#free-vs-premium" className={activeSection === 'free-vs-premium' ? 'active' : ''} onClick={(e) => scrollTo('free-vs-premium', e)}>Free vs. Premium Tier</a></li>
+                                <li><a href="#real-world-use-cases" className={activeSection === 'real-world-use-cases' ? 'active' : ''} onClick={(e) => scrollTo('real-world-use-cases', e)}>Real-World Use Cases</a></li>
                                 <li><a href="#pros-and-cons" className={activeSection === 'pros-and-cons' ? 'active' : ''} onClick={(e) => scrollTo('pros-and-cons', e)}>Pros & Cons Comparison</a></li>
                                 <li><a href="#installation" className={activeSection === 'installation' ? 'active' : ''} onClick={(e) => scrollTo('installation', e)}>Installation & Setup</a></li>
                                 <li><a href="#api-key" className={activeSection === 'api-key' ? 'active' : ''} onClick={(e) => scrollTo('api-key', e)}>Creating an API Key</a></li>
@@ -151,7 +153,7 @@ const Documentation: React.FC = () => {
                         <p>
                             Aullevo has two ways of filling out forms, depending on what you need:
                         </p>
-                        
+
                         <div className="docs-table-wrapper" style={{ marginTop: '1rem' }}>
                             <table className="docs-table">
                                 <thead>
@@ -189,21 +191,149 @@ const Documentation: React.FC = () => {
                             </div>
                         </div>
 
-                        <h3>Upcoming Feature: Drag-and-Drop Resume Scanner</h3>
+                        <h3>Built-in Feature: Drag-and-Drop Resume Scanner</h3>
                         <div className="docs-note" style={{ margin: '1.5rem 0', borderLeftColor: 'var(--accent-glow)', background: 'var(--bg-badge-live)' }}>
                             <div className="note-content">
-                                🚀 <strong>Under Development:</strong> We are currently building a feature to extract data directly from PDF/DOCX resume files or template scans. Soon, instead of typing your profile manually, you can simply upload your documents and Aullevo will build your profiles instantly.
+                                ✨ <strong>Instant Profile Generation:</strong> Aullevo features a built-in Drag-and-Drop Resume Scanner. Instead of typing your profile manually, simply upload your PDF/DOCX resume or portfolio document, and Aullevo automatically extracts your contact details, work experience, education, and skills directly into your encrypted local profile vault.
                             </div>
                         </div>
+                    </section>
 
-                        <h3>Premium Accounts</h3>
+                    <section id="free-vs-premium" className="docs-section">
+                        <h2>3. Free vs. Premium Tier Breakdown</h2>
                         <p>
-                            Aullevo is fully local-first and free to use with your own API key. However, we offer an optional <strong>Premium Account</strong> that unlocks features like securely syncing your profiles across multiple devices, accessing premium templates, and getting high-speed priority AI analysis credits.
+                            Aullevo is fundamentally built to be <strong>100% local-first and free to use</strong> when connected to your own Google Gemini API key. Because you bring your own API key, there are zero token markups or monthly AI subscription fees for standard form filling.
                         </p>
+                        <p>
+                            The optional <strong>Premium Account (Pro Lifetime)</strong> is specifically crafted for power users who need advanced multi-identity management, AI drag-and-drop resume scanning, and autonomous multi-page form automation.
+                        </p>
+
+                        <h3>Feature & Tier Comparison Matrix</h3>
+                        <div className="docs-table-wrapper" style={{ marginTop: '1.5rem' }}>
+                            <table className="docs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Capability / Feature</th>
+                                        <th><span className="tier-badge free">Free Tier</span></th>
+                                        <th><span className="tier-badge pro">Pro Lifetime</span></th>
+                                        <th>Practical Benefit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Profile Capacity</strong></td>
+                                        <td>1 Active Local Profile</td>
+                                        <td><strong>Unlimited Multi-Profiles</strong></td>
+                                        <td>Switch between <em>Frontend Dev</em>, <em>Full-Stack</em>, <em>Personal</em>, or <em>Client</em> identities in 1 click.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Drag-and-Drop Resume Scanner</strong></td>
+                                        <td>Basic Manual Profile Input</td>
+                                        <td><strong>AI Resume Parser & Vault</strong></td>
+                                        <td>Instantly extract structured data from PDF/DOCX resumes and populate profiles automatically.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AI Engine & Token Costs</strong></td>
+                                        <td>Own Gemini API Key (Free)</td>
+                                        <td><strong>Own Gemini API Key (Free)</strong></td>
+                                        <td>Zero third-party markup. Direct, private connection to Google AI Studio's free tier.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Form Automation</strong></td>
+                                        <td>Manual Single-Page Fill</td>
+                                        <td><strong>Smart Autopilot Wizards</strong></td>
+                                        <td>Automate multi-step application wizards across portals without manual page-by-page triggering.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Custom Q&A Presets</strong></td>
+                                        <td>Standard Field Mappings</td>
+                                        <td><strong>Unlimited Custom Presets</strong></td>
+                                        <td>Store pre-crafted answers for non-standard screening and essay questions.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Resume Vault Storage</strong></td>
+                                        <td>1 Local PDF/DOCX Resume</td>
+                                        <td><strong>Multi-Resume Vault</strong></td>
+                                        <td>Link specialized CVs and cover letters directly to corresponding profiles.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Pricing & Subscription</strong></td>
+                                        <td>100% Free Forever</td>
+                                        <td><strong>One-time Lifetime Upgrade</strong></td>
+                                        <td>No recurring monthly fees or hidden charges. Pay once, unlock forever.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <section id="real-world-use-cases" className="docs-section">
+                        <h2>4. Real-World Use Cases & Feature Applications</h2>
+                        <p>
+                            Wondering how Aullevo fits into your daily workflow? Here are real-world examples of how users leverage Aullevo's features to save hours of repetitive typing:
+                        </p>
+
+                        <div className="docs-card-grid" style={{ gridTemplateColumns: '1fr', gap: '1.5rem', marginTop: '1.5rem' }}>
+                            <div className="use-case-card">
+                                <span className="use-case-badge">Job Seekers & Applicants</span>
+                                <div className="use-case-header">
+                                    <h4>High-Volume Tech Job Applications</h4>
+                                    <span className="tier-badge pro">Multi-Profile Feature</span>
+                                </div>
+                                <div className="use-case-problem">
+                                    <strong>The Scenario:</strong> Applying to 40+ engineering roles weekly across Greenhouse, Workday, and Lever. Different positions require highlighting different skill sets (e.g. <em>React Frontend</em> vs <em>Backend Node.js</em>).
+                                </div>
+                                <div className="use-case-solution">
+                                    <strong>How Aullevo Helps:</strong> Create separate profiles in Aullevo for "Frontend Engineer" and "Backend Developer". Before starting an application, toggle the active profile. Aullevo populates relevant project links, skills, and tailored experience fields instantly without re-typing.
+                                </div>
+                            </div>
+
+                            <div className="use-case-card">
+                                <span className="use-case-badge">Students & Researchers</span>
+                                <div className="use-case-header">
+                                    <h4>Scholarship & Grant Applications</h4>
+                                    <span className="tier-badge free">Dual Engine Feature</span>
+                                </div>
+                                <div className="use-case-problem">
+                                    <strong>The Scenario:</strong> Filling out multi-page university registration forms, research grant requests, and student aid surveys with repetitive personal and academic histories.
+                                </div>
+                                <div className="use-case-solution">
+                                    <strong>How Aullevo Helps:</strong> Use Heuristic Mode to instantly fill basic contact details (under 0.1s), then trigger AI-Assisted Mode to analyze dynamic essay prompts ("Explain your research goals") using pre-configured context statements in your profile.
+                                </div>
+                            </div>
+
+                            <div className="use-case-card">
+                                <span className="use-case-badge">Freelancers & Virtual Assistants</span>
+                                <div className="use-case-header">
+                                    <h4>Managing Client Profiles & Filings</h4>
+                                    <span className="tier-badge pro">Multi-Profile Vault</span>
+                                </div>
+                                <div className="use-case-problem">
+                                    <strong>The Scenario:</strong> Virtual assistants and agency freelancers submitting vendor forms or registering accounts on behalf of multiple distinct clients.
+                                </div>
+                                <div className="use-case-solution">
+                                    <strong>How Aullevo Helps:</strong> Store isolated client profiles in Aullevo Premium. Switch cleanly between Client A and Client B with zero risk of mixing up company tax IDs, addresses, or emails, keeping all sensitive client data encrypted in your local browser vault.
+                                </div>
+                            </div>
+
+                            <div className="use-case-card">
+                                <span className="use-case-badge">Administrative & Operations</span>
+                                <div className="use-case-header">
+                                    <h4>Bulk Web Form & Survey Data Entry</h4>
+                                    <span className="tier-badge free">Local Heuristics</span>
+                                </div>
+                                <div className="use-case-problem">
+                                    <strong>The Scenario:</strong> Administrative teams manually re-keying standard employee, supplier, or invoice entries into web portals and internal dashboards.
+                                </div>
+                                <div className="use-case-solution">
+                                    <strong>How Aullevo Helps:</strong> Leverage instant Heuristic mode with keyboard shortcuts (<kbd>Ctrl+M</kbd> or <kbd>Alt+A</kbd>) to complete 20+ input fields in a single click, eliminating manual copy-pasting entirely.
+                                </div>
+                            </div>
+                        </div>
                     </section>
 
                     <section id="pros-and-cons" className="docs-section">
-                        <h2>3. Extension Pros & Cons</h2>
+                        <h2>5. Extension Pros & Cons</h2>
                         <p>
                             We believe in transparency. Here is a clear breakdown of the advantages and limitations of using Aullevo:
                         </p>
@@ -211,7 +341,7 @@ const Documentation: React.FC = () => {
                         <div className="pros-cons-grid">
                             <div className="pc-card pros">
                                 <h4>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                                     Pros (Advantages)
                                 </h4>
                                 <ul className="docs-list">
@@ -225,7 +355,7 @@ const Documentation: React.FC = () => {
 
                             <div className="pc-card cons">
                                 <h4>
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
                                     Cons (Limitations)
                                 </h4>
                                 <ul className="docs-list">
@@ -239,7 +369,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="installation" className="docs-section">
-                        <h2>4. Installation & Setup</h2>
+                        <h2>6. Installation & Setup</h2>
                         <p>Choose the installation path that matches your preference. For most users, we recommend the Standard installation.</p>
 
                         <div className="docs-tabs-header">
@@ -334,7 +464,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="api-key" className="docs-section">
-                        <h2>5. Creating a Gemini API Key</h2>
+                        <h2>7. Creating a Gemini API Key</h2>
                         <p>Because Aullevo connects directly to Google's Gemini models from your browser securely, you need to provide your own API key. Google currently offers a generous free tier for Gemini Flash.</p>
 
                         <div className="process-timeline">
@@ -370,7 +500,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="profiles-vault" className="docs-section">
-                        <h2>6. Profiles & Vault</h2>
+                        <h2>8. Profiles & Vault</h2>
                         <p>
                             The core of Aullevo is built on your <strong>Profile</strong> and <strong>Vault</strong>.
                             These data structures represent your entity model when filling forms.
@@ -391,7 +521,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="filling-process" className="docs-section">
-                        <h2>7. How Filling Works</h2>
+                        <h2>9. How Filling Works</h2>
                         <p>Once setup is complete, Aullevo automates data entry through an intelligent DOM traversal engine.</p>
 
                         <div className="process-timeline">
@@ -427,7 +557,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="privacy" className="docs-section">
-                        <h2>8. Privacy & Security</h2>
+                        <h2>10. Privacy & Security</h2>
                         <p>We take privacy seriously. Aullevo is engineered on a zero-knowledge trust model.</p>
 
                         <div className="docs-table-wrapper">
@@ -462,7 +592,7 @@ const Documentation: React.FC = () => {
                     </section>
 
                     <section id="capabilities-limitations" className="docs-section">
-                        <h2>9. Updates: Edge Cases & Boundaries</h2>
+                        <h2>11. Updates: Edge Cases & Boundaries</h2>
                         <p>Aullevo is a robust application natively out-of-the-box, but as with any advanced DOM automation tool, there are specific things it can and cannot do. Here is a breakdown of its absolute boundaries based on our deep codebase scans:</p>
 
                         <h3>1. Pop-up Modals (e.g., LinkedIn Easy Apply)</h3>
