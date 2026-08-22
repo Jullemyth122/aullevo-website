@@ -62,7 +62,7 @@ const HowItWorks: React.FC = () => {
 
     return (
         <div className="how-it-works-page animate-fade-in">
-            <SEO 
+            <SEO
                 title="How Aullevo Works | AI-Powered Web Form Filling"
                 description="Learn how to install, set up your Gemini API key, configure your encrypted profiles, and automate forms on Workday or Greenhouse in 2 minutes."
                 keywords="how to automate forms, gemini api key setup, local file vault, chrome extension setup, browser automation"
@@ -72,7 +72,7 @@ const HowItWorks: React.FC = () => {
                 <div className="container">
                     <div className="hero-content">
                         <div className="hero-badge">The workflow</div>
-                        <h1 className="hero-title">From <span className="gradient-text">installation</span><br/> to <span className="gradient-text">automation</span> in 2 minutes.</h1>
+                        <h1 className="hero-title">From <span className="gradient-text">installation</span><br /> to <span className="gradient-text">automation</span> in 2 minutes.</h1>
                         <p className="hero-subtitle">
                             No complex configuration. No sign up required. Just install the extension, add your own API key, and reclaim your time securely.
                         </p>

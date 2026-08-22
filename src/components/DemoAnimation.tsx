@@ -149,9 +149,7 @@ const DemoAnimation: React.FC = () => {
                 {isFormView && (
                     <div className="browser-extensions">
                         <div className={`ext-icon aullevo-icon ${isSidebarOpen ? 'active' : ''}`}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-                            </svg>
+                            <img src="/icon128.png" alt="Aullevo" width="20" height="20" style={{ borderRadius: '3px' }} />
                         </div>
                     </div>
                 )}
@@ -199,8 +197,8 @@ const DemoAnimation: React.FC = () => {
                                 {/* Aullevo card — appears after step 4 */}
                                 <div className={`ext-card ${isExtLoaded ? 'fade-in' : 'hidden'}`}>
                                     <div className="ext-card-header">
-                                        <div className="ext-card-icon" style={{ background: 'var(--brand-gradient)', color: 'var(--accent-gold)' }}>
-                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+                                        <div className="ext-card-icon ext-card-icon--aullevo">
+                                            <img src="/icon128.png" alt="Aullevo" width="36" height="36" style={{ borderRadius: '6px' }} />
                                         </div>
                                         <div className="ext-card-info">
                                             <h3>Aullevo - AI Form Filler <span className="ext-version">1.1.0</span></h3>
@@ -295,9 +293,7 @@ const DemoAnimation: React.FC = () => {
                         <div className="av-demo-header">
                             <div className="av-demo-brand">
                                 <div className="av-demo-logo">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                        <path d="M12 3l1.5 3.2 3.5.5-2.5 2.4.6 3.5L12 11l-3.1 1.6.6-3.5L7 6.7l3.5-.5z" />
-                                    </svg>
+                                    <img src="/icon128.png" alt="Aullevo" width="20" height="20" style={{ borderRadius: '4px' }} />
                                 </div>
                                 <div>
                                     <div className="av-demo-brand-name">Aullevo</div>

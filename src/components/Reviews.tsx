@@ -116,7 +116,7 @@ const Reviews: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         let currentUser = auth.currentUser;
         if (!currentUser) {
             setSubmitting(true);
@@ -198,7 +198,6 @@ const Reviews: React.FC = () => {
                     {/* Submission Form */}
                     <div className="review-form-container glass-card">
                         <h3>Leave a Feedback</h3>
-                        <p className="review-form-subtitle">Rate limit: 1 review per user. Updating overrides your prev review.</p>
 
                         <form onSubmit={handleSubmit} className="review-form">
                             <div className="form-group">

@@ -33,6 +33,12 @@
   --body-glow-1: rgba(59, 130, 246, 0.08);
   --body-glow-2: rgba(59, 130, 246, 0.06);
   --glass-card-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+
+  --mesh-glow-1: rgba(99, 102, 241, 0.15);
+  --mesh-glow-2: rgba(59, 130, 246, 0.15);
+  --mesh-glow-3: rgba(16, 185, 129, 0.12);
+  --bg-badge-live: rgba(59, 130, 246, 0.08);
+  --border-badge-live: rgba(59, 130, 246, 0.18);
 }
 
 [data-theme="light"] {
@@ -70,6 +76,12 @@
   --body-glow-1: rgba(37, 99, 235, 0.03);
   --body-glow-2: rgba(37, 99, 235, 0.01);
   --glass-card-shadow: 0 16px 32px rgba(15, 23, 42, 0.04);
+
+  --mesh-glow-1: rgba(99, 102, 241, 0.08);
+  --mesh-glow-2: rgba(59, 130, 246, 0.08);
+  --mesh-glow-3: rgba(16, 185, 129, 0.06);
+  --bg-badge-live: rgba(37, 99, 235, 0.05);
+  --border-badge-live: rgba(37, 99, 235, 0.12);
 }
 
 // SCSS Variables Mapping to CSS Variables

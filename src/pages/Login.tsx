@@ -27,8 +27,22 @@ const Login: React.FC = () => {
                     try {
                         const userSnap = await getDoc(userRef);
                         if (userSnap.exists()) {
-                            setIsPro(!!userSnap.data()?.isPro);
+                            const proStatus = !!userSnap.data()?.isPro;
+                            setIsPro(proStatus);
+                            try { localStorage.setItem('aullevo_is_pro', proStatus ? 'true' : 'false'); } catch {}
                             userDocExists = true;
+
+                            // Broadcast auth state + isPro for Chrome Extension content script sync
+                            window.postMessage({
+                                type: 'AULLEVO_WEB_AUTH',
+                                user: {
+                                    uid: currentUser.uid,
+                                    email: currentUser.email,
+                                    displayName: currentUser.displayName,
+                                    photoURL: currentUser.photoURL,
+                                    isPro: proStatus
+                                }
+                            }, '*');
                         }
                     } catch (dbErr) {
                         console.error("Firestore read error:", dbErr);
@@ -48,12 +62,27 @@ const Login: React.FC = () => {
                             console.error("Firestore write error:", dbWriteErr);
                         }
                         setIsPro(false);
+                        try { localStorage.setItem('aullevo_is_pro', 'false'); } catch {}
                     }
 
                     // Listen in real-time to Pro changes (e.g. if they pay)
-                    const unsubSnap = onSnapshot(userRef, (doc) => {
-                        if (doc.exists()) {
-                            setIsPro(!!doc.data().isPro);
+                    const unsubSnap = onSnapshot(userRef, (docSnap) => {
+                        if (docSnap.exists()) {
+                            const proStatus = !!docSnap.data().isPro;
+                            setIsPro(proStatus);
+                            try { localStorage.setItem('aullevo_is_pro', proStatus ? 'true' : 'false'); } catch {}
+
+                            // Broadcast updated isPro to extension in real-time
+                            window.postMessage({
+                                type: 'AULLEVO_WEB_AUTH',
+                                user: {
+                                    uid: currentUser.uid,
+                                    email: currentUser.email,
+                                    displayName: currentUser.displayName,
+                                    photoURL: currentUser.photoURL,
+                                    isPro: proStatus
+                                }
+                            }, '*');
                         }
                     }, (snapErr) => {
                         console.error("Firestore snapshot listener error:", snapErr);
@@ -110,16 +139,16 @@ const Login: React.FC = () => {
 
     return (
         <div className="login-page-container">
-            <SEO 
+            <SEO
                 title="Login to Aullevo | AI-Powered Automation Dashboard"
-                description="Sign in to Aullevo to sync your profiles, autopilot links, and custom rules across all your device browsers securely."
-                keywords="login aullevo, profile sync, extension dashboard, autofill settings, cloud sync activation"
+                description="Sign in to Aullevo to activate your Pro lifetime license, unlock smart autopilot wizards, and manage your extension account securely."
+                keywords="login aullevo, extension dashboard, autofill settings, pro lifetime activation, resume scanner"
             />
             {user ? (
                 /* ── AUTHENTICATED: PREMIUM DASHBOARD GRID ── */
                 <div className="login-dashboard-grid animate-fade-in">
 
-                    {/* Left Column: Profile Card & Sync HUD */}
+                    {/* Left Column: Profile Card & License HUD */}
                     <div className="dashboard-column dashboard-column--left glass-card">
                         <div className="user-profile-view">
                             <div className="avatar-ring-glow">
@@ -150,10 +179,10 @@ const Login: React.FC = () => {
                             {/* Divider */}
                             <div className="hud-divider"></div>
 
-                            {/* Extension Sync HUD Panel */}
+                            {/* Extension License HUD Panel */}
                             <div className="sync-hud-panel">
                                 <div className="sync-hud-header">
-                                    <span className="hud-title">Extension Sync HUD</span>
+                                    <span className="hud-title">Extension License HUD</span>
                                     <div className="sync-pulse-wrapper">
                                         <span className={`sync-pulse-dot ${simulatedSync ? 'active' : ''}`}></span>
                                         <span className="sync-pulse-text">{simulatedSync ? 'Connected' : 'Offline'}</span>
@@ -165,12 +194,12 @@ const Login: React.FC = () => {
                                         <span className="stat-value text-green">Active & Paired</span>
                                     </div>
                                     <div className="hud-stat-item">
-                                        <span className="stat-label">Linked Devices</span>
-                                        <span className="stat-value">1 Active Browser</span>
+                                        <span className="stat-label">Storage Model</span>
+                                        <span className="stat-value">Local AES-256 IDB</span>
                                     </div>
                                     <div className="hud-stat-item">
-                                        <span className="stat-label">Last Database Sync</span>
-                                        <span className="stat-value">Just Now</span>
+                                        <span className="stat-label">License Verification</span>
+                                        <span className="stat-value">{isPro ? 'Pro Lifetime Active' : 'Free Tier'}</span>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +223,7 @@ const Login: React.FC = () => {
                                 <div className="upsell-badge">Aullevo Premium</div>
                                 <h3>Supercharge Your Form Automation</h3>
                                 <p className="upsell-description">
-                                    Unlock advanced Gemini-powered AI form filling capabilities and eliminate repetitive typing forever.
+                                    Unlock advanced Gemini-powered AI form filling, Drag-and-Drop Resume Scanner, and eliminate repetitive typing forever.
                                 </p>
 
                                 <div className="pro-feature-grid">
@@ -207,8 +236,8 @@ const Login: React.FC = () => {
                                             </svg>
                                         </div>
                                         <div className="feature-text">
-                                            <h4>Unlimited Sync Profiles</h4>
-                                            <p>Create separate identity sets for personal, software engineer, or agency applications.</p>
+                                            <h4>Unlimited Multi-Profiles</h4>
+                                            <p>Create separate identity sets for personal, software engineer, or client applications.</p>
                                         </div>
                                     </div>
 
@@ -221,7 +250,7 @@ const Login: React.FC = () => {
                                             </svg>
                                         </div>
                                         <div className="feature-text">
-                                            <h4>Smart Autopilot Links</h4>
+                                            <h4>Smart Autopilot Wizards</h4>
                                             <p>Speed through multi-page job portals and applications with autonomous, continuous inputs.</p>
                                         </div>
                                     </div>
@@ -235,8 +264,8 @@ const Login: React.FC = () => {
                                             </svg>
                                         </div>
                                         <div className="feature-text">
-                                            <h4>Deep AI Form Understanding</h4>
-                                            <p>Harness localized context models so Gemini knows exactly how to customize your responses.</p>
+                                            <h4>AI Resume Scanner & Parser</h4>
+                                            <p>Instantly extract structured skills, work history, and details from your uploaded CV.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +284,7 @@ const Login: React.FC = () => {
                             /* PRO ACTIVE DETAIL CARD */
                             <div className="pro-activated-panel">
                                 <div className="celebration-ring">
-                                    <div className="sparkles-container">✨ 🎉 ✨</div>
+                                    <div className="sparkles-container"> 🎉 </div>
                                 </div>
                                 <h3>Pro Lifetime Activated</h3>
                                 <p className="pro-thanks">
@@ -263,18 +292,18 @@ const Login: React.FC = () => {
                                 </p>
 
                                 <div className="instructions-card">
-                                    <h4>How to Sync with Chrome Extension</h4>
+                                    <h4>How to Link with Chrome Extension</h4>
                                     <ol className="instructions-list">
                                         <li>Open your Google Chrome browser.</li>
                                         <li>Click on the **Aullevo** extension icon in your toolbar.</li>
                                         <li>Click **Sign In** and authenticate using **{user.email}**.</li>
-                                        <li>Your settings, profiles, and Pro Status will automatically synchronize instantly!</li>
+                                        <li>Your Pro Lifetime status will automatically activate in your extension instantly!</li>
                                     </ol>
                                 </div>
 
                                 <div className="pro-status-verification">
                                     <span className="verify-dot animate-pulse"></span>
-                                    <span>Cloud Synchronization Enabled & Secure</span>
+                                    <span>Pro Lifetime License Active & Verified</span>
                                 </div>
                             </div>
                         )}
@@ -286,9 +315,9 @@ const Login: React.FC = () => {
 
                     {/* Left Pane: Promotional Showcase */}
                     <div className="login-promo-panel">
-                        <div className="promo-badge">Aullevo Sync</div>
-                        <h3>Your entire form-filling engine, unified.</h3>
-                        <p>Sign in to sync your encrypted profiles, autopilot links, and custom rules across all your active browser installations instantly.</p>
+                        <div className="promo-badge">Aullevo Pro</div>
+                        <h3>Your entire form-filling engine, unlocked.</h3>
+                        <p>Sign in to manage your Pro Lifetime license, unlock AI drag-and-drop resume scanning, and power through multi-step applications.</p>
 
                         <div className="promo-feature-list">
                             <div className="promo-feature-item">
@@ -298,8 +327,8 @@ const Login: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="promo-feature-text">
-                                    <strong>Real-Time Syncing</strong>
-                                    <span>Edits in your account dashboard reflect in the extension within seconds.</span>
+                                    <strong>Instant Pro Verification</strong>
+                                    <span>One-click Google authentication seamlessly validates your lifetime status inside the extension.</span>
                                 </div>
                             </div>
 
@@ -311,8 +340,8 @@ const Login: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="promo-feature-text">
-                                    <strong>End-to-End Encryption</strong>
-                                    <span>Your private resumes and forms remain fully secure under AES-256 local-first structures.</span>
+                                    <strong>100% Local-First Privacy</strong>
+                                    <span>Your private resumes and profile vaults remain stored safely on-device under AES-256 encryption.</span>
                                 </div>
                             </div>
 
@@ -335,7 +364,7 @@ const Login: React.FC = () => {
                         <div className="login-prompt-view">
                             <div className="branding-dot"></div>
                             <h1>Access Your Space</h1>
-                            <p>Authenticate securely using your primary Google account to activate synchronizations.</p>
+                            <p>Authenticate securely using your primary Google account to access your account dashboard.</p>
 
                             <button className="btn btn-google-login" onClick={handleGoogleLogin}>
                                 <svg width="20" height="20" viewBox="0 0 24 24" style={{ marginRight: '12px' }}>

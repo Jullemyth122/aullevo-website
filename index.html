@@ -1,67 +1,331 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T715FHZTDJ"></script>
+    <!-- Google Tag Manager -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-T715FHZTDJ');
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-M5XM5TX7");
     </script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/l1.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aullevo | AI Form Filler & Autofill Browser Extension</title>
 
-    <!-- Fallback Search Engine Meta Tags -->
+    <!-- ══════════════════════════════════════════════════════
+         TITLE
+         • Primary keyword up front
+         • Pipe-separated brand at the end
+    ══════════════════════════════════════════════════════ -->
+    <title>
+      AI Form Filler & Autofill Automation for Workday, HR & Government Forms |
+      Aullevo
+    </title>
+
+    <!-- ══════════════════════════════════════════════════════
+         CANONICAL
+    ══════════════════════════════════════════════════════ -->
+    <link rel="canonical" href="https://aullevo-web.vercel.app/" />
+
+    <!-- ══════════════════════════════════════════════════════
+         CORE SEO META
+         • Description: 140-160 chars, natural language, includes
+           the top-priority keyword phrases
+         • Keywords: still read by some crawlers & Bing; grouped
+           by theme so they don't look spammy
+         • Robots: explicit index/follow + rich-result hints
+    ══════════════════════════════════════════════════════ -->
     <meta
       name="description"
-      content="Automate form filling with Aullevo. The secure, local AI autofill extension powered by Gemini. Fill Workday job applications, surveys, and forms in 3 seconds."
+      content="Aullevo is a free AI form filler and autofill browser extension powered by Gemini. Automate Workday job applications, HR paperwork, government forms, and school surveys — locally and securely, in seconds."
     />
     <meta
       name="keywords"
-      content="ai form filler, autofill browser extension, workday autofill, job application automator, gemini form filler, secure local autofill, form automation"
+      content="
+        ai form filler, ai autofill extension, automated form filling,
+        workday autofill, workday application automation, job application filler,
+        hr form automation, hr paperwork autofill, onboarding form filler,
+        government form autofill, government paperwork automation, tax form filler,
+        school survey autofill, student form automation,
+        gemini form filler, local ai autofill, secure form automation,
+        browser extension form filler, chrome autofill extension, edge autofill,
+        complex form automation, online form autofill, smart autofill tool
+      "
     />
     <meta name="author" content="Aullevo Team" />
-    <meta name="robots" content="index, follow" />
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
     <meta name="theme-color" content="#0a0a0c" />
 
-    <!-- Open Graph / Facebook Fallbacks -->
+    <!-- ══════════════════════════════════════════════════════
+         AEO — ANSWER ENGINE OPTIMIZATION
+         These tags help Google's AI Overviews surface Aullevo
+         when users ask "what is the best autofill extension"
+         or "how do I automate Workday job applications".
+         speakable points to sections Google can read aloud or
+         pull into AI answers.
+    ══════════════════════════════════════════════════════ -->
+    <meta
+      name="speakable"
+      content="Aullevo is a secure, local AI autofill extension that fills Workday, HR, government, and school forms automatically using Gemini AI — with no data leaving your device."
+    />
+
+    <!-- ══════════════════════════════════════════════════════
+         OPEN GRAPH (Facebook, LinkedIn, Discord, Slack previews)
+    ══════════════════════════════════════════════════════ -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Aullevo" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://aullevo-web.vercel.app/" />
     <meta
       property="og:title"
-      content="Aullevo | AI Form Filler & Autofill Browser Extension"
+      content="Aullevo — AI Form Filler & Autofill Automation"
     />
     <meta
       property="og:description"
-      content="Automate form filling with Aullevo. The secure, local AI autofill extension powered by Gemini. Fill Workday job applications, surveys, and forms in 3 seconds."
+      content="Stop filling forms by hand. Aullevo uses Gemini AI to autofill Workday, HR, government, and school forms in seconds — 100% local and secure."
     />
     <meta
       property="og:image"
       content="https://aullevo-web.vercel.app/og-image.png"
     />
-    <meta property="og:url" content="https://aullevo-web.vercel.app" />
-    <meta property="og:site_name" content="Aullevo" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Aullevo AI form filler filling a Workday job application automatically"
+    />
 
-    <!-- Twitter Card Fallbacks -->
+    <!-- ══════════════════════════════════════════════════════
+         TWITTER / X CARD
+    ══════════════════════════════════════════════════════ -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Aullevo | AI Form Filler & Autofill Browser Extension"
+      content="Aullevo — AI Form Filler & Autofill Automation"
     />
     <meta
       name="twitter:description"
-      content="Automate form filling with Aullevo. The secure, local AI autofill extension powered by Gemini. Fill Workday job applications, surveys, and forms in 3 seconds."
+      content="Stop filling forms by hand. Aullevo uses Gemini AI to autofill Workday, HR, government, and school forms in seconds — 100% local and secure."
     />
     <meta
       name="twitter:image"
       content="https://aullevo-web.vercel.app/og-image.png"
     />
+    <meta
+      name="twitter:image:alt"
+      content="Aullevo AI form filler filling a Workday job application automatically"
+    />
+
+    <!-- ══════════════════════════════════════════════════════
+         STRUCTURED DATA (JSON-LD)
+
+         1. SoftwareApplication — core product schema with pricing
+            and OS. Tells Google/Bing exactly what this is.
+
+         2. FAQPage — AEO powerhouse. Each Q&A here is a candidate
+            for a Google AI Overview snippet and a People Also Ask
+            result. Questions are written in natural spoken language
+            the way real users search.
+
+         3. HowTo — helps surface Aullevo in "how to automate
+            Workday applications" queries, a high-intent segment.
+
+         4. BreadcrumbList — establishes site hierarchy signal.
+
+         NOTE: add "aggregateRating" and real "offers" data once
+         you have genuine reviews and confirmed pricing.
+         Fake data = Google quality penalty.
+    ══════════════════════════════════════════════════════ -->
+
+    <!-- 1 · SoftwareApplication -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Aullevo",
+        "alternateName": [
+          "Aullevo AI Form Filler",
+          "Aullevo Autofill Extension"
+        ],
+        "applicationCategory": "BrowserApplication",
+        "applicationSubCategory": "Productivity",
+        "operatingSystem": "Chrome, Edge, Brave",
+        "url": "https://aullevo-web.vercel.app/",
+        "description": "Aullevo is a secure, local AI autofill browser extension powered by Gemini. It automatically fills Workday job applications, HR onboarding forms, government paperwork, school surveys, and other complex online forms — without sending any data to external servers.",
+        "featureList": [
+          "AI-powered autofill for Workday job applications",
+          "HR and onboarding form automation",
+          "Government and tax form autofill",
+          "School and university survey completion",
+          "Runs locally — no data leaves your device",
+          "Powered by Google Gemini AI",
+          "Works on Chrome, Edge, and Brave"
+        ],
+        "keywords": "ai form filler, autofill extension, workday automation, hr form automation, government form filler, gemini ai autofill",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "price": "390",
+          "priceCurrency": "PHP",
+          "availability": "https://schema.org/InStock"
+        }
+      }
+    </script>
+
+    <!-- 2 · FAQPage (AEO — feeds AI Overviews & People Also Ask) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is Aullevo?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aullevo is a free AI-powered browser extension that automatically fills out complex online forms — including Workday job applications, HR onboarding forms, government paperwork, and school surveys — using Google Gemini AI. All processing happens locally on your device, so your data never leaves your browser."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does Aullevo autofill Workday job applications?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aullevo detects form fields on Workday and other job application platforms, then uses Gemini AI to intelligently match your saved profile information to each field and fill them automatically — including dropdowns, checkboxes, and multi-step forms — in seconds."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Aullevo safe to use? Does it send my data anywhere?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Aullevo is designed with privacy first. All AI processing runs locally on your device using Gemini. Your personal information, resume data, and form responses are never sent to Aullevo's servers or any third-party service."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which forms and websites does Aullevo support?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aullevo supports a wide range of online forms including: Workday job applications, HR and employee onboarding forms, government and tax forms, school and university surveys, and most standard web-based forms with text fields, dropdowns, and checkboxes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What browsers does Aullevo work on?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aullevo works as a browser extension on Google Chrome, Microsoft Edge, and Brave. Support for additional Chromium-based browsers may be added in future updates."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Aullevo free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, Aullevo is free to use. You can install it as a browser extension on Chrome, Edge, or Brave at no cost."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What makes Aullevo better than a regular autofill or password manager?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Standard autofill tools like browser-built-in autofill or password managers only fill simple fields like name, email, and address. Aullevo uses AI to understand complex, multi-step forms — like Workday's job application flow — and intelligently fills every field including custom questions, work history dropdowns, and legal compliance sections."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <!-- 3 · HowTo (targets "how to automate job applications" queries) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Autofill a Workday Job Application with AI",
+        "description": "Use Aullevo to automatically fill out any Workday job application in seconds using AI — no copy-pasting required.",
+        "totalTime": "PT2M",
+        "tool": [
+          {
+            "@type": "HowToTool",
+            "name": "Aullevo browser extension (Chrome, Edge, or Brave)"
+          }
+        ],
+        "step": [
+          {
+            "@type": "HowToStep",
+            "position": 1,
+            "name": "Install Aullevo",
+            "text": "Install the Aullevo extension from the Chrome Web Store on Chrome, Edge, or Brave."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 2,
+            "name": "Set up your profile",
+            "text": "Open Aullevo and enter your personal information, work history, and preferences. This is stored locally on your device."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 3,
+            "name": "Open a Workday job application",
+            "text": "Navigate to any Workday job listing and start the application as you normally would."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 4,
+            "name": "Click Autofill",
+            "text": "Click the Aullevo icon or trigger autofill from the extension popup. Gemini AI will analyze the form and fill every field automatically."
+          },
+          {
+            "@type": "HowToStep",
+            "position": 5,
+            "name": "Review and submit",
+            "text": "Quickly review the filled fields, make any edits if needed, and submit your application."
+          }
+        ]
+      }
+    </script>
+
+    <!-- 4 · BreadcrumbList -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://aullevo-web.vercel.app/"
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-M5XM5TX7"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
