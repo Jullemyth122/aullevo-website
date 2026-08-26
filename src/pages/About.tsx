@@ -4,7 +4,7 @@ import SEO from '../components/SEO';
 const About: React.FC = () => {
     return (
         <div className="about-page animate-fade-in">
-            <SEO 
+            <SEO
                 title="About Aullevo | Secure, Local AI Form Automation"
                 description="Our mission is to build the fastest, most private way to automate repetitive forms. Learn about Aullevo's zero-knowledge architecture and local-first execution."
                 keywords="about aullevo, zero knowledge autofill, privacy design, local execution security, open source web automator"
@@ -114,50 +114,246 @@ const About: React.FC = () => {
                 </div>
             </section>
 
-            {/* Architecture Timeline */}
+            {/* Architecture Section */}
             <section className="architecture-section">
                 <div className="container">
-                    <h2 className="section-title text-center mb-12">System Architecture</h2>
+                    <div className="text-center mb-12">
+                        <div className="arch-eyebrow">
+                            <span className="arch-eyebrow-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                    <polyline points="2 17 12 22 22 17" />
+                                    <polyline points="2 12 12 17 22 12" />
+                                </svg>
+                            </span>
+                            Deep Dive: Layer-by-Layer Technical Specifications
+                        </div>
+                        <h2 className="section-title">System Architecture</h2>
+                        <p className="section-description">
+                            Engineered for complete encapsulation, zero-knowledge privacy, and deep DOM resilience.
+                        </p>
+                    </div>
+
                     <div className="arch-timeline">
-                        {[
-                            { layer: 'Layer 1: UI Core', desc: 'Secure React sidebar injected via Shadow DOM for absolute CSS isolation.', badge: 'Frontend' },
-                            { layer: 'Layer 2: Content Scripts', desc: 'MutationObserver and iframe extraction engine to handle dynamic government and enterprise forms.', badge: 'Bridge' },
-                            { layer: 'Layer 3: AI Engine', desc: 'Gemini 2.5 Flash logic that analyzes the blank DOM structure to map required fields.', badge: 'LLM' },
-                            { layer: 'Layer 4: Data Vault', desc: 'AES-256-GCM encrypted local multi-profile storage. Injects data directly into the browser. No cloud DBs.', badge: 'Storage' },
-                            { layer: 'Layer 5: Background', desc: 'Service workers regulating rate limits, notifications, and workflow orchestrations.', badge: 'System' },
-                        ].map(({ layer, desc, badge }, idx) => (
-                            <div key={layer} className="arch-step">
-                                <div className="arch-number">0{idx + 1}</div>
-                                <div className="arch-content">
-                                    <div className="arch-badge">{badge}</div>
-                                    <h3>{layer}</h3>
-                                    <p>{desc}</p>
+                        {/* Layer 1 */}
+                        <div className="arch-step arch-step-blue">
+                            <div className="arch-step-header">
+                                <div className="arch-number">01</div>
+                                <div className="arch-title-wrapper">
+                                    <div className="arch-badge-row">
+                                        <span className="arch-badge badge-blue">FRONTEND</span>
+                                    </div>
+                                    <h3 className="arch-title">Layer 1: Frontend &amp; UI Engine</h3>
                                 </div>
                             </div>
-                        ))}
+
+                            <div className="arch-body">
+                                <div className="arch-meta-row">
+                                    <span className="arch-meta-label">Technology:</span>
+                                    <span className="arch-meta-value">React 19, Lucide Icons, Vanilla CSS with CSS custom properties.</span>
+                                </div>
+
+                                <div className="arch-mechanism-block">
+                                    <span className="arch-meta-label">Mechanism:</span>
+                                    <p className="arch-mechanism-desc">
+                                        Creates a top-level host element (<code>#aullevo-sidebar-host</code>) with <code>z-index: 2147483646</code> and attaches an <strong>Open Shadow Root</strong>. Extension styles are injected directly into the shadow tree, ensuring 100% encapsulation—host CSS frameworks (Tailwind, Bootstrap, etc.) cannot disrupt the UI.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Layer 2 */}
+                        <div className="arch-step arch-step-purple">
+                            <div className="arch-step-header">
+                                <div className="arch-number">02</div>
+                                <div className="arch-title-wrapper">
+                                    <div className="arch-badge-row">
+                                        <span className="arch-badge badge-purple">BRIDGE</span>
+                                    </div>
+                                    <h3 className="arch-title">Layer 2: Content Scripts &amp; Deep DOM Engine</h3>
+                                </div>
+                            </div>
+
+                            <div className="arch-body">
+                                <div className="arch-mechanism-block">
+                                    <span className="arch-meta-label">Mechanism:</span>
+                                    <ul className="arch-spec-list">
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Deep Shadow Piercing:</strong>{' '}
+                                                <code>querySelectorAllDeep</code> recursively extracts elements inside nested Shadow DOM trees.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Tab Panel Activation:</strong>{' '}
+                                                Detects hidden tab panels (<code>[role="tabpanel"]</code>) and momentarily reveals them to extract all fields before filling.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Honeypot &amp; CAPTCHA Shields:</strong>{' '}
+                                                Identifies and skips hidden bot-traps (<code>aria-hidden</code>, 0-size, offscreen) and warns users if reCAPTCHA, hCaptcha, Turnstile, or Arkose are detected.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Human Input Simulation:</strong>{' '}
+                                                Injects values using prototype property setters and triggers React's internal <code>_valueTracker</code> to ensure form validation states acknowledge the changes.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Layer 3 */}
+                        <div className="arch-step arch-step-cyan">
+                            <div className="arch-step-header">
+                                <div className="arch-number">03</div>
+                                <div className="arch-title-wrapper">
+                                    <div className="arch-badge-row">
+                                        <span className="arch-badge badge-cyan">LLM &amp; HYBRID</span>
+                                    </div>
+                                    <h3 className="arch-title">Layer 3: Hybrid AI &amp; Matching Engine</h3>
+                                </div>
+                            </div>
+
+                            <div className="arch-body">
+                                <div className="arch-mechanism-block">
+                                    <span className="arch-meta-label">Mechanism:</span>
+                                    <ul className="arch-spec-list">
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Dual-Tier Resolution:</strong>{' '}
+                                                Combines Google Gemini LLM analysis with instant deterministic heuristics.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">2D Matrix / Table Optimizer:</strong>{' '}
+                                                Directly resolves availability tables (e.g., <em>Mon - From, Tue - To</em>) via heuristics, saving LLM tokens and avoiding prompt bloat.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Domain Session Cache:</strong>{' '}
+                                                Uses <code>chrome.storage.session</code> to cache field signature mappings for 15 minutes, making multi-page job applications instantaneous.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Contextual RAG &amp; Chat:</strong>{' '}
+                                                Pulls structured user memories to generate context-grounded responses to open-ended application questions or conversational chat inputs.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Layer 4 */}
+                        <div className="arch-step arch-step-green">
+                            <div className="arch-step-header">
+                                <div className="arch-number">04</div>
+                                <div className="arch-title-wrapper">
+                                    <div className="arch-badge-row">
+                                        <span className="arch-badge badge-green">STORAGE &amp; PRIVACY</span>
+                                    </div>
+                                    <h3 className="arch-title">Layer 4: Zero-Knowledge Data Vault</h3>
+                                </div>
+                            </div>
+
+                            <div className="arch-body">
+                                <div className="arch-mechanism-block">
+                                    <span className="arch-meta-label">Mechanism:</span>
+                                    <ul className="arch-spec-list">
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">100% Local-First Storage:</strong>{' '}
+                                                User profiles, custom fields, work histories, and uploaded resumes (parsed via <code>pdfjs-dist</code> and <code>mammoth</code>) are stored exclusively on-device in <code>chrome.storage.local</code>.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Namespace Partitioning:</strong>{' '}
+                                                Dynamically partitions data keys based on active authentication state (<code>aullevo_profiles_user_&lt;uid&gt;</code> vs <code>aullevo_profiles_guest</code>), enabling seamless switching between accounts.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Virtual File Dispatcher:</strong>{' '}
+                                                Reconstructs base64-stored files into native <code>File</code> / <code>DataTransfer</code> objects to populate native file upload inputs.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Layer 5 */}
+                        <div className="arch-step arch-step-amber">
+                            <div className="arch-step-header">
+                                <div className="arch-number">05</div>
+                                <div className="arch-title-wrapper">
+                                    <div className="arch-badge-row">
+                                        <span className="arch-badge badge-amber">ORCHESTRATION</span>
+                                    </div>
+                                    <h3 className="arch-title">Layer 5: Autonomous Autopilot Core</h3>
+                                </div>
+                            </div>
+
+                            <div className="arch-body">
+                                <div className="arch-mechanism-block">
+                                    <span className="arch-meta-label">Mechanism:</span>
+                                    <ul className="arch-spec-list">
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Multi-Page State Machine:</strong>{' '}
+                                                Uses <code>chrome.tabs.onUpdated</code> to track multi-step form journeys across page navigations up to 30 continuous steps.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Dynamic Row Expansion:</strong>{' '}
+                                                Detects "+ Add Experience" buttons, triggers clicks, invalidates the cache, and recurses to fill newly exposed form rows.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Anti-Loop Fingerprinting:</strong>{' '}
+                                                Compares field-value fingerprints to detect and safely abort if a form gets stuck in an infinite loop.
+                                            </div>
+                                        </li>
+                                        <li className="arch-spec-item">
+                                            <span className="arch-spec-bullet" />
+                                            <div className="arch-spec-text">
+                                                <strong className="arch-spec-label">Web-to-Extension Sync:</strong>{' '}
+                                                Listens to the web dashboard via IndexedDB/postMessage to synchronize user session and Pro status in real-time.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Open Source / CTA */}
-            <section className="about-footer-cta">
-                <div className="container">
-                    <div className="cta-box">
-                        <div className="cta-text">
-                            <h2>Open & Transparent</h2>
-                            <p>We believe trust is earned through transparency. Inspect our source code, audit our privacy claims, and verify Aullevo for yourself.</p>
-                        </div>
-                        <div className="cta-action">
-                            <a href="https://github.com/Jullemyth122/aullevo" target="_blank" rel="noreferrer" className="btn btn-primary btn-lg">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '0.75rem' }}>
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z" />
-                                </svg>
-                                View our GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     );
 };

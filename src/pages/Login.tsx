@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db, googleProvider } from '../config/firebase';
 import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
@@ -6,10 +6,30 @@ import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import DonateButton from './DonateButton';
 import SEO from '../components/SEO';
 
+const evaluateProStatus = (data: any): { isActive: boolean; expiresAt: string | null; isExpired: boolean } => {
+    if (!data) return { isActive: false, expiresAt: null, isExpired: false };
+    const hasProFlag = Boolean(data.isPro);
+    const exp = data.proExpiresAt || null;
+    if (!hasProFlag) {
+        return { isActive: false, expiresAt: exp, isExpired: false };
+    }
+    if (exp) {
+        const isStillValid = new Date(exp).getTime() > Date.now();
+        return {
+            isActive: isStillValid,
+            expiresAt: exp,
+            isExpired: !isStillValid
+        };
+    }
+    // No expiration date set
+    return { isActive: false, expiresAt: null, isExpired: true };
+};
+
 const Login: React.FC = () => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [isPro, setIsPro] = useState(false);
+    const [proExpiresAt, setProExpiresAt] = useState<string | null>(null);
     const simulatedSync = true;
     const navigate = useNavigate();
 
@@ -27,9 +47,14 @@ const Login: React.FC = () => {
                     try {
                         const userSnap = await getDoc(userRef);
                         if (userSnap.exists()) {
-                            const proStatus = !!userSnap.data()?.isPro;
-                            setIsPro(proStatus);
-                            try { localStorage.setItem('aullevo_is_pro', proStatus ? 'true' : 'false'); } catch {}
+                            const { isActive, expiresAt } = evaluateProStatus(userSnap.data());
+                            setIsPro(isActive);
+                            setProExpiresAt(expiresAt);
+                            try {
+                                localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
+                                if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
+                                else localStorage.removeItem('aullevo_pro_expires_at');
+                            } catch { }
                             userDocExists = true;
 
                             // Broadcast auth state + isPro for Chrome Extension content script sync
@@ -40,7 +65,8 @@ const Login: React.FC = () => {
                                     email: currentUser.email,
                                     displayName: currentUser.displayName,
                                     photoURL: currentUser.photoURL,
-                                    isPro: proStatus
+                                    isPro: isActive,
+                                    proExpiresAt: expiresAt
                                 }
                             }, '*');
                         }
@@ -62,15 +88,24 @@ const Login: React.FC = () => {
                             console.error("Firestore write error:", dbWriteErr);
                         }
                         setIsPro(false);
-                        try { localStorage.setItem('aullevo_is_pro', 'false'); } catch {}
+                        setProExpiresAt(null);
+                        try {
+                            localStorage.setItem('aullevo_is_pro', 'false');
+                            localStorage.removeItem('aullevo_pro_expires_at');
+                        } catch { }
                     }
 
                     // Listen in real-time to Pro changes (e.g. if they pay)
                     const unsubSnap = onSnapshot(userRef, (docSnap) => {
                         if (docSnap.exists()) {
-                            const proStatus = !!docSnap.data().isPro;
-                            setIsPro(proStatus);
-                            try { localStorage.setItem('aullevo_is_pro', proStatus ? 'true' : 'false'); } catch {}
+                            const { isActive, expiresAt } = evaluateProStatus(docSnap.data());
+                            setIsPro(isActive);
+                            setProExpiresAt(expiresAt);
+                            try {
+                                localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
+                                if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
+                                else localStorage.removeItem('aullevo_pro_expires_at');
+                            } catch { }
 
                             // Broadcast updated isPro to extension in real-time
                             window.postMessage({
@@ -80,7 +115,8 @@ const Login: React.FC = () => {
                                     email: currentUser.email,
                                     displayName: currentUser.displayName,
                                     photoURL: currentUser.photoURL,
-                                    isPro: proStatus
+                                    isPro: isActive,
+                                    proExpiresAt: expiresAt
                                 }
                             }, '*');
                         }
@@ -92,6 +128,7 @@ const Login: React.FC = () => {
                 } else {
                     setUser(null);
                     setIsPro(false);
+                    setProExpiresAt(null);
                 }
             } catch (authErr) {
                 console.error("Auth process error:", authErr);
@@ -141,8 +178,8 @@ const Login: React.FC = () => {
         <div className="login-page-container">
             <SEO
                 title="Login to Aullevo | AI-Powered Automation Dashboard"
-                description="Sign in to Aullevo to activate your Pro lifetime license, unlock smart autopilot wizards, and manage your extension account securely."
-                keywords="login aullevo, extension dashboard, autofill settings, pro lifetime activation, resume scanner"
+                description="Sign in to Aullevo to manage your Pro subscription ($2.50/mo), unlock smart autopilot wizards, and manage your extension account securely."
+                keywords="login aullevo, extension dashboard, autofill settings, pro subscription, monthly access, resume scanner"
             />
             {user ? (
                 /* ── AUTHENTICATED: PREMIUM DASHBOARD GRID ── */
@@ -169,10 +206,10 @@ const Login: React.FC = () => {
                                 {isPro ? (
                                     <>
                                         <span className="sparkle-icon">✨</span>
-                                        <span>Pro Lifetime Member</span>
+                                        <span>Pro Subscriber</span>
                                     </>
                                 ) : (
-                                    <span>Free Account</span>
+                                    <span>{proExpiresAt ? 'Subscription Expired' : 'Free Account'}</span>
                                 )}
                             </div>
 
@@ -199,8 +236,16 @@ const Login: React.FC = () => {
                                     </div>
                                     <div className="hud-stat-item">
                                         <span className="stat-label">License Verification</span>
-                                        <span className="stat-value">{isPro ? 'Pro Lifetime Active' : 'Free Tier'}</span>
+                                        <span className="stat-value">{isPro ? 'Pro Monthly Active' : (proExpiresAt ? 'Expired (Needs Renewal)' : 'Free Tier')}</span>
                                     </div>
+                                    {proExpiresAt && (
+                                        <div className="hud-stat-item">
+                                            <span className="stat-label">{isPro ? 'Valid Until' : 'Expired On'}</span>
+                                            <span className="stat-value">
+                                                {new Date(proExpiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -221,9 +266,9 @@ const Login: React.FC = () => {
                             /* UPSELL / FREE STATE VIEW */
                             <div className="upsell-panel">
                                 <div className="upsell-badge">Aullevo Premium</div>
-                                <h3>Supercharge Your Form Automation</h3>
+                                <h3>{proExpiresAt ? 'Renew Your Pro Subscription' : 'Supercharge Your Form Automation'}</h3>
                                 <p className="upsell-description">
-                                    Unlock advanced Gemini-powered AI form filling, Drag-and-Drop Resume Scanner, and eliminate repetitive typing forever.
+                                    Unlock advanced Gemini-powered AI form filling, Drag-and-Drop Resume Scanner, and eliminate repetitive typing for just $2.50 / month.
                                 </p>
 
                                 <div className="pro-feature-grid">
@@ -271,12 +316,12 @@ const Login: React.FC = () => {
                                 </div>
 
                                 <div className="upgrade-prompt-section">
-                                    <div className="upgrade-price-badge">LIFETIME ACCESS • NO SUBSCRIPTION</div>
+                                    <div className="upgrade-price-badge">MONTHLY ACCESS · $2.50 / MONTH</div>
                                     <DonateButton className="btn btn-primary btn-lg pulse">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
                                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                                         </svg>
-                                        Upgrade to Pro Lifetime
+                                        {proExpiresAt ? 'Renew Pro ($2.50/mo)' : 'Subscribe to Pro ($2.50/mo)'}
                                     </DonateButton>
                                 </div>
                             </div>
@@ -284,12 +329,17 @@ const Login: React.FC = () => {
                             /* PRO ACTIVE DETAIL CARD */
                             <div className="pro-activated-panel">
                                 <div className="celebration-ring">
-                                    <div className="sparkles-container"> 🎉 </div>
+                                    <div className="sparkles-container">✨</div>
                                 </div>
-                                <h3>Pro Lifetime Activated</h3>
+                                <h3>Pro Monthly Activated</h3>
                                 <p className="pro-thanks">
                                     Thank you for supporting Aullevo! Your account has full, unrestricted access to the complete suite of automation tools.
                                 </p>
+                                {proExpiresAt && (
+                                    <p style={{ fontSize: '0.9rem', color: '#10b981', fontWeight: '600', marginTop: '-4px' }}>
+                                        Active until: {new Date(proExpiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                                    </p>
+                                )}
 
                                 <div className="instructions-card">
                                     <h4>How to Link with Chrome Extension</h4>
@@ -297,13 +347,19 @@ const Login: React.FC = () => {
                                         <li>Open your Google Chrome browser.</li>
                                         <li>Click on the **Aullevo** extension icon in your toolbar.</li>
                                         <li>Click **Sign In** and authenticate using **{user.email}**.</li>
-                                        <li>Your Pro Lifetime status will automatically activate in your extension instantly!</li>
+                                        <li>Your Pro Monthly status will automatically activate in your extension instantly!</li>
                                     </ol>
                                 </div>
 
                                 <div className="pro-status-verification">
                                     <span className="verify-dot animate-pulse"></span>
-                                    <span>Pro Lifetime License Active & Verified</span>
+                                    <span>Pro Monthly Subscription Active & Verified</span>
+                                </div>
+
+                                <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                                    <DonateButton className="btn btn-secondary btn-sm">
+                                        Extend / Renew Subscription (+30 Days)
+                                    </DonateButton>
                                 </div>
                             </div>
                         )}
@@ -317,7 +373,7 @@ const Login: React.FC = () => {
                     <div className="login-promo-panel">
                         <div className="promo-badge">Aullevo Pro</div>
                         <h3>Your entire form-filling engine, unlocked.</h3>
-                        <p>Sign in to manage your Pro Lifetime license, unlock AI drag-and-drop resume scanning, and power through multi-step applications.</p>
+                        <p>Sign in to manage your Pro subscription ($2.50/mo), unlock AI drag-and-drop resume scanning, and power through multi-step applications.</p>
 
                         <div className="promo-feature-list">
                             <div className="promo-feature-item">
@@ -328,7 +384,7 @@ const Login: React.FC = () => {
                                 </div>
                                 <div className="promo-feature-text">
                                     <strong>Instant Pro Verification</strong>
-                                    <span>One-click Google authentication seamlessly validates your lifetime status inside the extension.</span>
+                                    <span>One-click Google authentication seamlessly validates your Pro subscription inside the extension.</span>
                                 </div>
                             </div>
 
@@ -352,8 +408,8 @@ const Login: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="promo-feature-text">
-                                    <strong>Keep Pro Benefits</strong>
-                                    <span>Your Pro lifetime purchase status resides permanently with your primary Google login.</span>
+                                    <strong>Flexible Monthly Access</strong>
+                                    <span>Cancel or renew anytime at only $2.50/month with zero long-term commitments.</span>
                                 </div>
                             </div>
                         </div>

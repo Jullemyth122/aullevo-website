@@ -14,14 +14,16 @@ export const logEvent = (eventName: string, params?: Record<string, any>) => {
     if ((window as any).dataLayer) {
       (window as any).dataLayer.push({
         event: eventName,
-        ...params
+        ...params,
       });
       sent = true;
     }
 
     if (!sent) {
-      console.warn(`[Analytics] Neither gtag nor dataLayer loaded. Event: ${eventName}`, params);
+      console.warn(
+        `[Analytics] Neither gtag nor dataLayer loaded. Event: ${eventName}`,
+        params,
+      );
     }
   }
 };
-

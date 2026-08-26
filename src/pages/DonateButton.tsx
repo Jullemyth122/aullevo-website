@@ -2,12 +2,11 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import { auth, db, googleProvider } from '../config/firebase';
 import { onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const KOFI_GLOBAL_LINK = 'https://ko-fi.com/mythxenodo25333';
-const PAYMONGO_LOCAL_LINK = 'https://pm.link/org-CkTB77gBCh4xvPkK6c3H6RPt/eZD45JF';
+const PAYMONGO_LOCAL_LINK = 'https://pm.link/org-CkTB77gBCh4xvPkK6c3H6RPt/ZLLIimX';
 
-/* ─── SVG Icons ─── */
+/* ── SVG Icons ── */
 
 const HeartIcon = () => (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -24,18 +23,8 @@ const GoogleIcon = () => (
     </svg>
 );
 
-const KofiIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
-        <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
-        <line x1="6" y1="2" x2="6" y2="4" />
-        <line x1="10" y1="2" x2="10" y2="4" />
-        <line x1="14" y1="2" x2="14" y2="4" />
-    </svg>
-);
-
 const WalletIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
         <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
         <path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
@@ -77,7 +66,7 @@ const ArrowRightIcon = () => (
     </svg>
 );
 
-/* ─── Focus Trap Hook ─── */
+/* ── Focus Trap Hook ── */
 
 function useFocusTrap(isActive: boolean) {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -116,7 +105,7 @@ function useFocusTrap(isActive: boolean) {
     return containerRef;
 }
 
-/* ─── Component ─── */
+/* ── Component ── */
 
 interface DonateButtonProps {
     className?: string;
@@ -193,8 +182,8 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                     createOrder: (_data: any, actions: any) => {
                         return actions.order.create({
                             purchase_units: [{
-                                amount: { value: '7.00' },
-                                description: 'Aullevo Pro Lifetime Membership'
+                                amount: { value: '2.50' },
+                                description: 'Aullevo Pro Monthly Subscription - 1 Month Access'
                             }]
                         });
                     },
@@ -204,14 +193,39 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                             const details = await actions.order.capture();
                             if (isMounted) {
                                 const userRef = doc(db, 'users', user.uid);
+
+                                // Extend from current active expiration date if still valid, or from now
+                                let baseTime = Date.now();
+                                try {
+                                    const userSnap = await getDoc(userRef);
+                                    if (userSnap.exists()) {
+                                        const currentExp = userSnap.data()?.proExpiresAt;
+                                        if (currentExp) {
+                                            const expTime = new Date(currentExp).getTime();
+                                            if (expTime > baseTime) {
+                                                baseTime = expTime;
+                                            }
+                                        }
+                                    }
+                                } catch (fetchErr) {
+                                    console.warn("Error fetching current expiration:", fetchErr);
+                                }
+
+                                const proExpiresAt = new Date(baseTime + 30 * 24 * 60 * 60 * 1000).toISOString();
+
                                 await setDoc(userRef, {
                                     isPro: true,
+                                    proExpiresAt: proExpiresAt,
+                                    subscriptionPlan: 'monthly',
+                                    subscriptionPrice: '$2.50/month',
                                     paymentDetails: {
                                         provider: 'paypal',
                                         orderId: details.id,
                                         payerEmail: details.payer?.email_address || '',
                                         status: details.status || 'COMPLETED',
-                                        updatedAt: new Date()
+                                        amount: '2.50',
+                                        currency: 'USD',
+                                        updatedAt: new Date().toISOString()
                                     }
                                 }, { merge: true });
                                 setPaymentSuccess(true);
@@ -277,13 +291,12 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
         }
     };
 
-    const getKofiCheckoutUrl = () => KOFI_GLOBAL_LINK;
     const getPaymongoCheckoutUrl = () => {
         if (!user) return PAYMONGO_LOCAL_LINK;
         return `${PAYMONGO_LOCAL_LINK}?email=${encodeURIComponent(user.email || '')}&uid=${user.uid}`;
     };
 
-    /* ─── Render Modal ─── */
+    /* ── Render Modal ── */
 
     const modal = isOpen ? ReactDOM.createPortal(
         <div
@@ -318,12 +331,12 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                         <div className="donate-shield" aria-hidden="true"><HeartIcon /></div>
                         <h2 id="donate-dialog-title">Upgrade to Aullevo Pro</h2>
                         <p id="donate-dialog-desc">
-                            Unlock lifetime access to advanced AI form filling, unlimited profiles,
+                            Unlock 30 days of full Pro access to advanced AI form filling, unlimited profiles,
                             memories, autopilot links, and priority support.
                         </p>
-                        <div className="donate-price-tag" aria-label="Price: $7 one-time payment">
-                            <span className="donate-price">$7</span>
-                            <span className="donate-price-label">One-time • Lifetime</span>
+                        <div className="donate-price-tag" aria-label="Price: $2.50 per month">
+                            <span className="donate-price">$2.50</span>
+                            <span className="donate-price-label">/ month · Cancel Anytime</span>
                         </div>
                     </header>
 
@@ -335,8 +348,8 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                         /* ── Guest: Auth Prompt ── */
                         <div className="modal-auth-prompt">
                             <div className="donate-status-info" role="alert">
-                                <span className="status-icon" aria-hidden="true">⚠️</span>
-                                <p>Please sign in first so your payment can be automatically linked to your account.</p>
+                                <span className="status-icon" aria-hidden="true">🔒</span>
+                                <p>Please sign in first so your subscription can be automatically linked to your account.</p>
                             </div>
                             <button
                                 className="btn-google-login"
@@ -368,8 +381,8 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                         <PayPalIcon />
                                     </div>
                                     <div className="paypal-section-title">
-                                        <span>Pay with PayPal</span>
-                                        <small>PayPal, Debit or Credit Card — instant activation</small>
+                                        <span>Pay with PayPal or Card</span>
+                                        <small>$2.50 / month — instant activation worldwide</small>
                                     </div>
                                 </div>
 
@@ -384,50 +397,47 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                     <div className="paypal-success-banner" role="status" aria-live="polite">
                                         <CheckCircleIcon />
                                         <h4>Payment Successful!</h4>
-                                        <p>Your account has been upgraded to Pro Lifetime. All premium features are now unlocked.</p>
+                                        <p>Your account has been upgraded to Aullevo Pro (Monthly Subscription). All premium features are now unlocked for 30 days.</p>
                                     </div>
                                 ) : (
                                     <div id="paypal-button-container" className="paypal-btn-container" aria-label="PayPal checkout buttons"></div>
                                 )}
                             </div>
 
-                            {/* Alternative Methods Divider */}
+                            {/* Philippines Local Methods Divider */}
                             <div className="donate-alt-divider" aria-hidden="true">
                                 <span />
-                                <small>or use an alternative</small>
+                                <small>Philippines Local Payments</small>
                                 <span />
                             </div>
 
-                            {/* Ko-fi */}
-                            <a
-                                href={getKofiCheckoutUrl()}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="donate-option-card"
-                                aria-label="Pay $7 Lifetime via Ko-fi using PayPal or Card"
-                            >
-                                <div className="donate-card-icon donate-card-icon--kofi"><KofiIcon /></div>
-                                <div className="donate-card-text">
-                                    <h4>Ko-fi <span className="donate-card-badge">Global</span></h4>
-                                    <p>Pay $7 Lifetime via PayPal or Card</p>
-                                </div>
-                                <div className="donate-arrow"><ArrowRightIcon /></div>
-                            </a>
-
-                            {/* Paymongo */}
+                            {/* PayMongo: GCash, Maya & QR Ph */}
                             <a
                                 href={getPaymongoCheckoutUrl()}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="donate-option-card"
-                                aria-label="Pay 390 Philippine Pesos Lifetime via GCash, Maya, or QR Ph"
+                                className="donate-option-card donate-option-card--ph"
+                                aria-label="Pay 154.29 Philippine Pesos per month via GCash, Maya, or QR Ph"
                             >
-                                <div className="donate-card-icon donate-card-icon--paymongo"><WalletIcon /></div>
-                                <div className="donate-card-text">
-                                    <h4>PayMongo <span className="donate-card-badge donate-card-badge--green">PH Local</span></h4>
-                                    <p>Pay ₱390 Lifetime with GCash, Maya, QR Ph</p>
+                                <div className="donate-card-icon donate-card-icon--paymongo">
+                                    <WalletIcon />
                                 </div>
-                                <div className="donate-arrow"><ArrowRightIcon /></div>
+                                <div className="donate-card-text">
+                                    <div className="donate-card-header-row">
+                                        <h4>GCash, Maya & QR Ph</h4>
+                                        <span className="donate-card-badge donate-card-badge--green">₱154.29 / mo</span>
+                                    </div>
+                                    <p>Scan with GCash, Maya, GoTyme, BPI, or any QR Ph bank app</p>
+                                    <div className="donate-wallet-tags" aria-hidden="true">
+                                        <span className="tag-pill tag-gcash">GCash</span>
+                                        <span className="tag-pill tag-maya">Maya</span>
+                                        <span className="tag-pill tag-qrph">QR Ph</span>
+                                        <span className="tag-pill tag-bank">Cards & Banks</span>
+                                    </div>
+                                </div>
+                                <div className="donate-arrow">
+                                    <ArrowRightIcon />
+                                </div>
                             </a>
                         </div>
                     )}
@@ -444,7 +454,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                     </button>
                     <div className="donate-secure-text">
                         <LockIcon />
-                        <span>256-bit encrypted • Secure checkout</span>
+                        <span>256-bit encrypted · Secure checkout</span>
                     </div>
                 </footer>
             </div>
@@ -452,7 +462,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
         document.body
     ) : null;
 
-    /* ─── Trigger Button ─── */
+    /* ── Trigger Button ── */
 
     return (
         <>

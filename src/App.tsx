@@ -7,6 +7,8 @@ import HowItWorks from './pages/HowItWorks';
 import Documentation from './pages/Documentation';
 import About from './pages/About';
 import Login from './pages/Login';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/main.scss';
 
@@ -23,6 +25,8 @@ const App: React.FC = () => {
         { path: 'docs', element: <Documentation /> },
         { path: 'about', element: <About /> },
         { path: 'login', element: <Login /> },
+        { path: 'privacy', element: <PrivacyPolicy /> },
+        { path: 'terms', element: <TermsOfService /> },
       ],
     },
   ])

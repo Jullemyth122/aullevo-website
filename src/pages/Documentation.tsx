@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import SEO from '../components/SEO';
 import { logEvent } from '../utils/analytics';
 
@@ -48,7 +48,7 @@ const Documentation: React.FC = () => {
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.8.3</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v1.0.0</span>
                     </div>
                     <h1 className="docs-title">Developer & User Guide</h1>
                     <p className="docs-subtitle">Everything you need to set up, configure, and automate with Aullevo.</p>
@@ -205,7 +205,7 @@ const Documentation: React.FC = () => {
                             Aullevo is fundamentally built to be <strong>100% local-first and free to use</strong> when connected to your own Google Gemini API key. Because you bring your own API key, there are zero token markups or monthly AI subscription fees for standard form filling.
                         </p>
                         <p>
-                            The optional <strong>Premium Account (Pro Lifetime)</strong> is specifically crafted for power users who need advanced multi-identity management, AI drag-and-drop resume scanning, and autonomous multi-page form automation.
+                            The optional <strong>Premium Account (Pro Subscription)</strong> is specifically crafted for power users who need advanced multi-identity management, AI drag-and-drop resume scanning, and autonomous multi-page form automation.
                         </p>
 
                         <h3>Feature & Tier Comparison Matrix</h3>
@@ -215,7 +215,7 @@ const Documentation: React.FC = () => {
                                     <tr>
                                         <th>Capability / Feature</th>
                                         <th><span className="tier-badge free">Free Tier</span></th>
-                                        <th><span className="tier-badge pro">Pro Lifetime</span></th>
+                                        <th><span className="tier-badge pro">Pro ($2.50/mo)</span></th>
                                         <th>Practical Benefit</th>
                                     </tr>
                                 </thead>
@@ -259,8 +259,8 @@ const Documentation: React.FC = () => {
                                     <tr>
                                         <td><strong>Pricing & Subscription</strong></td>
                                         <td>100% Free Forever</td>
-                                        <td><strong>One-time Lifetime Upgrade</strong></td>
-                                        <td>No recurring monthly fees or hidden charges. Pay once, unlock forever.</td>
+                                        <td><strong>Monthly Subscription ($2.50/mo)</strong></td>
+                                        <td>Only $2.50 per month. Flexible monthly access, cancel anytime.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -649,3 +649,4 @@ const Documentation: React.FC = () => {
 };
 
 export default Documentation;
+

@@ -96,34 +96,73 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Mobile Nav Overlay */}
-            <nav className={`mobile-nav ${isMenuOpen ? 'open' : ''}`}>
-                {navItems.map((item) => (
-                    <Link
-                        key={item}
-                        to={getPath(item)}
-                        className={`mobile-link ${isActive(item) ? 'active' : ''}`}
-                    >
-                        {item}
-                    </Link>
-                ))}
-                
-                {user ? (
-                    <Link to="/login" className="mobile-link">
-                        My Account
-                    </Link>
-                ) : (
-                    <Link to="/login" className="mobile-link">
-                        Sign In
-                    </Link>
-                )}
+            <div 
+                className={`mobile-nav-backdrop ${isMenuOpen ? 'open' : ''}`} 
+                onClick={() => setIsMenuOpen(false)} 
+            />
+            
+            <nav className={`mobile-nav ${isMenuOpen ? 'open' : ''}`} aria-hidden={!isMenuOpen}>
+                <div className="mobile-nav-inner">
+                    <div className="mobile-nav-links">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item}
+                                to={getPath(item)}
+                                className={`mobile-link ${isActive(item) ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                <span>{item}</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mobile-link-arrow">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </Link>
+                        ))}
+                        
+                        {user ? (
+                            <Link 
+                                to="/login" 
+                                className={`mobile-link mobile-link--account ${location.pathname === '/login' ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                <span className="mobile-account-info">
+                                    <span className="nav-avatar">
+                                        {user.photoURL ? (
+                                            <img src={user.photoURL} alt="Avatar" />
+                                        ) : (
+                                            user.displayName?.charAt(0).toUpperCase() || 'U'
+                                        )}
+                                    </span>
+                                    <span>My Account</span>
+                                </span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mobile-link-arrow">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </Link>
+                        ) : (
+                            <Link 
+                                to="/login" 
+                                className={`mobile-link ${location.pathname === '/login' ? 'active' : ''}`}
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                <span>Sign In</span>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mobile-link-arrow">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </Link>
+                        )}
+                    </div>
 
-                <div className="mobile-theme-toggle-wrapper" style={{ margin: '1rem 0' }}>
-                    <ThemeToggle />
+                    <div className="mobile-nav-footer">
+                        <div className="mobile-nav-utility">
+                            <span className="utility-label">Theme Appearance</span>
+                            <ThemeToggle />
+                        </div>
+
+                        <TrustDownloadButton className="btn btn-primary btn-block mobile-download-btn">
+                            Download Extension
+                        </TrustDownloadButton>
+                    </div>
                 </div>
-
-                <TrustDownloadButton className="btn btn-primary btn-lg">
-                    Download Extension
-                </TrustDownloadButton>
             </nav>
         </header>
     );

@@ -162,14 +162,14 @@ const Home: React.FC = () => {
                     <div className="hero-text animate-fade-in">
                         <div className="hero-badge">
                             <span className="hero-badge-dot"></span>
-                            AI-Powered Form Automation
+                            Advanced Automation with AI
                         </div>
                         <h1>
-                            Automate Work. <br />
+                            Automate Repetitive Task. <br />
                             <span className="gradient-text">Reclaim Your Time.</span>
                         </h1>
                         <p className="hero-subtitle">
-                            The AI-powered assistant that instantly fills forms, applications, and repetitive data entries. Looks human, works at lightspeed.
+                            The Automation that instantly fill forms, repetitive data entries and so much task manually, also can be used with AI.
                         </p>
                         <div className="hero-ctas">
                             <TrustDownloadButton className="btn btn-primary btn-lg">
@@ -186,7 +186,7 @@ const Home: React.FC = () => {
                         </div>
 
                         <div className="trust-bar">
-                            <span>TRUSTED BY 100+ USERS</span>
+                            <span>TRUSTED BY 50+ USERS</span>
                             {/* <div className="trust-logos">
                                 <strong>Google</strong>
                                 <strong>Amazon</strong>
@@ -432,12 +432,12 @@ const Home: React.FC = () => {
                             </p>
                         </div>
 
-                        <div className="roadmap-card roadmap-card--active">
+                        <div className="roadmap-card roadmap-card--completed">
                             <div className="roadmap-status">
-                                <span className="roadmap-status-dot roadmap-status-dot--progress"></span>
-                                In Development (Soon)
+                                <span className="roadmap-status-dot roadmap-status-dot--done"></span>
+                                Completed
                             </div>
-                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-glow)' }}>
+                            <div className="roadmap-icon" style={{ background: 'var(--bg-badge-live)', color: 'var(--accent-pop)' }}>
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
                                     <polyline points="14 2 14 8 20 8" />
@@ -492,8 +492,8 @@ const Home: React.FC = () => {
 
                         <div className="roadmap-card">
                             <div className="roadmap-status">
-                                <span className="roadmap-status-dot roadmap-status-dot--planned"></span>
-                                Planned
+                                <span className="roadmap-status-dot roadmap-status-dot--progress"></span>
+                                In Development (Soon)
                             </div>
                             <div className="roadmap-icon">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
