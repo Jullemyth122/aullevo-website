@@ -2,73 +2,98 @@
 
 .features-page {
   padding-top: $nav-height;
-  padding-bottom: 6rem;
+  padding-bottom: 8rem;
   position: relative;
-  background-color: var(--bg-main);
 }
 
 /* ─────────────────────────────────────────────────────────
    HERO SECTION
    ────────────────────────────────────────────────────────── */
 .features-hero {
-  padding: 6rem 0 3rem;
+  padding: 6rem 0 4rem;
   text-align: center;
   position: relative;
 
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 400px;
+    background: radial-gradient(ellipse at 50% 0%, var(--body-glow-1) 0%, var(--body-glow-2) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(40px);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
   .hero-badge {
-    display: inline-block;
-    padding: 0.35rem 1rem;
-    background: var(--bg-badge-live);
-    border: 1px solid var(--border-badge-live);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1.25rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
     color: var(--primary);
-    border-radius: 99px;
-    font-size: 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.82rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  [data-theme="light"] .hero-badge {
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.2);
+    color: #1d4ed8;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
   }
 
   .hero-title {
-    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    font-size: clamp(2.3rem, 5.5vw, 4.4rem);
     font-weight: 800;
     line-height: 1.12;
     color: var(--text-main);
-    margin-bottom: 1.25rem;
-    letter-spacing: -0.03em;
-
-    .gradient-text {
-      background: var(--brand-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.035em;
   }
 
   .hero-subtitle {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--text-muted);
-    line-height: 1.7;
+    line-height: 1.75;
   }
 }
 
 /* ─────────────────────────────────────────────────────────
-   FEATURES GRID (Clean, compact, and fully responsive)
+   FEATURES BENTO GRID (Pinterest / Behance Clean Light Aesthetic)
    ────────────────────────────────────────────────────────── */
 .features-bento-section {
   padding: 1.5rem 0 4rem;
+  position: relative;
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  gap: 1.75rem;
   width: 100%;
 
   @media (max-width: 1080px) {
     grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   @media (max-width: 640px) {
@@ -77,216 +102,271 @@
   }
 }
 
+// ── Master Feature Card ──
 .feature-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  padding: 2rem 2.25rem;
+  padding: 2.15rem 1.95rem;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  backdrop-filter: blur($glass-blur);
-  box-shadow: var(--shadow-sm);
-  transition:
-    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.3s ease;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              background 0.3s ease;
 
-  &::before {
+  // Specular top highlight line for dark mode
+  &::after {
     content: "";
     position: absolute;
     top: 0;
-    left: 0;
-    width: 3px;
-    height: 100%;
-    opacity: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+    opacity: 0.5;
     transition: opacity 0.3s ease;
   }
 
+  // Dark Mode Hover States
   &.feature-card--blue {
-    &::before {
-      background: #3b82f6;
+    .feature-icon {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.05) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #60a5fa;
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.15);
     }
     &:hover {
-      border-color: rgba(59, 130, 246, 0.4);
+      border-color: rgba(59, 130, 246, 0.45);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(59, 130, 246, 0.2);
     }
   }
-  &.feature-card--purple {
-    &::before {
-      background: #a855f7;
+
+  &.feature-card--yellow {
+    .feature-icon {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0.05) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.35);
+      color: #fbbf24;
+      box-shadow: 0 0 16px rgba(251, 191, 36, 0.15);
     }
     &:hover {
-      border-color: rgba(168, 85, 247, 0.4);
-    }
-  }
-  &.feature-card--cyan {
-    &::before {
-      background: #06b6d4;
-    }
-    &:hover {
-      border-color: rgba(6, 182, 212, 0.4);
-    }
-  }
-  &.feature-card--green {
-    &::before {
-      background: #10b981;
-    }
-    &:hover {
-      border-color: rgba(16, 185, 129, 0.4);
-    }
-  }
-  &.feature-card--amber {
-    &::before {
-      background: #f59e0b;
-    }
-    &:hover {
-      border-color: rgba(245, 158, 11, 0.4);
+      border-color: rgba(251, 191, 36, 0.45);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5), 0 0 25px rgba(251, 191, 36, 0.2);
     }
   }
 
   &:hover {
-    background: var(--bg-card-hover);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-glow), var(--glass-card-shadow);
+    background: var(--glass-bg-hover);
+    transform: translateY(-4px);
 
-    &::before {
+    &::after {
       opacity: 1;
     }
   }
 
   @media (max-width: 640px) {
-    padding: 1.65rem 1.4rem;
+    padding: 1.75rem 1.5rem;
+    border-radius: 18px;
   }
 }
 
+// ── Behance / Pinterest Clean Light Mode Styling ──
+[data-theme="light"] {
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 6px 18px -3px rgba(15, 23, 42, 0.03);
+
+    &::after {
+      display: none; // Remove dark specular line in light mode
+    }
+
+    &:hover {
+      background: #ffffff;
+      transform: translateY(-4px);
+    }
+
+    &.feature-card--blue {
+      .feature-icon {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.09) 0%, rgba(37, 99, 235, 0.03) 100%);
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        color: #2563eb;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+      }
+
+      &:hover {
+        border-color: rgba(37, 99, 235, 0.35);
+        box-shadow: 0 14px 32px -4px rgba(37, 99, 235, 0.11), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      }
+    }
+
+    &.feature-card--yellow {
+      .feature-icon {
+        background: linear-gradient(135deg, rgba(217, 119, 6, 0.09) 0%, rgba(217, 119, 6, 0.03) 100%);
+        border: 1px solid rgba(217, 119, 6, 0.2);
+        color: #d97706;
+        box-shadow: 0 2px 8px rgba(217, 119, 6, 0.06);
+      }
+
+      &:hover {
+        border-color: rgba(217, 119, 6, 0.35);
+        box-shadow: 0 14px 32px -4px rgba(217, 119, 6, 0.11), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      }
+    }
+  }
+}
+
+// ── Subtle Ambient Card Background Glow ──
 .item-bg-gradient {
   position: absolute;
   inset: 0;
-  opacity: 0.12;
+  opacity: 0.15;
   z-index: 0;
   pointer-events: none;
+  transition: opacity 0.3s ease;
+
+  .feature-card:hover & {
+    opacity: 0.25;
+  }
 
   &.blue {
     background: radial-gradient(
       circle at top right,
       #3b82f6 0%,
-      transparent 60%
+      transparent 65%
     );
   }
-  &.purple {
+  &.yellow {
     background: radial-gradient(
       circle at top right,
-      #a855f7 0%,
-      transparent 60%
-    );
-  }
-  &.cyan {
-    background: radial-gradient(
-      circle at top right,
-      #06b6d4 0%,
-      transparent 60%
-    );
-  }
-  &.green {
-    background: radial-gradient(
-      circle at top right,
-      #10b981 0%,
-      transparent 60%
-    );
-  }
-  &.amber {
-    background: radial-gradient(
-      circle at top right,
-      #f59e0b 0%,
-      transparent 60%
+      #fbbf24 0%,
+      transparent 65%
     );
   }
 }
 
+[data-theme="light"] .item-bg-gradient {
+  opacity: 0.04;
+
+  .feature-card:hover & {
+    opacity: 0.08;
+  }
+
+  &.blue {
+    background: radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.2) 0%,
+      transparent 65%
+    );
+  }
+  &.yellow {
+    background: radial-gradient(
+      circle at top right,
+      rgba(217, 119, 6, 0.2) 0%,
+      transparent 65%
+    );
+  }
+}
+
+// ── Card Header & Badges ──
 .feature-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.4rem;
   position: relative;
   z-index: 1;
 }
 
 .feature-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-glass);
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-main);
   flex-shrink: 0;
+  transition: transform 0.25s ease;
+
+  .feature-card:hover & {
+    transform: scale(1.06);
+  }
 }
 
 .feature-badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.68rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
   font-weight: 700;
   font-family: monospace;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 
   &.badge-blue {
     background: rgba(59, 130, 246, 0.12);
-    border: 1px solid rgba(59, 130, 246, 0.25);
+    border: 1px solid rgba(59, 130, 246, 0.3);
     color: #60a5fa;
   }
-  &.badge-purple {
-    background: rgba(168, 85, 247, 0.12);
-    border: 1px solid rgba(168, 85, 247, 0.25);
-    color: #c084fc;
-  }
-  &.badge-cyan {
-    background: rgba(6, 182, 212, 0.12);
-    border: 1px solid rgba(6, 182, 212, 0.25);
-    color: #38bdf8;
-  }
-  &.badge-green {
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.25);
-    color: #34d399;
-  }
-  &.badge-amber {
-    background: rgba(245, 158, 11, 0.12);
-    border: 1px solid rgba(245, 158, 11, 0.25);
+  &.badge-yellow {
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
     color: #fbbf24;
   }
 }
 
+// Accessible Badge Colors for Light Mode (WCAG AAA Compliant)
+[data-theme="light"] {
+  .feature-badge {
+    &.badge-blue {
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+    &.badge-yellow {
+      background: rgba(217, 119, 6, 0.08);
+      border: 1px solid rgba(217, 119, 6, 0.24);
+      color: #b45309;
+      font-weight: 700;
+    }
+  }
+}
+
+// ── Card Typography ──
 .feature-card-title {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
-  margin: 0 0 0.65rem;
+  margin: 0 0 0.75rem;
   position: relative;
   z-index: 1;
   line-height: 1.35;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 
   @media (max-width: 640px) {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
   }
+}
+
+[data-theme="light"] .feature-card-title {
+  color: #0f172a;
+  font-weight: 750;
 }
 
 .feature-card-desc {
   font-size: 0.95rem;
-  line-height: 1.65;
+  line-height: 1.68;
   color: var(--text-muted);
-  margin: 0 0 1.25rem;
+  margin: 0 0 1.5rem;
   position: relative;
   z-index: 1;
   flex-grow: 1;
@@ -296,6 +376,11 @@
   }
 }
 
+[data-theme="light"] .feature-card-desc {
+  color: #475569;
+}
+
+// ── Card Footer & Tag Pills ──
 .feature-card-footer {
   position: relative;
   z-index: 1;
@@ -304,12 +389,44 @@
 
 .feature-pill {
   display: inline-block;
-  padding: 0.3rem 0.75rem;
-  background: var(--bg-badge-live);
-  border: 1px solid var(--border-badge-live);
-  color: var(--primary);
-  border-radius: 6px;
-  font-size: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  border-radius: 8px;
+  font-size: 0.76rem;
   font-weight: 600;
   font-family: monospace;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+
+  .feature-card--blue:hover & {
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #60a5fa;
+  }
+
+  .feature-card--yellow:hover & {
+    border-color: rgba(251, 191, 36, 0.4);
+    color: #fbbf24;
+  }
+}
+
+[data-theme="light"] {
+  .feature-pill {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+
+    .feature-card--blue:hover & {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+
+    .feature-card--yellow:hover & {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #b45309;
+    }
+  }
 }

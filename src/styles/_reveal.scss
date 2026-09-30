@@ -1,0 +1,27 @@
+// Scroll reveals, driven by useScrollReveal (IntersectionObserver).
+// Elements wait hidden, then rise in on the compositor; the attribute is removed
+// when the animation ends so hover transforms/transitions work normally again.
+[data-reveal] {
+  opacity: 0;
+}
+
+[data-reveal].is-revealed {
+  animation: revealRise 1s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0s) both;
+}
+
+@keyframes revealRise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Decorative loops stop ticking while their section is out of view
+.is-offscreen,
+.is-offscreen * {
+  animation-play-state: paused !important;
+}

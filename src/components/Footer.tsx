@@ -10,22 +10,12 @@ const Footer: React.FC = () => {
             <div className="container footer-content">
                 <div className="footer-main">
                     <Link to="/" className="footer-logo">
-                        {/* Logo SVG with gradient */}
-                        <svg width="28" height="28" viewBox="0 0 32 32" fill="none" className="footer-logo-icon">
-                            <rect width="32" height="32" rx="8" fill="url(#footerGrad)" />
-                            <path d="M10 22L16 10L22 22H10Z" fill="white" fillOpacity="0.9" />
-                            <defs>
-                                <linearGradient id="footerGrad" x1="0" y1="0" x2="32" y2="32">
-                                    <stop stopColor="#3B82F6" />
-                                    <stop offset="1" stopColor="#8B5CF6" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
+                        <img src="/icon48.png" alt="Aullevo" width="28" height="28" className="footer-logo-icon" style={{ borderRadius: '7px', objectFit: 'cover' }} />
                         <span className="footer-logo-text">Aullevo</span>
                     </Link>
                     <p>
-                        AI-powered form automation that runs entirely on your device.
-                        Private, fast, and undetectable.
+                        Form automation that keeps your data encrypted on your device.
+                        Private, fast, and simple.
                     </p>
                     <div className="social-links">
                         <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Follow Aullevo on X">
@@ -52,15 +42,15 @@ const Footer: React.FC = () => {
                         <Link to="/features">Features</Link>
                         <Link to="/how-it-works">How It Works</Link>
                         <Link to="/docs">Documentation</Link>
-                        <a href="/aullevo-extension.zip" download="aullevo-extension.zip">Chrome Extension</a>
-                        <Link to="/docs#free-vs-premium">Pricing &amp; Tiers</Link>
+                        <a href="/aullevo-extension.zip" download="aullevo-extension.zip">Download Extension</a>
+                        <Link to="/docs#free-vs-premium">Free vs. Pro</Link>
                     </div>
                     <div className="footer-col">
                         <h4>Company</h4>
                         <Link to="/about">About Us</Link>
                         <Link to="/docs#what-is-aullevo">Mission &amp; Overview</Link>
-                        <a href="mailto:support@aullevo.com">Contact Support</a>
-                        <a href="mailto:privacy@aullevo.com">Privacy Team</a>
+                        <a href="mailto:xenexashura@gmail.com">Contact Support</a>
+                        <Link to="/privacy#contact">Privacy Questions</Link>
                     </div>
                     <div className="footer-col">
                         <h4>Legal</h4>

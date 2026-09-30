@@ -44,7 +44,10 @@ const Navbar: React.FC = () => {
     return (
         <header className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="container navbar-inner">
-                <Link to="/" className="nav-logo">Aullevo</Link>
+                <Link to="/" className="nav-logo">
+                    <img src="/icon48.png" alt="Aullevo" width="28" height="28" className="nav-logo-img" />
+                    <span>Aullevo</span>
+                </Link>
 
                 {/* Desktop Nav */}
                 <nav className="nav-links">
@@ -59,7 +62,7 @@ const Navbar: React.FC = () => {
                     ))}
                     
                     {/* Account Status / Sign In */}
-                    {user ? (
+                    {user && !user.isAnonymous ? (
                         <Link to="/login" className={`nav-link nav-link--account ${location.pathname === '/login' ? 'active' : ''}`}>
                             <span className="nav-avatar">
                                 {user.photoURL ? (
@@ -118,7 +121,7 @@ const Navbar: React.FC = () => {
                             </Link>
                         ))}
                         
-                        {user ? (
+                        {user && !user.isAnonymous ? (
                             <Link 
                                 to="/login" 
                                 className={`mobile-link mobile-link--account ${location.pathname === '/login' ? 'active' : ''}`}

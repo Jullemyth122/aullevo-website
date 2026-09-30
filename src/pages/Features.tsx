@@ -111,155 +111,155 @@ const RepeatIcon = () => (
     </svg>
 );
 
+const PagesIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="12" height="16" rx="2" />
+        <polyline points="15 9 19 12 15 15" />
+        <line x1="19" y1="12" x2="9" y2="12" />
+    </svg>
+);
+
+const NoteIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 4h12l4 4v12H4z" />
+        <polyline points="16 4 16 8 20 8" />
+        <line x1="8" y1="12" x2="16" y2="12" />
+        <line x1="8" y1="16" x2="13" y2="16" />
+    </svg>
+);
+
 const featuresList = [
-    // Layer 1: Frontend & UI Engine
+    // Form Engine
     {
-        title: 'Open Shadow Root Encapsulation',
-        badge: 'Layer 1: Frontend',
+        title: 'Works on Nearly Any Web Form',
+        badge: 'Form Engine',
         color: 'blue',
-        icon: <ShadowDomIcon />,
-        desc: 'Attaches an Open Shadow Root with z-index: 2147483646. Ensures 100% CSS isolation so host page styling (Tailwind, Bootstrap, etc.) cannot disrupt or bleed into the UI.',
-        pill: '100% CSS Isolation'
-    },
-    // Layer 2: Deep DOM & Content Scripts
-    {
-        title: 'Deep Shadow DOM Piercing',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
-        icon: <ShadowDomIcon />,
-        desc: 'Uses recursive shadow tree querySelectorAllDeep traversal to find and fill custom inputs nested deep within modern web components and microfrontends.',
-        pill: 'Recursive DOM Scan'
-    },
-    {
-        title: 'Hidden Tab Panel Revealer',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
         icon: <LayersIcon />,
-        desc: 'Detects hidden tab panels ([role="tabpanel"]) and momentarily activates them behind the scenes to map and populate fields before user submission.',
-        pill: 'Multi-Tab Revealer'
+        desc: 'Detects text fields, text areas, native and custom dropdowns, radio buttons, checkboxes, date pickers, and file inputs on Google Forms, Microsoft Forms, job portals, and plain HTML forms. No site-specific setup needed.',
+        pill: 'Universal Detection'
     },
     {
-        title: 'Honeypot & Anti-CAPTCHA Shield',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
-        icon: <ShieldAlertIcon />,
-        desc: 'Identifies and skips hidden bot-traps (aria-hidden, 0-size, offscreen inputs) and alerts users when Turnstile, reCAPTCHA, or Arkose are present.',
-        pill: 'Bot-Trap Immune'
+        title: 'Shadow DOM & iFrame Support',
+        badge: 'Form Engine',
+        color: 'yellow',
+        icon: <ShadowDomIcon />,
+        desc: 'Reaches inputs hidden inside open and closed Shadow DOM components and fills forms in every frame of the page, where regular browser autofill gives up.',
+        pill: 'Deep DOM + Frames'
     },
     {
-        title: 'Human Input & ValueTracker Sync',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
+        title: 'React, Vue & Angular Ready',
+        badge: 'Form Engine',
+        color: 'blue',
         icon: <MousePointerIcon />,
-        desc: 'Injects values using prototype property setters and triggers React\'s internal _valueTracker to ensure reactive form state and validation acknowledge inputs.',
-        pill: 'React / Vue Reactive'
+        desc: 'Sets values through native input setters and fires real input, change, and blur events, so modern single-page apps register every answer and run their own validation.',
+        pill: 'Framework-Aware'
     },
     {
-        title: 'Cross-Frame (iFrame) Auto-Fill',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
-        icon: <FrameIcon />,
-        desc: 'Extracts and fills inputs deep inside cross-origin iframes via secure content script bridges that standard autofillers silently skip.',
-        pill: 'Cross-Origin Bridge'
+        title: 'Smart Keyword Matching',
+        badge: 'Form Engine',
+        color: 'yellow',
+        icon: <ZapIcon />,
+        desc: 'Matches your saved fields to form questions using label similarity, word stems, and aliases. Every match is scored and the best one wins, so each field is filled once with the right value, instantly and fully offline.',
+        pill: 'Instant & Offline'
     },
     {
-        title: 'SPA Soft-Navigation Observer',
-        badge: 'Layer 2: Bridge',
-        color: 'purple',
-        icon: <RefreshIcon />,
-        desc: 'Tracks MutationObserver and History API events to detect single-page application route transitions and immediately re-evaluate new forms.',
-        pill: 'SPA Auto-Detect'
-    },
-    // Layer 3: Hybrid AI & Matching Engine
-    {
-        title: 'Dual-Tier Gemini AI Engine',
-        badge: 'Layer 3: AI & Hybrid',
-        color: 'cyan',
-        icon: <BrainIcon />,
-        desc: 'Combines Google Gemini LLM visual-semantic analysis with instant deterministic heuristics for sub-millisecond accuracy without transmitting sensitive data.',
-        pill: 'Gemini LLM + Heuristics'
-    },
-    {
-        title: '2D Availability Matrix Optimizer',
-        badge: 'Layer 3: AI & Hybrid',
-        color: 'cyan',
+        title: 'Grids, Rankings & Tricky Inputs',
+        badge: 'Form Engine',
+        color: 'blue',
         icon: <TableIcon />,
-        desc: 'Directly resolves complex weekly availability tables (e.g. Mon - From, Tue - To) via deterministic heuristics, eliminating prompt bloat and token waste.',
-        pill: 'Matrix Heuristics'
+        desc: 'Handles Google Forms grid questions, Microsoft Forms ranking questions, availability tables, split date fields, and country dial-code pickers.',
+        pill: 'Edge Cases Covered'
     },
     {
-        title: 'Domain Session Cache',
-        badge: 'Layer 3: AI & Hybrid',
-        color: 'cyan',
-        icon: <ZapIcon />,
-        desc: 'Caches field signature mappings in chrome.storage.session for 15 minutes, making multi-page job portals and consecutive applications instantaneous.',
-        pill: '15-Min Instant Cache'
+        title: 'Highlight & Rescan',
+        badge: 'Form Engine',
+        color: 'yellow',
+        icon: <RefreshIcon />,
+        desc: 'See every field Aullevo detected before you fill. Outlines and badges show exactly what will be touched, and filled fields are labeled so you can review them at a glance.',
+        pill: 'Preview Before Fill'
+    },
+    // AI
+    {
+        title: 'Gemini AI Smart Fill',
+        badge: 'AI',
+        color: 'blue',
+        icon: <BrainIcon />,
+        desc: 'For questions keywords cannot answer, Google Gemini picks the best multiple-choice option, combines fields (like First + Last Name into Full Name), and drafts short answers. Uses your own free Gemini API key.',
+        pill: 'Free: 10 / week · Pro: Unlimited'
     },
     {
-        title: 'Contextual RAG & Chat Answers',
-        badge: 'Layer 3: AI & Hybrid',
-        color: 'cyan',
-        icon: <ChatIcon />,
-        desc: 'Retrieves your structured experiences and background notes to craft tailored, grounded answers to open-ended job questions ("Why this company?").',
-        pill: 'Grounded RAG'
-    },
-    // Layer 4: Zero-Knowledge Data Vault
-    {
-        title: '100% Local AES-256 Vault',
-        badge: 'Layer 4: Storage',
-        color: 'green',
-        icon: <ShieldLockIcon />,
-        desc: 'All profile records, IDs, and custom fields are encrypted strictly on-device in chrome.storage.local. Zero cloud databases, zero telemetry.',
-        pill: 'Zero Cloud Storage'
-    },
-    {
-        title: 'Multi-Profile Namespace Partitioning',
-        badge: 'Layer 4: Storage',
-        color: 'green',
-        icon: <UserGroupIcon />,
-        desc: 'Dynamically isolates data keys for Personal, Work, Software Engineer, or Guest personas, allowing effortless one-click switching.',
-        pill: 'Account Isolation'
-    },
-    {
-        title: 'PDF & DOCX Resume Parser',
-        badge: 'Layer 4: Storage',
-        color: 'green',
-        icon: <FileUploadIcon />,
-        desc: 'Processes resumes client-side using pdfjs-dist and mammoth to instantly extract work experience, education, skills, and certifications.',
-        pill: 'Client-Side Parsing'
-    },
-    {
-        title: 'Virtual File Dispatcher',
-        badge: 'Layer 4: Storage',
-        color: 'green',
-        icon: <FileUploadIcon />,
-        desc: 'Reconstructs base64-stored resumes into native File and DataTransfer objects to automatically populate file upload buttons with zero drag-and-drop.',
-        pill: 'Auto-Upload Attachments'
-    },
-    // Layer 5: Autonomous Autopilot Core
-    {
-        title: 'Multi-Page State Machine',
-        badge: 'Layer 5: Orchestration',
-        color: 'amber',
-        icon: <RepeatIcon />,
-        desc: 'Tracks multi-step form journeys across page navigations up to 30 continuous steps via chrome.tabs.onUpdated listeners.',
-        pill: '30-Step Navigation'
-    },
-    {
-        title: 'Dynamic Row Expansion',
-        badge: 'Layer 5: Orchestration',
-        color: 'amber',
-        icon: <ZapIcon />,
-        desc: 'Detects "+ Add Experience" buttons, triggers synthetic clicks, invalidates cache, and recursively fills newly exposed form rows.',
-        pill: 'Auto "+ Add Row"'
-    },
-    {
-        title: 'Anti-Loop Fingerprinting',
-        badge: 'Layer 5: Orchestration',
-        color: 'amber',
+        title: 'Privacy Controls for AI',
+        badge: 'AI',
+        color: 'yellow',
         icon: <ShieldAlertIcon />,
-        desc: 'Calculates DOM field-value fingerprints to identify repeated cycles and safely abort automation if a form gets stuck in an infinite loop.',
-        pill: 'Infinite-Loop Protection'
+        desc: 'Mark any field SENSITIVE and its value never reaches the AI, only its label. Gemini replies with which of your fields to use, and the real value is filled in locally on your device.',
+        pill: 'Sensitive = Never Sent'
+    },
+    {
+        title: 'AI First, Keywords as Backup',
+        badge: 'AI',
+        color: 'blue',
+        icon: <ChatIcon />,
+        desc: 'AI answers take priority. If the AI skips a question, times out, or is unavailable, the keyword engine fills whatever is left, and Aullevo tells you exactly what happened.',
+        pill: 'Never Half-Filled'
+    },
+    {
+        title: 'AI Memories',
+        badge: 'AI',
+        color: 'yellow',
+        icon: <NoteIcon />,
+        desc: 'Save short facts about yourself, like "Prefers remote roles" or "Available from March", and the AI uses them for open-ended questions your profile fields don\'t cover. Switch any memory off at any time.',
+        pill: 'Your Context for AI'
+    },
+    // Profiles & Files
+    {
+        title: '7 Ready-Made Profiles, Plus Your Own',
+        badge: 'Profiles & Files',
+        color: 'yellow',
+        icon: <UserGroupIcon />,
+        desc: 'Start from Job, Medical, Government, Survey, Academic, Financial, or Custom profiles, or create your own. Add unlimited custom fields with context hints that help matching and AI understand your data.',
+        pill: 'Free: 2 Active · Pro: Unlimited'
+    },
+    {
+        title: 'Document Upload into Forms',
+        badge: 'Pro',
+        color: 'blue',
+        icon: <FileUploadIcon />,
+        desc: 'Save your resume, cover letter, IDs, and certificates once. Aullevo attaches the right document to each file input or drag-and-drop zone by reading its label.',
+        pill: 'Auto-Attach Files'
+    },
+    {
+        title: 'JSON Import & Export',
+        badge: 'Pro',
+        color: 'yellow',
+        icon: <RepeatIcon />,
+        desc: 'Back up your profile to a JSON file, move it to another browser, or bulk-import fields from existing data in seconds.',
+        pill: 'Portable Data'
+    },
+    {
+        title: 'Auto-Pagination for Multi-Page Forms',
+        badge: 'Pro',
+        color: 'blue',
+        icon: <PagesIcon />,
+        desc: 'Fills a page, clicks Next or Continue, and repeats until it presses Submit on the last page. It pauses when a required field is empty, fixes answers a form rejects (like "5 years" in a number-only box), and clicks through steps like "Apply anyway".',
+        pill: 'Fill · Next · Submit'
+    },
+    // Privacy
+    {
+        title: 'Passphrase-Encrypted Vault',
+        badge: 'Privacy',
+        color: 'blue',
+        icon: <ShieldLockIcon />,
+        desc: 'Profiles, documents, and your API key are encrypted with AES-256-GCM using a key derived from your passphrase. The key lives only in memory and is cleared when you close the browser or press Lock.',
+        pill: 'Encrypted on Device'
+    },
+    {
+        title: 'Your Profiles Never Leave Your Device',
+        badge: 'Privacy',
+        color: 'yellow',
+        icon: <FrameIcon />,
+        desc: 'Aullevo has no server that stores your profile data. Connecting your Aullevo account only syncs your plan status. There is no tracking or analytics inside the extension.',
+        pill: 'Local-First'
     }
 ];
 
@@ -267,22 +267,22 @@ const Features: React.FC = () => {
     return (
         <div className="features-page animate-fade-in">
             <SEO
-                title="Aullevo Features | Deep Layer-by-Layer Automation Tech"
-                description="Explore Aullevo's 18+ technical features: Shadow DOM piercing, zero-knowledge local vault, 2D matrix optimizer, virtual file dispatcher, and autonomous multi-step autopilot."
-                keywords="ai form filler features, local encryption vault, shadow dom autofill, gemini form filling, multi step wizard automation"
+                title="Aullevo Features | AI Form Filler for Chrome, Brave & Edge"
+                description="Everything Aullevo does: fills nearly any web form, Shadow DOM and iframe support, Gemini AI Smart Fill with privacy controls, multi-profile vault, document upload into forms, auto-pagination for multi-page forms, and passphrase encryption."
+                keywords="ai form filler features, chrome autofill extension, gemini form filling, job application autofill, encrypted profile vault, shadow dom autofill"
             />
             
             {/* Features Hero */}
             <section className="features-hero">
                 <div className="container">
                     <div className="hero-content">
-                        <div className="hero-badge">Full Architectural Feature Suite</div>
+                        <div className="hero-badge">Everything Aullevo Does</div>
                         <h1 className="hero-title">
-                            Powered by Modern AI. <br />
-                            <span className="gradient-text">Engineered for the modern web.</span>
+                            Fill any form. <br />
+                            <span className="gradient-text">Keep your data yours.</span>
                         </h1>
                         <p className="hero-subtitle">
-                            Every single web form is different. From Shadow DOMs and iframes to reactive state trackers and multi-page wizards, here is every technology engineered into Aullevo across all 5 layers.
+                            Every web form is different. Aullevo combines a fast offline matching engine with optional Gemini AI to fill them, while your profiles stay encrypted on your own device.
                         </p>
                     </div>
                 </div>

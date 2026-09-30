@@ -6,8 +6,8 @@ const HowItWorks: React.FC = () => {
     const steps = [
         {
             num: "01",
-            title: 'Install Extension',
-            desc: 'Add Aullevo to Chrome in one click. It lives entirely locally in your browser as a lightweight <2MB extension. There are no heavy desktop apps or cloud accounts required.',
+            title: 'Install & Create Your Vault',
+            desc: 'Download Aullevo and load it into Chrome, Brave, or Edge. Open the side panel with Alt+Q and choose a passphrase. It encrypts everything you save, so only you can open your profiles. No account needed to start.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -18,8 +18,8 @@ const HowItWorks: React.FC = () => {
         },
         {
             num: "02",
-            title: 'Set Up Your API Key',
-            desc: 'Get your own free Gemini API key from Google AI Studio. Paste it into Aullevo\'s settings. By using your own key, your data communicates directly with Google, completely bypassing any 3rd party servers. We never see your data.',
+            title: 'Fill In Your Profile',
+            desc: 'Pick a ready-made profile (Job, Academic, Government, and more) and fill in your details once. Add custom fields with context hints, attach documents like your resume, and mark anything private as SENSITIVE.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
@@ -28,8 +28,8 @@ const HowItWorks: React.FC = () => {
         },
         {
             num: "03",
-            title: 'Build Your Profile & File Vault',
-            desc: 'Upload your Resumes (PDF or DOCX) into the File Vault and let Gemini parse them into structured JSON profiles. You can create different setups for different roles (e.g., "Full Stack" vs "Frontend" profiles). Everything is locally encrypted via AES-256-GCM.',
+            title: 'Optional: Turn On AI Smart Fill',
+            desc: 'Get a free Gemini API key from Google AI Studio and paste it into Settings. AI handles open-ended and multiple-choice questions keywords cannot. Your key talks directly to Google, and SENSITIVE fields are never sent.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -39,8 +39,8 @@ const HowItWorks: React.FC = () => {
         },
         {
             num: "04",
-            title: 'Navigate & Auto-Fill',
-            desc: 'Go to any web form (Workday, Greenhouse, Taleo) and hit Alt+F (or click "Fill" in the sidebar). Aullevo instantly scans the DOM (including deep iframes) and instructs Gemini to semantically map your profile data into exactly the right fields in milliseconds.',
+            title: 'Open a Form & Press Alt+Shift+L',
+            desc: 'Go to any form, whether Google Forms, Microsoft Forms, or a job portal, and press Alt+Shift+L or click Fill in the side panel. Aullevo scans the page, including Shadow DOM and iframes, and fills every field it can match.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
@@ -50,7 +50,7 @@ const HowItWorks: React.FC = () => {
         {
             num: "05",
             title: 'Review & Submit',
-            desc: 'Aullevo simulates human typing to bypass anti-bot tech, filling your fields perfectly. We deliberately do not auto-submit forms, giving you a chance to verify everything. If a CAPTCHA appears, Aullevo intelligently pauses until you solve it.',
+            desc: 'Filled fields are highlighted so you can check them at a glance, then you submit when you\'re ready. With Pro Auto-Pagination on, Aullevo clicks Next and Submit for you and pauses if a required field is empty. Choose Instant, Natural, or Slow typing for sites that expect real keystrokes.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="9 11 12 14 22 4" />
@@ -64,8 +64,8 @@ const HowItWorks: React.FC = () => {
         <div className="how-it-works-page animate-fade-in">
             <SEO
                 title="How Aullevo Works | AI-Powered Web Form Filling"
-                description="Learn how to install, set up your Gemini API key, configure your encrypted profiles, and automate forms on Workday or Greenhouse in 2 minutes."
-                keywords="how to automate forms, gemini api key setup, local file vault, chrome extension setup, browser automation"
+                description="Install Aullevo, create your encrypted vault, fill in your profile once, and autofill any web form with one shortcut. Optional Gemini AI for harder questions."
+                keywords="how to autofill forms, chrome form filler setup, gemini api key setup, job application autofill, browser extension setup"
             />
             {/* Hero Section */}
             <section className="hiw-hero">
@@ -74,7 +74,7 @@ const HowItWorks: React.FC = () => {
                         <div className="hero-badge">The workflow</div>
                         <h1 className="hero-title">From <span className="gradient-text">installation</span><br /> to <span className="gradient-text">automation</span> in 2 minutes.</h1>
                         <p className="hero-subtitle">
-                            No complex configuration. No sign up required. Just install the extension, add your own API key, and reclaim your time securely.
+                            No complex setup and no account required to start. Install the extension, save your details once, and let Aullevo handle the typing.
                         </p>
                     </div>
                 </div>
@@ -107,7 +107,7 @@ const HowItWorks: React.FC = () => {
                 <div className="container text-center">
                     <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to stop typing?</h2>
                     <p style={{ fontSize: '1.2rem', marginBottom: '2.5rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
-                        Download the source and load it into your Chrome browser today. Time is your most valuable asset.
+                        Download Aullevo and load it into Chrome, Brave, or Edge in under a minute. Free to start, and Pro when you need more.
                     </p>
                     <TrustDownloadButton className="btn btn-primary btn-lg">
                         Download Extension (ZIP)
