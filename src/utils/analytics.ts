@@ -1,29 +1,21 @@
 // src/utils/analytics.ts
+import { track } from "@vercel/analytics";
 
-export const logEvent = (eventName: string, params?: Record<string, any>) => {
-  if (typeof window !== "undefined") {
-    let sent = false;
+type EventParams = Record<string, string | number | boolean | null>;
 
-    // 1. Try Google Analytics (gtag)
-    if ((window as any).gtag) {
-      (window as any).gtag("event", eventName, params);
-      sent = true;
-    }
+export const logEvent = (eventName: string, params?: EventParams) => {
+  if (typeof window === "undefined") return;
 
-    // 2. Try Google Tag Manager (dataLayer)
-    if ((window as any).dataLayer) {
-      (window as any).dataLayer.push({
-        event: eventName,
-        ...params,
-      });
-      sent = true;
-    }
+  // Vercel Web Analytics (custom events are only recorded on Vercel Pro/Enterprise)
+  track(eventName, params);
 
-    if (!sent) {
-      console.warn(
-        `[Analytics] Neither gtag nor dataLayer loaded. Event: ${eventName}`,
-        params,
-      );
-    }
+  // Google Analytics: prefer gtag; fall back to a GTM dataLayer push.
+  // Never both, since gtag also writes to dataLayer and that would double count.
+  if ((window as any).gtag) {
+    (window as any).gtag("event", eventName, params);
+  } else if ((window as any).dataLayer) {
+    (window as any).dataLayer.push({ event: eventName, ...params });
+  } else {
+    console.warn(`[Analytics] Neither gtag nor dataLayer loaded. Event: ${eventName}`, params);
   }
 };

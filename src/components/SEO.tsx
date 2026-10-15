@@ -16,13 +16,13 @@ const SEO: React.FC<SEOProps> = ({
   keywords,
   canonicalPath,
   ogType = 'website',
-  ogImage = 'https://aullevo-web.vercel.app/og-image.png',
+  ogImage = 'https://aullevo.com/og-image.png',
 }) => {
   const { pathname } = useLocation();
   const currentPath = canonicalPath !== undefined ? canonicalPath : pathname;
   // Ensure correct slash formatting
   const cleanPath = currentPath.startsWith('/') ? currentPath : `/${currentPath}`;
-  const canonicalUrl = `https://aullevo-web.vercel.app${cleanPath === '/' ? '' : cleanPath}`;
+  const canonicalUrl = `https://aullevo.com${cleanPath === '/' ? '' : cleanPath}`;
 
   return (
     <>

@@ -7,35 +7,37 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.875rem 2rem;
-  border-radius: 99px;
+  border-radius: 9999px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  border: none;
-  letter-spacing: 0.01em;
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: -0.01em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 50%, #fb923c 100%);
+  background: var(--brand-gradient);
   color: #fff;
   box-shadow:
-    0 4px 20px rgba(244, 63, 94, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 8px 24px -4px rgba(59, 130, 246, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
+  // Shimmer slides with transform (compositor) instead of animating background-position
   &::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: inherit;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 250%;
     background: linear-gradient(
       105deg,
       transparent 30%,
       rgba(255, 255, 255, 0.15) 45%,
-      rgba(255, 255, 255, 0.25) 50%,
+      rgba(255, 255, 255, 0.3) 50%,
       rgba(255, 255, 255, 0.15) 55%,
       transparent 70%
     );
-    background-size: 250% 100%;
     animation: donateShimmer 4s ease-in-out infinite;
     pointer-events: none;
   }
@@ -43,8 +45,9 @@
   &:hover {
     transform: translateY(-2px);
     box-shadow:
-      0 8px 32px rgba(244, 63, 94, 0.45),
-      0 4px 16px rgba(251, 146, 60, 0.25);
+      0 12px 32px -4px rgba(59, 130, 246, 0.6),
+      0 0 20px rgba(59, 130, 246, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
     filter: brightness(1.08);
   }
 
@@ -93,10 +96,15 @@
   display: flex;
   flex-direction: column;
   background: var(--bg-modal);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-glass);
   border-radius: 24px;
   overflow: hidden;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+
+  [data-theme="light"] & {
+    border-color: rgba(226, 232, 240, 0.9);
+    box-shadow: 0 24px 55px -10px rgba(15, 23, 42, 0.14), 0 0 1px 1px rgba(15, 23, 42, 0.04);
+  }
 
   @media (max-width: 480px) {
     max-height: 95vh;
@@ -213,6 +221,103 @@
       color: var(--text-muted);
     }
   }
+}
+
+/* Plan picker (Monthly / Yearly / Lifetime) */
+.donate-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+
+  @media (max-width: 380px) {
+    gap: 0.4rem;
+  }
+
+  legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}
+
+.donate-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 1rem 0.4rem 0.8rem;
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  background: var(--bg-input);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: var(--border-glass-hover);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &.is-selected {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 1px var(--primary) inset;
+  }
+
+  .donate-plan-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .donate-plan-price {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+
+  .donate-plan-period {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .donate-plan-badge {
+    position: absolute;
+    top: -0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.1rem 0.5rem;
+    border-radius: 99px;
+    background: var(--accent-pop);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+
+.donate-plan-note {
+  margin-top: 0.75rem !important;
+  font-size: 0.85rem !important;
 }
 
 .donate-divider {
@@ -585,11 +690,11 @@
 
 @keyframes donateShimmer {
   0% {
-    background-position: 200% 0;
+    transform: translate3d(-100%, 0, 0);
   }
 
   100% {
-    background-position: -200% 0;
+    transform: translate3d(40%, 0, 0);
   }
 }
 
@@ -667,6 +772,170 @@
   p {
     margin: 0;
     font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// "How activation works" steps (top of the payment options)
+// ---------------------------------------------------------------------------
+.donate-steps {
+  list-style: none;
+  margin: 0.25rem 0 0.5rem;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+  border-radius: 12px;
+
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    font-size: 0.84rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+
+    strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      padding: 0.05rem 0.35rem;
+      border-radius: 5px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+    }
+  }
+}
+
+.donate-step-num {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary, #2563eb);
+}
+
+// ---------------------------------------------------------------------------
+// GCash / Maya block: pay button + status note in one container
+// ---------------------------------------------------------------------------
+.donate-ph-block {
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(59, 130, 246, 0.03) 100%);
+
+  // The pay card sits flush inside the block (it's a <button>, so reset native styles)
+  .donate-option-card--ph {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      transform: none;
+      box-shadow: none;
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    &:focus-visible {
+      outline: 2px solid #10b981;
+      outline-offset: -2px;
+    }
+
+    &:disabled {
+      cursor: progress;
+    }
+  }
+}
+
+.donate-ph-spinner {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 185, 129, 0.25);
+  border-top-color: #10b981;
+  animation: donate-ph-spin 0.7s linear infinite;
+}
+
+@keyframes donate-ph-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.donate-ph-note {
+  padding: 0.75rem 1.15rem 0.85rem;
+  border-top: 1px dashed rgba(16, 185, 129, 0.3);
+  text-align: left;
+}
+
+.donate-ph-hint,
+.donate-ph-error {
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.donate-ph-hint {
+  color: var(--text-muted);
+
+  strong {
+    color: var(--text-main);
+    font-weight: 600;
+  }
+}
+
+.donate-ph-error {
+  color: #ef4444;
+}
+
+.donate-ph-done {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.15rem;
+  border-top: 1px dashed rgba(16, 185, 129, 0.3);
+  background: rgba(16, 185, 129, 0.08);
+  text-align: left;
+
+  svg {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    color: #10b981;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  strong {
+    font-size: 0.88rem;
+    color: #059669;
+  }
+
+  span {
+    font-size: 0.8rem;
     color: var(--text-muted);
   }
 }

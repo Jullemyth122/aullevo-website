@@ -1,0 +1,451 @@
+// /admin: payment review. Builds on the account dashboard styles in _login.scss.
+
+.admin-page .account-dashboard {
+  max-width: 920px;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.account-signout.admin-refresh:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    background: var(--glass-bg);
+  }
+
+  strong {
+    font-size: 1.6rem;
+    line-height: 1.1;
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+  }
+
+  span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .is-warn strong {
+    color: var(--accent-gold);
+  }
+}
+
+.admin-tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background: var(--bg-input);
+  width: fit-content;
+  max-width: 100%;
+  overflow-x: auto;
+
+  button {
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-main);
+    }
+
+    &.is-active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+.admin-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.admin-help {
+  margin: 0 0 0.25rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.admin-empty {
+  margin: 0;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.plan-note.admin-notice-ok {
+  margin: 0 0 1.25rem;
+  border-color: rgba(16, 185, 129, 0.28);
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--text-main);
+}
+
+.admin-page .plan-note--warn {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Pending claim card ── */
+
+.admin-claim {
+  .account-card-head {
+    margin-bottom: 0.75rem;
+  }
+
+  .admin-claim-title {
+    font-size: 1.05rem;
+    overflow-wrap: anywhere;
+  }
+}
+
+.admin-claim-amount {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin: 0 0 1.25rem;
+
+  strong {
+    font-size: 1.5rem;
+    color: var(--text-main);
+  }
+
+  span {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+}
+
+.admin-details {
+  margin-bottom: 1.25rem;
+
+  dd {
+    min-width: 0;
+  }
+}
+
+.admin-txn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.4rem 0.6rem;
+
+  code {
+    font-size: 0.85rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
+    background: var(--bg-input);
+    user-select: all;
+  }
+}
+
+.admin-link-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.plan-note.admin-verify {
+  margin: 0 0 1.25rem;
+}
+
+.plan-note.admin-verify--manual {
+  border-color: rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+  color: var(--text-main);
+}
+
+.plan-note.admin-banner {
+  margin: 0;
+}
+
+.admin-blocked {
+  flex: 1 1 100%;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--accent-danger);
+}
+
+.admin-warn-text {
+  color: var(--accent-gold) !important;
+}
+
+.admin-plan-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  padding: 0;
+  border: 0;
+
+  legend {
+    width: 100%;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    background: var(--bg-input);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+
+    small {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &:has(input:focus-visible) {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    &.is-selected {
+      border-color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    &.is-disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.admin-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-main);
+  cursor: pointer;
+
+  input {
+    margin-top: 0.2rem;
+    accent-color: var(--primary);
+  }
+}
+
+.plan-note.admin-preview {
+  margin-top: 0.9rem;
+}
+
+.admin-actions,
+.admin-reject-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.admin-reject-row .admin-input {
+  flex: 1 1 240px;
+}
+
+.admin-btn {
+  padding: 0.6rem 1.15rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--glass-bg);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--primary);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &--primary {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+  }
+
+  &--danger {
+    border-color: var(--accent-danger);
+    color: var(--accent-danger);
+
+    &:hover:not(:disabled) {
+      border-color: var(--accent-danger);
+      background: rgba(239, 68, 68, 0.08);
+    }
+  }
+}
+
+.admin-input {
+  box-sizing: border-box;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--bg-input);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 0.9rem;
+
+  &:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+  }
+}
+
+.admin-search {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* ── Lists and tables ── */
+
+.admin-list {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--glass-border);
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  strong {
+    font-size: 0.92rem;
+    color: var(--text-main);
+    overflow-wrap: anywhere;
+  }
+
+  span {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  margin: 0 -0.25rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+
+  th {
+    padding: 0 0.6rem 0.6rem;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 0.75rem 0.6rem;
+    border-top: 1px solid var(--glass-border);
+    vertical-align: top;
+    color: var(--text-main);
+
+    small {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .status-pill {
+    white-space: normal;
+  }
+}

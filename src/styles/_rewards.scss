@@ -1,0 +1,334 @@
+// /rewards: Free users watch a short ad to unlock a feature for a few hours
+.rewards-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 120px 20px 80px;
+  display: grid;
+  gap: 32px;
+}
+
+.rewards-head {
+  display: grid;
+  gap: 10px;
+  max-width: 680px;
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+  }
+}
+
+.rewards-eyebrow,
+.rewards-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aullevo-blue-glow);
+}
+
+.rewards-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rewards-main {
+  display: grid;
+  gap: 12px;
+  padding: 28px;
+  border-radius: 20px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.7rem;
+  }
+}
+
+.rewards-gives {
+  margin: 0;
+  font-size: 1.1rem;
+
+  strong {
+    color: var(--aullevo-blue-glow);
+  }
+}
+
+.rewards-detail,
+.rewards-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.rewards-actions,
+.rewards-done {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.rewards-done {
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.rewards-current {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--accent-gold, #fbbf24);
+}
+
+.rewards-btn {
+  justify-self: start;
+  font: inherit;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 22px;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--aullevo-blue-bright), var(--aullevo-blue));
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+  transition: transform 0.15s, opacity 0.2s;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--aullevo-blue-glow);
+    outline-offset: 3px;
+  }
+
+  &--quiet {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
+    color: var(--text-main);
+    padding: 9px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+.rewards-error {
+  margin: 0;
+  color: var(--accent-danger, #f87171);
+  font-size: 0.92rem;
+}
+
+.rewards-pro {
+  margin: 8px 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+
+  a {
+    color: var(--aullevo-blue-glow);
+  }
+}
+
+.rewards-list {
+  display: grid;
+  gap: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+}
+
+.rewards-item {
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  color: var(--text-main);
+  display: grid;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  b {
+    font-size: 0.95rem;
+  }
+
+  span {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  em {
+    font-style: normal;
+    font-size: 0.8rem;
+    color: #34d399;
+  }
+
+  &:hover {
+    border-color: var(--glass-border-hover);
+  }
+
+  &.is-current {
+    border-color: var(--aullevo-blue-bright);
+    background: var(--bg-card-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--aullevo-blue-glow);
+    outline-offset: 2px;
+  }
+}
+
+// Test ad (until Google Ad Manager is connected)
+.rewards-ad {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(2, 6, 16, 0.86);
+  backdrop-filter: blur(6px);
+}
+
+.rewards-ad__frame {
+  width: min(640px, 100%);
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-modal);
+}
+
+.rewards-ad__tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.rewards-ad__screen {
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  border-radius: 12px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 20px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 40%, rgba(37, 99, 235, 0.28), transparent 65%), #050b18;
+}
+
+.rewards-ad__logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+}
+
+.rewards-ad__title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.rewards-ad__text {
+  margin: 0;
+  max-width: 44ch;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.rewards-ad__bar {
+  height: 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+
+  i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--aullevo-blue-bright), var(--aullevo-blue-glow));
+    transition: width 0.25s linear;
+  }
+}
+
+.rewards-ad__count {
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.rewards-ad__cta {
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--aullevo-blue-bright), var(--aullevo-blue));
+
+  &:hover {
+    filter: brightness(1.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--aullevo-blue-glow);
+    outline-offset: 3px;
+  }
+}
+
+.rewards-ad__note {
+  margin: 0;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+// The card text sits on the dark screen in both themes
+.rewards-ad__screen {
+  color: #f8fafc;
+
+  .rewards-ad__text {
+    color: #cbd5e1;
+  }
+}

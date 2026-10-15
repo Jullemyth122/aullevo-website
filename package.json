@@ -7,15 +7,23 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "setup:payments": "node scripts/setup-payments.mjs",
+    "approve:payments": "node scripts/approve-payments.mjs",
+    "test:rewards": "node --test scripts/rewards-core.test.ts"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.8.0",
+    "@vercel/analytics": "^2.0.1",
     "firebase": "^12.12.0",
+    "firebase-admin": "^13.10.0",
     "gsap": "^3.14.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
-    "sass": "^1.97.3"
+    "sass": "^1.97.3",
+    "three": "^0.186.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

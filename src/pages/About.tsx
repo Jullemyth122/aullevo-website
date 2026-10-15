@@ -5,9 +5,9 @@ const About: React.FC = () => {
     return (
         <div className="about-page animate-fade-in">
             <SEO
-                title="About Aullevo | Secure, Local AI Form Automation"
-                description="Our mission is to build the fastest, most private way to automate repetitive forms. Learn about Aullevo's zero-knowledge architecture and local-first execution."
-                keywords="about aullevo, zero knowledge autofill, privacy design, local execution security, open source web automator"
+                title="About Aullevo | Private, Local-First Form Automation"
+                description="Aullevo's mission is to make repetitive web forms effortless without giving up your privacy. Learn how the encrypted vault, offline matching engine, and privacy-controlled AI (Gemini, ChatGPT, Claude, or your own server) work."
+                keywords="about aullevo, private autofill, encrypted form filler, local-first browser extension, gemini form filling privacy"
             />
             {/* Minimal hero section */}
             <section className="about-hero">
@@ -20,7 +20,7 @@ const About: React.FC = () => {
                                 <span className="gradient-text">Start working.</span>
                             </h1>
                             <p className="about-subtitle">
-                                We are building the fastest, most private way to automate repetitive web forms, job applications, and government portals, giving you back thousands of hours.
+                                We're building a fast, private way to handle repetitive web forms, from job applications to school and government portals, so you can spend your time on what actually matters.
                             </p>
                         </div>
                     </div>
@@ -36,10 +36,10 @@ const About: React.FC = () => {
                         </div>
                         <div className="split-right">
                             <p className="large-text">
-                                Whether it's <strong>university admissions, government portals, or medical intake forms</strong>, we lose countless hours manually typing the exact same information.
+                                Whether it's <strong>job applications, university admissions, government portals, or medical intake forms</strong>, we keep typing the exact same information again and again.
                             </p>
                             <p className="secondary-text">
-                                The average person spends dozens of hours a year navigating complex, multi-step forms across Workday, visa applications, and institutional databases. Existing autofillers fail completely on these dynamic sites, and worse, they often store your highly sensitive personal data on random cloud servers.
+                                Browser autofill only knows your name and address, and it breaks on modern sites built with custom dropdowns, Shadow DOM components, and embedded frames. Many autofill tools also upload your personal data to their own cloud servers.
                             </p>
                         </div>
                     </div>
@@ -59,17 +59,17 @@ const About: React.FC = () => {
                                         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                     </svg>
                                 </div>
-                                <h3>Zero-Knowledge AI Analysis</h3>
-                                <p>Aullevo utilizes Gemini 2.5 Flash to deeply understand the context of complex forms. <strong>The AI only ever sees the blank form structure.</strong> It figures out what the page needs, without ever seeing or transmitting your actual data.</p>
+                                <h3>Smart Matching, Optional AI</h3>
+                                <p>A fast matching engine fills standard fields <strong>offline, with no AI at all</strong>. When you turn on AI Smart Fill, the AI provider you pick (Google Gemini, ChatGPT, Claude, or your own OpenAI-compatible server) helps with multiple-choice and open-ended questions, and <strong>you decide which of your answers it may see.</strong></p>
                             </div>
                             <div className="solution-card">
-                                <div className="solution-icon green">
+                                <div className="solution-icon yellow">
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                                     </svg>
                                 </div>
-                                <h3>100% Local Execution</h3>
-                                <p>The actual data filling happens strictly on your device. Your sensitive information (IDs, financial details, health records) is encrypted with AES-256-GCM in your local vault. It never leaves your machine.</p>
+                                <h3>Encrypted on Your Device</h3>
+                                <p>Your profiles, documents, and API keys are encrypted with AES-256-GCM and stored only in your browser, with a separate key for each account. Aullevo has no server that stores your profile data.</p>
                             </div>
                         </div>
                     </div>
@@ -81,33 +81,32 @@ const About: React.FC = () => {
                 <div className="container">
                     <div className="text-center mb-12">
                         <h2 className="section-title">Privacy by Design</h2>
-                        <p className="section-description">Unlike cloud-based autofill tools, we isolate the AI from your sensitive data.</p>
+                        <p className="section-description">AI Smart Fill is off by default. When you turn it on, here is exactly what your chosen AI provider can and cannot see.</p>
                     </div>
 
                     <div className="privacy-comparison">
                         <div className="privacy-card negative">
                             <div className="privacy-header">
-                                <div className="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg></div>
-                                <h3>What We NEVER Send to AI</h3>
+                                <div className="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg></div>
+                                <h3>Never Sent to AI</h3>
                             </div>
                             <ul>
-                                <li>Your PII (Name, Email, Phone, Address)</li>
-                                <li>Highly sensitive IDs (SSN, Passport, Visas)</li>
-                                <li>Medical, financial, or salary information</li>
-                                <li>Actual form field values you type</li>
-                                <li>Custom field values or passwords</li>
+                                <li>Values of fields marked SENSITIVE (email, phone, address, IDs, medical, and financial fields start as SENSITIVE)</li>
+                                <li>Your uploaded documents (resume, IDs, certificates)</li>
+                                <li>Your encryption key</li>
+                                <li>Anything at all while AI Smart Fill is turned off</li>
                             </ul>
                         </div>
                         <div className="privacy-card positive">
                             <div className="privacy-header">
                                 <div className="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg></div>
-                                <h3>What IS Sent (Form Structure Only)</h3>
+                                <h3>Sent to Your AI Provider (AI Smart Fill Only)</h3>
                             </div>
                             <ul>
-                                <li>Blank field labels and ARIA labels</li>
-                                <li>Expected input types (e.g., "date", "text")</li>
-                                <li>Available dropdown/radio options</li>
-                                <li>Empty DOM hierarchy and form structure</li>
+                                <li>The form's questions and answer options</li>
+                                <li>Labels and context hints of your enabled fields</li>
+                                <li>Values of fields marked AI SAFE (e.g. name, skills), so it can pick better answers</li>
+                                <li>Toggle any field to SENSITIVE at any time to keep its value private</li>
                             </ul>
                         </div>
                     </div>
@@ -126,11 +125,11 @@ const About: React.FC = () => {
                                     <polyline points="2 12 12 17 22 12" />
                                 </svg>
                             </span>
-                            Deep Dive: Layer-by-Layer Technical Specifications
+                            Deep Dive: How Aullevo Is Built
                         </div>
                         <h2 className="section-title">System Architecture</h2>
                         <p className="section-description">
-                            Engineered for complete encapsulation, zero-knowledge privacy, and deep DOM resilience.
+                            A Manifest V3 browser extension built for privacy, reliability on modern websites, and speed.
                         </p>
                     </div>
 
@@ -141,36 +140,36 @@ const About: React.FC = () => {
                                 <div className="arch-number">01</div>
                                 <div className="arch-title-wrapper">
                                     <div className="arch-badge-row">
-                                        <span className="arch-badge badge-blue">FRONTEND</span>
+                                        <span className="arch-badge badge-blue">INTERFACE</span>
                                     </div>
-                                    <h3 className="arch-title">Layer 1: Frontend &amp; UI Engine</h3>
+                                    <h3 className="arch-title">Layer 1: Side Panel &amp; Full-Page View</h3>
                                 </div>
                             </div>
 
                             <div className="arch-body">
                                 <div className="arch-meta-row">
                                     <span className="arch-meta-label">Technology:</span>
-                                    <span className="arch-meta-value">React 19, Lucide Icons, Vanilla CSS with CSS custom properties.</span>
+                                    <span className="arch-meta-value">React 19, TypeScript, Vite, Chrome Side Panel API (Manifest V3).</span>
                                 </div>
 
                                 <div className="arch-mechanism-block">
                                     <span className="arch-meta-label">Mechanism:</span>
                                     <p className="arch-mechanism-desc">
-                                        Creates a top-level host element (<code>#aullevo-sidebar-host</code>) with <code>z-index: 2147483646</code> and attaches an <strong>Open Shadow Root</strong>. Extension styles are injected directly into the shadow tree, ensuring 100% encapsulation—host CSS frameworks (Tailwind, Bootstrap, etc.) cannot disrupt the UI.
+                                        Aullevo lives in the browser's native <strong>side panel</strong> (Alt+Q), so it never covers or restyles the page you're filling. A <strong>full-page view</strong> gives you room to edit profiles and settings, and both views stay in sync. An optional floating button appears only on the top-level page, never inside ads or embedded frames.
                                     </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Layer 2 */}
-                        <div className="arch-step arch-step-purple">
+                        <div className="arch-step arch-step-yellow">
                             <div className="arch-step-header">
                                 <div className="arch-number">02</div>
                                 <div className="arch-title-wrapper">
                                     <div className="arch-badge-row">
-                                        <span className="arch-badge badge-purple">BRIDGE</span>
+                                        <span className="arch-badge badge-yellow">FORM ENGINE</span>
                                     </div>
-                                    <h3 className="arch-title">Layer 2: Content Scripts &amp; Deep DOM Engine</h3>
+                                    <h3 className="arch-title">Layer 2: Content Script &amp; Deep DOM Engine</h3>
                                 </div>
                             </div>
 
@@ -181,29 +180,29 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Deep Shadow Piercing:</strong>{' '}
-                                                <code>querySelectorAllDeep</code> recursively extracts elements inside nested Shadow DOM trees.
+                                                <strong className="arch-spec-label">Shadow DOM &amp; Frames:</strong>{' '}
+                                                Finds inputs inside open and closed shadow roots (via <code>chrome.dom.openOrClosedShadowRoot</code>) in every frame of the page.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Tab Panel Activation:</strong>{' '}
-                                                Detects hidden tab panels (<code>[role="tabpanel"]</code>) and momentarily reveals them to extract all fields before filling.
+                                                <strong className="arch-spec-label">Label Resolution:</strong>{' '}
+                                                Reads labels, ARIA attributes, grid row headers, and nearby question text so each field is identified the way a person would read it.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Honeypot &amp; CAPTCHA Shields:</strong>{' '}
-                                                Identifies and skips hidden bot-traps (<code>aria-hidden</code>, 0-size, offscreen) and warns users if reCAPTCHA, hCaptcha, Turnstile, or Arkose are detected.
+                                                <strong className="arch-spec-label">Framework-Aware Input:</strong>{' '}
+                                                Sets values through native prototype setters and dispatches real <code>input</code>, <code>change</code>, and <code>blur</code> events so React, Vue, and Angular forms register every answer.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Human Input Simulation:</strong>{' '}
-                                                Injects values using prototype property setters and triggers React's internal <code>_valueTracker</code> to ensure form validation states acknowledge the changes.
+                                                <strong className="arch-spec-label">Every Input Type:</strong>{' '}
+                                                Custom dropdowns and listboxes, radios and checkboxes, Microsoft Forms ranking questions, split date fields, dial-code pickers, and file inputs (attached with <code>DataTransfer</code>).
                                             </div>
                                         </li>
                                     </ul>
@@ -212,14 +211,14 @@ const About: React.FC = () => {
                         </div>
 
                         {/* Layer 3 */}
-                        <div className="arch-step arch-step-cyan">
+                        <div className="arch-step arch-step-blue">
                             <div className="arch-step-header">
                                 <div className="arch-number">03</div>
                                 <div className="arch-title-wrapper">
                                     <div className="arch-badge-row">
-                                        <span className="arch-badge badge-cyan">LLM &amp; HYBRID</span>
+                                        <span className="arch-badge badge-blue">MATCHING &amp; AI</span>
                                     </div>
-                                    <h3 className="arch-title">Layer 3: Hybrid AI &amp; Matching Engine</h3>
+                                    <h3 className="arch-title">Layer 3: Hybrid Matching Engine</h3>
                                 </div>
                             </div>
 
@@ -230,29 +229,29 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Dual-Tier Resolution:</strong>{' '}
-                                                Combines Google Gemini LLM analysis with instant deterministic heuristics.
+                                                <strong className="arch-spec-label">Offline Keyword Matching:</strong>{' '}
+                                                Scores every field-to-question pair using label similarity, word stems, and aliases, then assigns the highest-confidence matches first so each field is filled exactly once.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">2D Matrix / Table Optimizer:</strong>{' '}
-                                                Directly resolves availability tables (e.g., <em>Mon - From, Tue - To</em>) via heuristics, saving LLM tokens and avoiding prompt bloat.
+                                                <strong className="arch-spec-label">Privacy-Filtered AI Prompt:</strong>{' '}
+                                                Before calling the AI, values of SENSITIVE fields are stripped out. The AI replies with <em>which</em> of your fields answers each question, and the real value is filled in locally.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Domain Session Cache:</strong>{' '}
-                                                Uses <code>chrome.storage.session</code> to cache field signature mappings for 15 minutes, making multi-page job applications instantaneous.
+                                                <strong className="arch-spec-label">AI First, Keywords as Backup:</strong>{' '}
+                                                Uncertain matches wait for the AI. Anything the AI skips or cannot answer is filled by the keyword engine, without overriding an answer the AI already chose.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Contextual RAG &amp; Chat:</strong>{' '}
-                                                Pulls structured user memories to generate context-grounded responses to open-ended application questions or conversational chat inputs.
+                                                <strong className="arch-spec-label">Plan Limits:</strong>{' '}
+                                                Free users get 6 AI fills every day, and each short ad gives 10 more for 2 hours. Pro removes the limit, with no ads.
                                             </div>
                                         </li>
                                     </ul>
@@ -261,14 +260,14 @@ const About: React.FC = () => {
                         </div>
 
                         {/* Layer 4 */}
-                        <div className="arch-step arch-step-green">
+                        <div className="arch-step arch-step-yellow">
                             <div className="arch-step-header">
                                 <div className="arch-number">04</div>
                                 <div className="arch-title-wrapper">
                                     <div className="arch-badge-row">
-                                        <span className="arch-badge badge-green">STORAGE &amp; PRIVACY</span>
+                                        <span className="arch-badge badge-yellow">STORAGE &amp; PRIVACY</span>
                                     </div>
-                                    <h3 className="arch-title">Layer 4: Zero-Knowledge Data Vault</h3>
+                                    <h3 className="arch-title">Layer 4: Encrypted Local Vault</h3>
                                 </div>
                             </div>
 
@@ -279,22 +278,22 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">100% Local-First Storage:</strong>{' '}
-                                                User profiles, custom fields, work histories, and uploaded resumes (parsed via <code>pdfjs-dist</code> and <code>mammoth</code>) are stored exclusively on-device in <code>chrome.storage.local</code>.
+                                                <strong className="arch-spec-label">Local Encryption:</strong>{' '}
+                                                Profiles, documents, and your AI provider keys are encrypted with <strong>AES-256-GCM</strong> using a random key Aullevo creates for each account (and for guest use) on the device. No passphrase to remember: the side panel opens straight to Autofill.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Namespace Partitioning:</strong>{' '}
-                                                Dynamically partitions data keys based on active authentication state (<code>aullevo_profiles_user_&lt;uid&gt;</code> vs <code>aullevo_profiles_guest</code>), enabling seamless switching between accounts.
+                                                <strong className="arch-spec-label">One Key per Account:</strong>{' '}
+                                                Each account (and guest use) has its own key in the extension's storage, which web pages can't read. Signing in with another account switches to that account's own data.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Virtual File Dispatcher:</strong>{' '}
-                                                Reconstructs base64-stored files into native <code>File</code> / <code>DataTransfer</code> objects to populate native file upload inputs.
+                                                <strong className="arch-spec-label">No Profile Uploads:</strong>{' '}
+                                                Encrypted data stays in <code>chrome.storage.local</code> on your device. No analytics or tracking runs inside the extension.
                                             </div>
                                         </li>
                                     </ul>
@@ -303,14 +302,14 @@ const About: React.FC = () => {
                         </div>
 
                         {/* Layer 5 */}
-                        <div className="arch-step arch-step-amber">
+                        <div className="arch-step arch-step-blue">
                             <div className="arch-step-header">
                                 <div className="arch-number">05</div>
                                 <div className="arch-title-wrapper">
                                     <div className="arch-badge-row">
-                                        <span className="arch-badge badge-amber">ORCHESTRATION</span>
+                                        <span className="arch-badge badge-blue">ORCHESTRATION</span>
                                     </div>
-                                    <h3 className="arch-title">Layer 5: Autonomous Autopilot Core</h3>
+                                    <h3 className="arch-title">Layer 5: Service Worker &amp; Account Sync</h3>
                                 </div>
                             </div>
 
@@ -321,29 +320,29 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Multi-Page State Machine:</strong>{' '}
-                                                Uses <code>chrome.tabs.onUpdated</code> to track multi-step form journeys across page navigations up to 30 continuous steps.
+                                                <strong className="arch-spec-label">Keyboard Shortcuts:</strong>{' '}
+                                                Alt+Q opens the panel, Alt+Shift+L fills the current page, and Alt+Shift+B runs a Multi-link batch.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Dynamic Row Expansion:</strong>{' '}
-                                                Detects "+ Add Experience" buttons, triggers clicks, invalidates the cache, and recurses to fill newly exposed form rows.
+                                                <strong className="arch-spec-label">Multi-link Batch Fill:</strong>{' '}
+                                                Queue several form links and Aullevo opens and fills each one in its own tab, waiting for pages to finish loading.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Anti-Loop Fingerprinting:</strong>{' '}
-                                                Compares field-value fingerprints to detect and safely abort if a form gets stuck in an infinite loop.
+                                                <strong className="arch-spec-label">Auto-Pagination (Pro):</strong>{' '}
+                                                Fills each page of a multi-step form, clicks Next, and submits on the last page. It pauses on empty required fields and corrects answers a form rejects.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Web-to-Extension Sync:</strong>{' '}
-                                                Listens to the web dashboard via IndexedDB/postMessage to synchronize user session and Pro status in real-time.
+                                                <strong className="arch-spec-label">Verified Account Sync:</strong>{' '}
+                                                When you sign in on Aullevo Web, the site hands the extension a short-lived Firebase ID token. The extension checks your plan directly with Firestore, so Pro status can't be faked.
                                             </div>
                                         </li>
                                     </ul>

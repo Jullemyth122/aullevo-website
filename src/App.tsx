@@ -9,6 +9,8 @@ import About from './pages/About';
 import Login from './pages/Login';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Admin from './pages/Admin';
+import Rewards from './pages/Rewards';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/main.scss';
 
@@ -27,6 +29,8 @@ const App: React.FC = () => {
         { path: 'login', element: <Login /> },
         { path: 'privacy', element: <PrivacyPolicy /> },
         { path: 'terms', element: <TermsOfService /> },
+        { path: 'admin', element: <Admin /> },
+        { path: 'rewards', element: <Rewards /> },
       ],
     },
   ])

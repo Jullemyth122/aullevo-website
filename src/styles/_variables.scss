@@ -1,119 +1,204 @@
 :root {
-  // Premium 'Deep Space' Dark Palette (Default)
-  --bg-main: #05050a;
-  --bg-secondary: #0a0f1f;
-  --bg-card: rgba(20, 25, 40, 0.7);
-  --bg-card-hover: rgba(30, 35, 60, 0.8);
-  --bg-modal: #0d1224;
-  --bg-input: rgba(255, 255, 255, 0.04);
+  // ═══ Aullevo Brand — Royal Cobalt Blue (from logo #1a5296) ═══
+  --aullevo-blue: #1a5296;
+  --aullevo-blue-bright: #2563eb;
+  --aullevo-blue-glow: #60a5fa;
+  --aullevo-blue-deep: #0f3460;
 
-  // Dynamic Theme Gradients for Panels
+  // ═══ Dark Mode: Deep Cosmic Obsidian ═══
+  --bg-main: #030712;
+  --bg-secondary: #080e1e;
+  --bg-card: rgba(15, 23, 42, 0.65);
+  --bg-card-hover: rgba(22, 33, 62, 0.8);
+  --bg-modal: #0b1120;
+  --bg-input: rgba(255, 255, 255, 0.05);
+
+  // ═══ Glassmorphism Tokens ═══
+  --glass-bg: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  --glass-bg-hover: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(37, 99, 235, 0.5);
+  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+  --glass-shadow:
+    0 20px 50px -10px rgba(0, 0, 0, 0.55),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+  --glass-shadow-hover:
+    0 25px 60px -12px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(37, 99, 235, 0.2),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
+
+  // ═══ Chromatic Dispersion — Ambient Prism Tokens (Dark) ═══
+  --chroma-r: rgba(255, 80, 120, 0.06);
+  --chroma-g: rgba(100, 220, 255, 0.08);
+  --chroma-b: rgba(60, 100, 255, 0.12);
+  --chroma-halo: 0 0 120px 40px rgba(37, 99, 235, 0.08),
+    0 0 240px 80px rgba(100, 180, 255, 0.04);
+
+  // ═══ Panel Gradients ═══
   --panel-gradient: linear-gradient(
     180deg,
-    rgba(10, 15, 31, 0.4) 0%,
-    transparent 100%
+    rgba(15, 23, 42, 0.6) 0%,
+    rgba(3, 7, 18, 0.4) 100%
   );
   --card-gradient-neg: linear-gradient(
-    180deg,
-    rgba(239, 68, 68, 0.03) 0%,
-    rgba(5, 5, 10, 0.4) 100%
+    135deg,
+    rgba(251, 191, 36, 0.08) 0%,
+    rgba(15, 23, 42, 0.5) 100%
   );
   --card-gradient-pos: linear-gradient(
-    180deg,
-    rgba(16, 185, 129, 0.03) 0%,
-    rgba(5, 5, 10, 0.4) 100%
+    135deg,
+    rgba(37, 99, 235, 0.1) 0%,
+    rgba(15, 23, 42, 0.5) 100%
   );
 
-  --bg-navbar-scrolled: rgba(5, 5, 10, 0.88);
-  --bg-mobile-nav: rgba(5, 5, 10, 0.98);
+  --bg-navbar-scrolled: rgba(3, 7, 18, 0.75);
+  --bg-mobile-nav: rgba(3, 7, 18, 0.95);
 
-  --primary: #3b82f6;
-  --accent-glow: #6366f1;
+  // ═══ Brand Colors ═══
+  --primary: #2563eb;
+  --accent-glow: #60a5fa;
   --accent-pop: #10b981;
   --accent-danger: #ef4444;
   --accent-gold: #fbbf24;
 
+  // ═══ Typography ═══
   --text-main: #ffffff;
   --text-muted: #94a3b8;
-  --text-dark: #0f172a;
+  --text-dark: #030712;
   --text-on-gradient: #ffffff;
-  --text-gradient: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
-  --brand-gradient: linear-gradient(90deg, #3b82f6 0%, #28314d 100%);
+  --text-gradient: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #cbd5e1 60%,
+    #94a3b8 100%
+  );
+  --brand-gradient: linear-gradient(
+    135deg,
+    #60a5fa 0%,
+    #2563eb 50%,
+    #1a5296 100%
+  );
+  --gold-gradient: linear-gradient(
+    135deg,
+    #fef08a 0%,
+    #fbbf24 50%,
+    #d97706 100%
+  );
 
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-hover: rgba(255, 239, 170, 0.427);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.15);
+  // ═══ Borders & Shadows ═══
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glass-hover: rgba(37, 99, 235, 0.45);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.2);
 
-  --body-glow-1: rgba(59, 130, 246, 0.08);
-  --body-glow-2: rgba(59, 130, 246, 0.06);
-  --glass-card-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  --body-glow-1: rgba(37, 99, 235, 0.14);
+  --body-glow-2: rgba(26, 82, 150, 0.1);
+  --glass-card-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 
-  --mesh-glow-1: rgba(99, 102, 241, 0.15);
-  --mesh-glow-2: rgba(59, 130, 246, 0.15);
-  --mesh-glow-3: rgba(16, 185, 129, 0.12);
-  --bg-badge-live: rgba(59, 130, 246, 0.08);
-  --border-badge-live: rgba(59, 130, 246, 0.18);
+  // ═══ Mesh Background ═══
+  --mesh-glow-1: rgba(37, 99, 235, 0.22);
+  --mesh-glow-2: rgba(26, 82, 150, 0.18);
+  --mesh-glow-3: rgba(100, 180, 255, 0.08);
+  --bg-badge-live: rgba(37, 99, 235, 0.12);
+  --border-badge-live: rgba(37, 99, 235, 0.28);
 }
 
+// ═══════════════════════════════════════════════
+// ═══ LIGHT MODE: Iridescent Crystal ═══
+// ═══════════════════════════════════════════════
 [data-theme="light"] {
-  // Premium Accessible 'Warm Slate' Palette
-  --bg-main: #e8ecf1;
-  --bg-secondary: #dae0e8;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 0.98);
-  --bg-modal: #f0f2f5;
+  --bg-main: #f0f4f8;
+  --bg-secondary: #e8eef5;
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --bg-modal: #ffffff;
   --bg-input: rgba(15, 23, 42, 0.04);
-  --bg-navbar-scrolled: rgba(232, 236, 241, 0.92);
-  --bg-mobile-nav: rgba(232, 236, 241, 0.98);
+  --bg-navbar-scrolled: rgba(240, 244, 248, 0.82);
+  --bg-mobile-nav: rgba(240, 244, 248, 0.98);
 
-  // Dynamic Theme Gradients - Clean Light Specular Reflections (No dark cuts)
+  --glass-bg: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.6) 100%
+  );
+  --glass-bg-hover: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+  --glass-border: rgba(200, 215, 235, 0.6);
+  --glass-border-hover: rgba(37, 99, 235, 0.4);
+  --glass-specular: inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+  --glass-shadow:
+    0 16px 40px -8px rgba(15, 23, 42, 0.06),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.9);
+  --glass-shadow-hover:
+    0 20px 50px -8px rgba(15, 23, 42, 0.1),
+    0 0 25px rgba(37, 99, 235, 0.1),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 1);
+
+  // Chromatic Dispersion — Light Mode (soft)
+  --chroma-r: rgba(255, 120, 150, 0.04);
+  --chroma-g: rgba(100, 200, 240, 0.05);
+  --chroma-b: rgba(37, 99, 235, 0.06);
+  --chroma-halo: 0 0 80px 30px rgba(37, 99, 235, 0.04),
+    0 0 160px 60px rgba(100, 180, 255, 0.03);
+
   --panel-gradient: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.5) 0%,
-    transparent 100%
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(240, 244, 248, 0.5) 100%
   );
   --card-gradient-neg: linear-gradient(
-    180deg,
-    rgba(239, 68, 68, 0.05) 0%,
-    rgba(255, 255, 255, 0.4) 100%
+    135deg,
+    rgba(251, 191, 36, 0.06) 0%,
+    rgba(255, 255, 255, 0.85) 100%
   );
   --card-gradient-pos: linear-gradient(
-    180deg,
-    rgba(16, 185, 129, 0.05) 0%,
-    rgba(255, 255, 255, 0.4) 100%
+    135deg,
+    rgba(37, 99, 235, 0.06) 0%,
+    rgba(255, 255, 255, 0.85) 100%
   );
 
-  --primary: #2563eb;
-  --accent-glow: #4f46e5;
+  --primary: #1a5296;
+  --accent-glow: #2563eb;
   --accent-pop: #059669;
   --accent-danger: #dc2626;
   --accent-gold: #d97706;
 
   --text-main: #0f172a;
-  --text-muted: #475569;
+  --text-muted: #64748b;
   --text-dark: #ffffff;
   --text-on-gradient: #ffffff;
-  --text-gradient: linear-gradient(135deg, #0f172a 0%, #334155 100%);
-  --brand-gradient: linear-gradient(90deg, #2563eb 0%, #1e40af 100%);
+  --text-gradient: linear-gradient(180deg, #0f172a 0%, #334155 100%);
+  --brand-gradient: linear-gradient(135deg, #2563eb 0%, #1a5296 100%);
+  --gold-gradient: linear-gradient(135deg, #b45309 0%, #d97706 100%);
 
-  --border-glass: rgba(15, 23, 42, 0.09);
-  --border-glass-hover: rgba(36, 75, 164, 0.802);
-  --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.03);
-  --shadow-glow: 0 10px 40px rgba(37, 99, 235, 0.04);
+  --border-glass: rgba(200, 215, 235, 0.6);
+  --border-glass-hover: rgba(37, 99, 235, 0.35);
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-glow: 0 8px 30px rgba(37, 99, 235, 0.08);
 
-  --body-glow-1: rgba(37, 99, 235, 0.03);
-  --body-glow-2: rgba(37, 99, 235, 0.01);
-  --glass-card-shadow: 0 16px 32px rgba(15, 23, 42, 0.04);
+  --body-glow-1: rgba(37, 99, 235, 0.06);
+  --body-glow-2: rgba(100, 180, 255, 0.04);
+  --glass-card-shadow: 0 16px 36px rgba(15, 23, 42, 0.05);
 
-  --mesh-glow-1: rgba(99, 102, 241, 0.08);
-  --mesh-glow-2: rgba(59, 130, 246, 0.08);
-  --mesh-glow-3: rgba(16, 185, 129, 0.06);
-  --bg-badge-live: rgba(37, 99, 235, 0.05);
-  --border-badge-live: rgba(37, 99, 235, 0.12);
+  --mesh-glow-1: rgba(37, 99, 235, 0.1);
+  --mesh-glow-2: rgba(26, 82, 150, 0.08);
+  --mesh-glow-3: rgba(100, 180, 255, 0.06);
+  --bg-badge-live: rgba(37, 99, 235, 0.06);
+  --border-badge-live: rgba(37, 99, 235, 0.18);
 }
 
-// SCSS Variables Mapping to CSS Variables
+// ═══ SCSS Variables → CSS Variables mapping ═══
 $bg-main: var(--bg-main);
 $bg-secondary: var(--bg-secondary);
 $bg-card: var(--bg-card);
@@ -133,12 +218,14 @@ $text-dark: var(--text-dark);
 $text-on-gradient: var(--text-on-gradient);
 $text-gradient: var(--text-gradient);
 $brand-gradient: var(--brand-gradient);
+$gold-gradient: var(--gold-gradient);
 
 $border-glass: var(--border-glass);
 $border-glass-hover: var(--border-glass-hover);
 
 // Non-color variables
 $font-stack:
+  "Outfit",
   "Inter",
   system-ui,
   -apple-system,
@@ -146,4 +233,4 @@ $font-stack:
 $nav-height: 5rem;
 $shadow-sm: var(--shadow-sm);
 $shadow-glow: var(--shadow-glow);
-$glass-blur: 12px;
+$glass-blur: 24px;

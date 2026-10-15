@@ -1,10 +1,11 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db, googleProvider } from '../config/firebase';
-import { signInWithPopup, onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
+import { signInWithPopup, onAuthStateChanged, signOut, type User } from 'firebase/auth';
+import { doc, getDoc, setDoc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import DonateButton from './DonateButton';
 import SEO from '../components/SEO';
+import { PLANS, formatUsd, isPlanId, type PlanId } from '../config/plans';
 
 const evaluateProStatus = (data: any): { isActive: boolean; expiresAt: string | null; isExpired: boolean } => {
     if (!data) return { isActive: false, expiresAt: null, isExpired: false };
@@ -21,8 +22,74 @@ const evaluateProStatus = (data: any): { isActive: boolean; expiresAt: string | 
             isExpired: !isStillValid
         };
     }
-    // No expiration date set
-    return { isActive: false, expiresAt: null, isExpired: true };
+    // isPro is true with no expiration date (Lifetime, Admin Grant, or manual DB flag)
+    return { isActive: true, expiresAt: null, isExpired: false };
+};
+
+// Which plan the last payment was for (older docs say 'pro' = the 30-day plan)
+const readPlan = (data: { subscriptionPlan?: unknown } | undefined): PlanId =>
+    (isPlanId(data?.subscriptionPlan) ? data.subscriptionPlan : 'monthly');
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const PRO_PRICE_SUMMARY = `${formatUsd(PLANS.monthly)} / 30 days, ${formatUsd(PLANS.yearly)} / year, or ${formatUsd(PLANS.lifetime)} once for lifetime`;
+
+type PlanState = 'pro' | 'pending' | 'expired' | 'free';
+// Where PayMongo sent the buyer back to (?payment=paymongo | cancelled)
+type PaymongoReturn = 'checking' | 'paid' | 'waiting' | 'cancelled' | null;
+
+const VERIFY_ATTEMPTS = 6;
+const VERIFY_INTERVAL_MS = 4000;
+type ExtensionStatus = 'not-detected' | 'detected' | 'connected' | 'error';
+
+const PLAN_STATUS_LABELS: Record<PlanState, string> = {
+    pro: 'Active',
+    pending: 'Activating',
+    expired: 'Expired',
+    free: 'Free'
+};
+
+const EXTENSION_STATUS_LABELS: Record<ExtensionStatus, string> = {
+    connected: 'Connected',
+    detected: 'Connecting…',
+    error: 'Error',
+    'not-detected': 'Not detected'
+};
+
+const PRO_FEATURES = [
+    { title: 'No ads, everything unlocked', description: 'Free gives a little of everything each day, then asks for a short ad. Pro never shows an ad.' },
+    { title: 'Unlimited Voice mode', description: 'Talk to Aullevo to fill pages or single questions, dictate answers, and manage profiles hands-free (your ElevenLabs key). Free gets 3 sessions a day, plus 6 per ad.' },
+    { title: 'Unlimited AI Smart Fill', description: 'No limit on AI answers (Gemini, ChatGPT, Claude, or your own server). Free gets 6 fills a day, plus 10 per ad.' },
+    { title: 'Unlimited active profiles & links', description: 'Keep every profile on at once and queue as many Multi-link applications as you like. Free allows 3 profiles and 5 links.' },
+    { title: 'Automatic document uploads', description: 'Your resume, cover letter, and IDs go to the right upload fields.' },
+    { title: 'Every typing speed', description: 'Slow and custom typing speeds, any time.' },
+    { title: 'Unlimited JSON imports & download', description: 'Import as often as you like (Free allows 4 a day, plus 10 per ad) and download profiles as backup files.' },
+    { title: 'Auto-Pagination', description: 'Fills every page of multi-step forms, clicks Next, and submits for you. Free gets 2 hours a day, plus 4 per ad.' }
+];
+
+const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+
+// Sends auth state to the Aullevo extension's content script.
+// idToken lets the extension verify the account and read isPro from Firestore itself
+// (the extension does not trust the isPro value in this message).
+const broadcastToExtension = async (currentUser: User, isActive: boolean, expiresAt: string | null) => {
+    try {
+        const idToken = await currentUser.getIdToken();
+        window.postMessage({
+            type: 'AULLEVO_WEB_AUTH',
+            idToken,
+            user: {
+                uid: currentUser.uid,
+                email: currentUser.email,
+                displayName: currentUser.displayName,
+                photoURL: currentUser.photoURL,
+                isPro: isActive,
+                proExpiresAt: expiresAt
+            }
+        }, window.location.origin);
+    } catch (err) {
+        console.warn('Could not broadcast auth to extension:', err);
+    }
 };
 
 const Login: React.FC = () => {
@@ -30,8 +97,71 @@ const Login: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [isPro, setIsPro] = useState(false);
     const [proExpiresAt, setProExpiresAt] = useState<string | null>(null);
-    const simulatedSync = true;
+    const [planId, setPlanId] = useState<PlanId>('monthly');
+    // Real extension status, reported back by the Aullevo extension's content script
+    const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('not-detected');
+    const [extensionError, setExtensionError] = useState<string | null>(null);
+    // A PayPal/GCash payment waiting for manual activation
+    const [hasPendingPayment, setHasPendingPayment] = useState(false);
+    const [paymongoReturn, setPaymongoReturn] = useState<PaymongoReturn>(() => {
+        const payment = new URLSearchParams(window.location.search).get('payment');
+        return payment === 'paymongo' ? 'checking' : payment === 'cancelled' ? 'cancelled' : null;
+    });
     const navigate = useNavigate();
+
+    // Back from PayMongo checkout: ask the server to confirm the payment. The webhook usually
+    // activates Pro first; this covers a slow or missing webhook.
+    useEffect(() => {
+        if (new URLSearchParams(window.location.search).has('payment')) {
+            window.history.replaceState(window.history.state, '', window.location.pathname);
+        }
+        if (paymongoReturn !== 'checking' || !user?.uid) return;
+
+        let cancelled = false;
+        (async () => {
+            for (let attempt = 0; attempt < VERIFY_ATTEMPTS && !cancelled; attempt++) {
+                try {
+                    const idToken = await auth.currentUser?.getIdToken();
+                    const res = await fetch('/api/paymongo?action=verify', {
+                        method: 'POST',
+                        headers: { Authorization: `Bearer ${idToken}` }
+                    });
+                    const data = await res.json().catch(() => ({}));
+                    if (data.status === 'paid') {
+                        if (!cancelled) setPaymongoReturn('paid');
+                        return;
+                    }
+                } catch (err) {
+                    console.warn('Could not confirm PayMongo payment yet:', err);
+                }
+                await new Promise((resolve) => setTimeout(resolve, VERIFY_INTERVAL_MS));
+            }
+            if (!cancelled) setPaymongoReturn('waiting');
+        })();
+        return () => { cancelled = true; };
+    }, [paymongoReturn, user?.uid]);
+
+    // Handshake with the extension:
+    // - AULLEVO_EXTENSION_READY: extension just loaded on this page → re-send the sign-in token
+    //   (covers the case where our first broadcast happened before the extension was listening)
+    // - AULLEVO_EXTENSION_STATUS: extension verified the token against Firestore (or failed)
+    useEffect(() => {
+        const handleExtensionMessage = (event: MessageEvent) => {
+            if (event.source !== window || event.origin !== window.location.origin) return;
+            const data = event.data;
+            if (data?.type === 'AULLEVO_EXTENSION_READY') {
+                setExtensionStatus(prev => (prev === 'connected' ? prev : 'detected'));
+                if (auth.currentUser) {
+                    broadcastToExtension(auth.currentUser, isPro, proExpiresAt);
+                }
+            } else if (data?.type === 'AULLEVO_EXTENSION_STATUS') {
+                setExtensionStatus(data.success ? 'connected' : 'error');
+                setExtensionError(data.success ? null : (data.error || 'Could not verify account.'));
+            }
+        };
+        window.addEventListener('message', handleExtensionMessage);
+        return () => window.removeEventListener('message', handleExtensionMessage);
+    }, [isPro, proExpiresAt]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -50,6 +180,7 @@ const Login: React.FC = () => {
                             const { isActive, expiresAt } = evaluateProStatus(userSnap.data());
                             setIsPro(isActive);
                             setProExpiresAt(expiresAt);
+                            setPlanId(readPlan(userSnap.data()));
                             try {
                                 localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
                                 if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
@@ -58,17 +189,7 @@ const Login: React.FC = () => {
                             userDocExists = true;
 
                             // Broadcast auth state + isPro for Chrome Extension content script sync
-                            window.postMessage({
-                                type: 'AULLEVO_WEB_AUTH',
-                                user: {
-                                    uid: currentUser.uid,
-                                    email: currentUser.email,
-                                    displayName: currentUser.displayName,
-                                    photoURL: currentUser.photoURL,
-                                    isPro: isActive,
-                                    proExpiresAt: expiresAt
-                                }
-                            }, '*');
+                            await broadcastToExtension(currentUser, isActive, expiresAt);
                         }
                     } catch (dbErr) {
                         console.error("Firestore read error:", dbErr);
@@ -101,6 +222,7 @@ const Login: React.FC = () => {
                             const { isActive, expiresAt } = evaluateProStatus(docSnap.data());
                             setIsPro(isActive);
                             setProExpiresAt(expiresAt);
+                            setPlanId(readPlan(docSnap.data()));
                             try {
                                 localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
                                 if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
@@ -108,17 +230,7 @@ const Login: React.FC = () => {
                             } catch { }
 
                             // Broadcast updated isPro to extension in real-time
-                            window.postMessage({
-                                type: 'AULLEVO_WEB_AUTH',
-                                user: {
-                                    uid: currentUser.uid,
-                                    email: currentUser.email,
-                                    displayName: currentUser.displayName,
-                                    photoURL: currentUser.photoURL,
-                                    isPro: isActive,
-                                    proExpiresAt: expiresAt
-                                }
-                            }, '*');
+                            broadcastToExtension(currentUser, isActive, expiresAt);
                         }
                     }, (snapErr) => {
                         console.error("Firestore snapshot listener error:", snapErr);
@@ -139,6 +251,24 @@ const Login: React.FC = () => {
 
         return () => unsubscribe();
     }, []);
+
+    // Watch this user's pending payment claims (rules only allow reading your own)
+    useEffect(() => {
+        if (!user?.uid) {
+            setHasPendingPayment(false);
+            return;
+        }
+        const pendingQuery = query(
+            collection(db, 'paymentClaims'),
+            where('uid', '==', user.uid),
+            where('status', '==', 'pending')
+        );
+        return onSnapshot(
+            pendingQuery,
+            (snap) => setHasPendingPayment(!snap.empty),
+            (err) => console.warn('Could not load payment status:', err)
+        );
+    }, [user?.uid]);
 
     const handleGoogleLogin = async () => {
         try {
@@ -174,195 +304,204 @@ const Login: React.FC = () => {
         );
     }
 
+    const planState: PlanState = isPro ? 'pro' : hasPendingPayment ? 'pending' : proExpiresAt ? 'expired' : 'free';
+    const daysLeft = proExpiresAt
+        ? Math.max(0, Math.ceil((new Date(proExpiresAt).getTime() - Date.now()) / DAY_MS))
+        : null;
+    // Pro with no expiry = lifetime (bought, or granted by hand)
+    const isLifetime = isPro && !proExpiresAt;
+    const currentPlan = PLANS[isLifetime ? 'lifetime' : planId];
+    const periodProgress = daysLeft === null ? 100 : Math.min(100, (daysLeft / (currentPlan.days ?? 30)) * 100);
+
     return (
         <div className="login-page-container">
             <SEO
                 title="Login to Aullevo | AI-Powered Automation Dashboard"
-                description="Sign in to Aullevo to manage your Pro subscription ($2.50/mo), unlock smart autopilot wizards, and manage your extension account securely."
-                keywords="login aullevo, extension dashboard, autofill settings, pro subscription, monthly access, resume scanner"
+                description="Sign in to Aullevo to upgrade to Pro, check your plan status, and connect your browser extension."
+                keywords="login aullevo, aullevo account, aullevo pro, connect extension, autofill pro plan"
             />
-            {user ? (
-                /* ── AUTHENTICATED: PREMIUM DASHBOARD GRID ── */
-                <div className="login-dashboard-grid animate-fade-in">
+            {user && !user.isAnonymous ? (
+                /* ── AUTHENTICATED: ACCOUNT DASHBOARD ── */
+                <div className="account-dashboard animate-fade-in">
 
-                    {/* Left Column: Profile Card & License HUD */}
-                    <div className="dashboard-column dashboard-column--left glass-card">
-                        <div className="user-profile-view">
-                            <div className="avatar-ring-glow">
-                                <div className="user-avatar-large">
-                                    {user.photoURL ? (
-                                        <img src={user.photoURL} alt={user.displayName || 'User'} />
-                                    ) : (
-                                        <span>{user.displayName?.charAt(0).toUpperCase() || 'U'}</span>
-                                    )}
-                                </div>
-                            </div>
-
-                            <h1>Welcome back,</h1>
-                            <h3 className="user-display-name">{user.displayName || 'Developer'}</h3>
-                            <p className="user-email">{user.email}</p>
-
-                            <div className={`pro-status-badge ${isPro ? 'pro' : 'free'}`}>
-                                {isPro ? (
-                                    <>
-                                        <span className="sparkle-icon">✨</span>
-                                        <span>Pro Subscriber</span>
-                                    </>
+                    {/* Identity header */}
+                    <header className="account-header">
+                        <div className="account-identity">
+                            <div className="account-avatar">
+                                {user.photoURL ? (
+                                    <img src={user.photoURL} alt="" referrerPolicy="no-referrer" />
                                 ) : (
-                                    <span>{proExpiresAt ? 'Subscription Expired' : 'Free Account'}</span>
+                                    <span>{user.displayName?.charAt(0).toUpperCase() || 'U'}</span>
                                 )}
                             </div>
+                            <div className="account-identity-text">
+                                <p className="account-eyebrow">Account</p>
+                                <h1 className="account-name">{user.displayName || 'Your account'}</h1>
+                                <p className="account-email">{user.email}</p>
+                            </div>
+                        </div>
+                        <button className="account-signout" onClick={handleLogout} type="button">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                <polyline points="16 17 21 12 16 7" />
+                                <line x1="21" y1="12" x2="9" y2="12" />
+                            </svg>
+                            Sign out
+                        </button>
+                    </header>
 
-                            {/* Divider */}
-                            <div className="hud-divider"></div>
+                    <div className="account-grid">
+                        <div className="account-main">
 
-                            {/* Extension License HUD Panel */}
-                            <div className="sync-hud-panel">
-                                <div className="sync-hud-header">
-                                    <span className="hud-title">Extension License HUD</span>
-                                    <div className="sync-pulse-wrapper">
-                                        <span className={`sync-pulse-dot ${simulatedSync ? 'active' : ''}`}></span>
-                                        <span className="sync-pulse-text">{simulatedSync ? 'Connected' : 'Offline'}</span>
-                                    </div>
+                            {/* Plan */}
+                            <section className="account-card" aria-labelledby="plan-heading">
+                                <div className="account-card-head">
+                                    <h2 id="plan-heading">Plan</h2>
+                                    <span className={`status-pill status-pill--${planState}`}>
+                                        <span className="status-pill-dot" aria-hidden="true"></span>
+                                        {PLAN_STATUS_LABELS[planState]}
+                                    </span>
                                 </div>
-                                <div className="hud-stats-list">
-                                    <div className="hud-stat-item">
-                                        <span className="stat-label">Extension Status</span>
-                                        <span className="stat-value text-green">Active & Paired</span>
+
+                                <div className="plan-summary">
+                                    <div>
+                                        <p className="plan-name">{isPro ? `Aullevo Pro · ${currentPlan.name}` : 'Aullevo Free'}</p>
+                                        <p className="plan-price">
+                                            {isLifetime
+                                                ? 'Lifetime access · Paid once, never expires'
+                                                : isPro
+                                                    ? `${formatUsd(currentPlan)} ${currentPlan.period} · No auto-renewal`
+                                                    : `Pro is ${PRO_PRICE_SUMMARY}`}
+                                        </p>
                                     </div>
-                                    <div className="hud-stat-item">
-                                        <span className="stat-label">Storage Model</span>
-                                        <span className="stat-value">Local AES-256 IDB</span>
-                                    </div>
-                                    <div className="hud-stat-item">
-                                        <span className="stat-label">License Verification</span>
-                                        <span className="stat-value">{isPro ? 'Pro Monthly Active' : (proExpiresAt ? 'Expired (Needs Renewal)' : 'Free Tier')}</span>
-                                    </div>
-                                    {proExpiresAt && (
-                                        <div className="hud-stat-item">
-                                            <span className="stat-label">{isPro ? 'Valid Until' : 'Expired On'}</span>
-                                            <span className="stat-value">
-                                                {new Date(proExpiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                                            </span>
-                                        </div>
+                                    {planState === 'pro' && !isLifetime && (
+                                        <DonateButton className="account-cta account-cta--quiet" defaultPlan={planId}>Extend or upgrade</DonateButton>
+                                    )}
+                                    {(planState === 'free' || planState === 'expired') && (
+                                        <DonateButton className="account-cta" defaultPlan={planState === 'expired' ? planId : undefined}>
+                                            {planState === 'expired' ? 'Renew Pro' : 'Upgrade to Pro'}
+                                        </DonateButton>
                                     )}
                                 </div>
-                            </div>
 
-                            <button className="btn btn-secondary logout-btn" onClick={handleLogout}>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '8px' }}>
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                                    <polyline points="16 17 21 12 16 7" />
-                                    <line x1="21" y1="12" x2="9" y2="12" />
-                                </svg>
-                                Sign Out
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Right Column: Premium Feature Cards / Upgrades */}
-                    <div className="dashboard-column dashboard-column--right glass-card">
-                        {!isPro ? (
-                            /* UPSELL / FREE STATE VIEW */
-                            <div className="upsell-panel">
-                                <div className="upsell-badge">Aullevo Premium</div>
-                                <h3>{proExpiresAt ? 'Renew Your Pro Subscription' : 'Supercharge Your Form Automation'}</h3>
-                                <p className="upsell-description">
-                                    Unlock advanced Gemini-powered AI form filling, Drag-and-Drop Resume Scanner, and eliminate repetitive typing for just $2.50 / month.
-                                </p>
-
-                                <div className="pro-feature-grid">
-                                    <div className="pro-feature-card">
-                                        <div className="feature-icon">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                                                <polyline points="2 17 12 22 22 17" />
-                                                <polyline points="2 12 12 17 22 12" />
-                                            </svg>
+                                {isPro && (
+                                    <div className="plan-period">
+                                        <div className="plan-period-row">
+                                            <span className="plan-period-days">
+                                                {daysLeft === null ? 'No expiry' : `${daysLeft} ${daysLeft === 1 ? 'day' : 'days'} left`}
+                                            </span>
+                                            <span>{proExpiresAt ? `Until ${formatDate(proExpiresAt)}` : 'Lifetime access'}</span>
                                         </div>
-                                        <div className="feature-text">
-                                            <h4>Unlimited Multi-Profiles</h4>
-                                            <p>Create separate identity sets for personal, software engineer, or client applications.</p>
+                                        <div className="plan-meter" role="presentation">
+                                            <span style={{ width: `${periodProgress}%` }}></span>
                                         </div>
                                     </div>
+                                )}
 
-                                    <div className="pro-feature-card">
-                                        <div className="feature-icon">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                                                <line x1="12" y1="22.08" x2="12" y2="12" />
-                                            </svg>
-                                        </div>
-                                        <div className="feature-text">
-                                            <h4>Smart Autopilot Wizards</h4>
-                                            <p>Speed through multi-page job portals and applications with autonomous, continuous inputs.</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="pro-feature-card">
-                                        <div className="feature-icon">
-                                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                                                <circle cx="12" cy="12" r="10" />
-                                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                                <line x1="12" y1="17" x2="12.01" y2="17" />
-                                            </svg>
-                                        </div>
-                                        <div className="feature-text">
-                                            <h4>AI Resume Scanner & Parser</h4>
-                                            <p>Instantly extract structured skills, work history, and details from your uploaded CV.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="upgrade-prompt-section">
-                                    <div className="upgrade-price-badge">MONTHLY ACCESS · $2.50 / MONTH</div>
-                                    <DonateButton className="btn btn-primary btn-lg pulse">
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
-                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                                        </svg>
-                                        {proExpiresAt ? 'Renew Pro ($2.50/mo)' : 'Subscribe to Pro ($2.50/mo)'}
-                                    </DonateButton>
-                                </div>
-                            </div>
-                        ) : (
-                            /* PRO ACTIVE DETAIL CARD */
-                            <div className="pro-activated-panel">
-                                <div className="celebration-ring">
-                                    <div className="sparkles-container">✨</div>
-                                </div>
-                                <h3>Pro Monthly Activated</h3>
-                                <p className="pro-thanks">
-                                    Thank you for supporting Aullevo! Your account has full, unrestricted access to the complete suite of automation tools.
-                                </p>
-                                {proExpiresAt && (
-                                    <p style={{ fontSize: '0.9rem', color: '#10b981', fontWeight: '600', marginTop: '-4px' }}>
-                                        Active until: {new Date(proExpiresAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                                {paymongoReturn === 'checking' && (
+                                    <p className="plan-note" role="status">
+                                        Confirming your GCash / Maya / QR Ph payment with PayMongo…
                                     </p>
                                 )}
+                                {paymongoReturn === 'paid' && (
+                                    <p className="plan-note" role="status">
+                                        Payment confirmed. Pro is active on this account.
+                                    </p>
+                                )}
+                                {paymongoReturn === 'waiting' && (
+                                    <p className="plan-note plan-note--warn" role="status">
+                                        PayMongo hasn&apos;t confirmed your payment yet. If you completed it, Pro turns on automatically within a few minutes. Refresh this page to check.
+                                    </p>
+                                )}
+                                {paymongoReturn === 'cancelled' && (
+                                    <p className="plan-note" role="status">
+                                        Checkout was cancelled and nothing was charged. You can upgrade again anytime.
+                                    </p>
+                                )}
+                                {planState === 'pending' && (
+                                    <p className="plan-note">
+                                        We&apos;ve received your payment. Pro turns on as soon as it&apos;s confirmed, so there&apos;s nothing else you need to do.
+                                    </p>
+                                )}
+                                {planState === 'expired' && proExpiresAt && (
+                                    <p className="plan-note plan-note--warn">
+                                        Pro ended on {formatDate(proExpiresAt)}. Your profiles are still on your device; renew to unlock the Pro features again.
+                                    </p>
+                                )}
+                            </section>
 
-                                <div className="instructions-card">
-                                    <h4>How to Link with Chrome Extension</h4>
-                                    <ol className="instructions-list">
-                                        <li>Open your Google Chrome browser.</li>
-                                        <li>Click on the **Aullevo** extension icon in your toolbar.</li>
-                                        <li>Click **Sign In** and authenticate using **{user.email}**.</li>
-                                        <li>Your Pro Monthly status will automatically activate in your extension instantly!</li>
-                                    </ol>
+                            {/* Features */}
+                            <section className="account-card" aria-labelledby="features-heading">
+                                <div className="account-card-head">
+                                    <h2 id="features-heading">{isPro ? 'Included in your plan' : 'What Pro unlocks'}</h2>
                                 </div>
+                                <ul className={`feature-checklist ${isPro ? 'is-unlocked' : ''}`}>
+                                    {PRO_FEATURES.map((feature) => (
+                                        <li key={feature.title}>
+                                            <span className="feature-check" aria-hidden="true">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                                    <polyline points="20 6 9 17 4 12" />
+                                                </svg>
+                                            </span>
+                                            <div>
+                                                <strong>{feature.title}</strong>
+                                                <span>{feature.description}</span>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </section>
+                        </div>
 
-                                <div className="pro-status-verification">
-                                    <span className="verify-dot animate-pulse"></span>
-                                    <span>Pro Monthly Subscription Active & Verified</span>
-                                </div>
+                        <aside className="account-side">
 
-                                <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                                    <DonateButton className="btn btn-secondary btn-sm">
-                                        Extend / Renew Subscription (+30 Days)
-                                    </DonateButton>
+                            {/* Extension */}
+                            <section className="account-card" aria-labelledby="extension-heading">
+                                <div className="account-card-head">
+                                    <h2 id="extension-heading">Extension</h2>
+                                    <span className={`status-pill status-pill--ext-${extensionStatus}`}>
+                                        <span className="status-pill-dot" aria-hidden="true"></span>
+                                        {EXTENSION_STATUS_LABELS[extensionStatus]}
+                                    </span>
                                 </div>
-                            </div>
-                        )}
+                                <dl className="account-details">
+                                    <div>
+                                        <dt>Status</dt>
+                                        <dd>
+                                            {extensionStatus === 'connected' && 'Linked to this account'}
+                                            {extensionStatus === 'detected' && 'Verifying your account…'}
+                                            {extensionStatus === 'error' && (extensionError || 'Verification failed')}
+                                            {extensionStatus === 'not-detected' && 'Not found in this browser'}
+                                        </dd>
+                                    </div>
+                                    <div>
+                                        <dt>License</dt>
+                                        <dd>{isPro ? 'Pro' : planState === 'expired' ? 'Expired' : 'Free'}</dd>
+                                    </div>
+                                    <div>
+                                        <dt>Profile storage</dt>
+                                        <dd>On this device · AES-256</dd>
+                                    </div>
+                                </dl>
+                            </section>
+
+                            {/* Setup help */}
+                            <section className="account-card account-card--muted" aria-labelledby="setup-heading">
+                                <div className="account-card-head">
+                                    <h2 id="setup-heading">
+                                        {extensionStatus === 'connected' ? 'Connecting another browser' : 'Connect the extension'}
+                                    </h2>
+                                </div>
+                                <ol className="setup-steps">
+                                    <li>Install Aullevo in Chrome, Brave, or Edge.</li>
+                                    <li>In the side panel, open <strong>Settings</strong> → <strong>Connect with Aullevo Web</strong>.</li>
+                                    <li>Stay signed in here as <strong>{user.email}</strong>. The extension links automatically.</li>
+                                </ol>
+                                {extensionStatus === 'not-detected' && (
+                                    <p className="setup-hint">Already installed? Reload the extension, then refresh this page.</p>
+                                )}
+                            </section>
+                        </aside>
                     </div>
                 </div>
             ) : (
@@ -373,7 +512,7 @@ const Login: React.FC = () => {
                     <div className="login-promo-panel">
                         <div className="promo-badge">Aullevo Pro</div>
                         <h3>Your entire form-filling engine, unlocked.</h3>
-                        <p>Sign in to manage your Pro subscription ($2.50/mo), unlock AI drag-and-drop resume scanning, and power through multi-step applications.</p>
+                        <p>Sign in to upgrade to Pro ({PRO_PRICE_SUMMARY}), check your plan, and connect the extension for unlimited AI fills, document uploads, and more.</p>
 
                         <div className="promo-feature-list">
                             <div className="promo-feature-item">
@@ -408,8 +547,8 @@ const Login: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="promo-feature-text">
-                                    <strong>Flexible Monthly Access</strong>
-                                    <span>Cancel or renew anytime at only $2.50/month with zero long-term commitments.</span>
+                                    <strong>Monthly, Yearly, or Lifetime</strong>
+                                    <span>{formatUsd(PLANS.monthly)} for 30 days, {formatUsd(PLANS.yearly)} for a year, or {formatUsd(PLANS.lifetime)} once for lifetime. Nothing renews automatically.</span>
                                 </div>
                             </div>
                         </div>
