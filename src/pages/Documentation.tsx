@@ -50,7 +50,7 @@ const Documentation: React.FC = () => {
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.4</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.5</span>
                     </div>
                     <h1 className="docs-title">User Guide</h1>
                     <p className="docs-subtitle">Everything you need to install, set up, and get the most out of Aullevo.</p>
@@ -208,6 +208,9 @@ const Documentation: React.FC = () => {
                             Aullevo is <strong>free to use</strong>: the full form engine, all profile types, the encrypted vault, and Multi-link batch fill are included. AI Smart Fill uses your own API key with the provider you choose (Gemini has a free tier), so there are no AI fees from us.
                         </p>
                         <p>
+                            <strong>Every day, Free includes</strong> 3 AI fills, 1 voice session, 2 hours of Auto-Pagination, 2 hours of Slow and custom typing speeds, and 5 JSON imports (with a connected Aullevo account; reset at midnight UTC, JSON imports at your local midnight). When a feature's free uses run out, a short ad on the Aullevo website gives about twice as much for a few hours. Ads are never shown before that, and never inside the extension.
+                        </p>
+                        <p>
                             <strong>Aullevo Pro</strong> is for people who fill a lot of forms: unlimited AI fills, unlimited active profiles, automatic document uploads, Auto-Pagination for multi-page forms, Voice mode, and more control.
                         </p>
 
@@ -231,13 +234,13 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>AI Smart Fill</strong></td>
-                                        <td>6 fills per 1-minute ad (2 hours)</td>
+                                        <td>3 fills a day (+6 for 2 hours with a 1-minute ad)</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>Uses your own API key (Gemini, OpenAI, or Anthropic) or your own OpenAI-compatible server. Each page the AI helps fill uses one fill.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Active Profiles</strong></td>
-                                        <td>3 at a time (more for 2 hours with a 30-second ad)</td>
+                                        <td>3 at a time (6 for 2 hours with a 30-second ad)</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>All profile types and custom profiles are available on both plans.</td>
                                     </tr>
@@ -249,31 +252,31 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>Auto-Pagination</strong></td>
-                                        <td>4 hours per 1-minute ad</td>
+                                        <td>2 hours a day (+4 hours with a 1-minute ad)</td>
                                         <td><strong>✓ Fill, Next &amp; Submit</strong></td>
                                         <td>Fills every page of a multi-step form and submits it. Pauses when a required field is empty.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Voice Mode</strong></td>
-                                        <td>2 sessions per 1-minute ad (2 hours)</td>
+                                        <td>1 session a day (+2 for 2 hours with a 1-minute ad)</td>
                                         <td><strong>✓ Talk to Fill</strong></td>
                                         <td>Fill pages or single questions by voice, dictate your own answers, hands-free live conversation.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Typing Speed</strong></td>
-                                        <td>Instant, Natural (+ Slow &amp; Custom for 4 hours with a 20-second ad)</td>
+                                        <td>Instant, Natural; Slow &amp; Custom 2 hours a day (+4 hours with a 20-second ad)</td>
                                         <td><strong>+ Slow &amp; Custom</strong></td>
                                         <td>A slower, human pace for sites that expect real keystrokes.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>JSON Quick Setup</strong></td>
-                                        <td>Copy &amp; 3 imports every 2 weeks (+10 for 5 hours with a 1-minute ad)</td>
+                                        <td>Copy &amp; 5 imports a day (+10 for 5 hours with a 1-minute ad)</td>
                                         <td><strong>✓ Unlimited imports + Download</strong></td>
-                                        <td>Set up a profile from your resume with an AI chatbot, or back it up as a <code>.json</code> file (Pro). Free resets every other Monday.</td>
+                                        <td>Set up a profile from your resume with an AI chatbot, or back it up as a <code>.json</code> file (Pro). Free imports reset every day.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Multi-link Queue</strong></td>
-                                        <td>3 links (10 for 5 hours with a 1-minute ad)</td>
+                                        <td>5 links (10 for 5 hours with a 1-minute ad)</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>Open and fill several applications in one batch.</td>
                                     </tr>
@@ -281,7 +284,7 @@ const Documentation: React.FC = () => {
                                         <td><strong>Custom Fields, AI Memories, Encrypted Vault, Guided Tour, 34 Languages</strong></td>
                                         <td>✓</td>
                                         <td><strong>✓</strong></td>
-                                        <td>Included on every plan. Ads are optional and only shown on the Aullevo website when you choose to unlock a feature; Pro has no ads.</td>
+                                        <td>Included on every plan. Daily free allowances reset at midnight UTC. Ads are only offered once a day's free allowance is used, and only on the Aullevo website; Pro has no ads.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Price</strong></td>
@@ -704,7 +707,7 @@ const Documentation: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <p>Free includes 3 imports every 2 weeks (resets every other Monday). Pro has unlimited imports and can <strong>Download</strong> the profile as a <code>.json</code> backup file.</p>
+                        <p>Free includes 5 imports a day (10 more for 5 hours with a short ad). Pro has unlimited imports and can <strong>Download</strong> the profile as a <code>.json</code> backup file.</p>
                     </section>
 
                     <section id="language-tour" className="docs-section">
@@ -763,12 +766,12 @@ const Documentation: React.FC = () => {
                                 <div className="step-point">4</div>
                                 <div className="step-text">
                                     <strong>Review &amp; Submit</strong>
-                                    Filled fields are badged so you can check them before you submit. With Auto-Pagination (Pro) on, Aullevo clicks Next and Submit itself and pauses if a required field is empty.
+                                    Filled fields are badged so you can check them before you submit. With Auto-Pagination on (Pro, or 2 free hours a day on Free), Aullevo clicks Next and Submit itself and pauses if a required field is empty.
                                 </div>
                             </div>
                         </div>
 
-                        <h3>Auto-Pagination (Pro)</h3>
+                        <h3>Auto-Pagination (Pro, or 2 Free Hours a Day)</h3>
                         <p>Turn it on in <strong>Settings → Auto-Pagination</strong>. It works with the Fill button, <kbd>Alt+Shift+L</kbd>, and Multi-link batches:</p>
                         <ul className="docs-list">
                             <li><strong>Page by page:</strong> fills the page, clicks Next or Continue, and presses Submit on the last page (up to 12 pages per run).</li>
@@ -778,10 +781,10 @@ const Documentation: React.FC = () => {
                             <li><strong>Patient with slow sites:</strong> waits up to 20 seconds for each new page to load.</li>
                         </ul>
 
-                        <h3 id="voice-mode">Voice Mode (Pro, new in v0.6.4)</h3>
+                        <h3 id="voice-mode">Voice Mode (new in v0.6.4)</h3>
                         <p>Click the <strong>sound-wave button</strong> in the side panel's header to swap the tabs for the agent orb. It uses the same profiles and settings, and the same button brings the classic view back. Voice mode needs your own <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" rel="noopener noreferrer" className="external-link">ElevenLabs API key</a>: open <strong>Voice settings</strong> at the bottom of the panel, paste it, and press <strong>Save</strong>. The key needs <strong>Speech to Text</strong> and <strong>Text to Speech</strong> access (add <strong>Voices → Read</strong> to see your own voices too). The first time you tap the mic, a tab opens so Chrome can ask for microphone permission.</p>
                         <ul className="docs-list">
-                            <li><strong>Fill:</strong> "fill this page", "fill all pages" (Pro), "stop", "next", "submit", "what's left?"</li>
+                            <li><strong>Fill:</strong> "fill this page", "fill all pages" (with auto-pagination), "stop", "next", "submit", "what's left?"</li>
                             <li><strong>Fill one question:</strong> "fill the email", "fill this one" (the field you clicked), "fill the first question", "fill question 3", "fill my birthday". Your AI provider reads what you said together with the form's questions and picks the exact ones you mean, however you phrase it, with &quot;uh&quot;s, lead-ins or Taglish. It never fills the whole form for a targeted command.</li>
                             <li><strong>Your own answer:</strong> "answer the gym question with: I jog every morning", "for the nickname, say Xen", "answer this with remote only". Your words are typed into that one question instead of a saved value.</li>
                             <li><strong>The page:</strong> "highlight the fields", "clear the highlights", "rescan".</li>
@@ -892,7 +895,7 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>Back Buttons &amp; Leaving the Form</strong></td>
-                                        <td>Aullevo never clicks Back, Previous, "Return to job search", "Save and close", or links to other sites. Without Auto-Pagination (Pro), it also never clicks Next or Submit.</td>
+                                        <td>Aullevo never clicks Back, Previous, "Return to job search", "Save and close", or links to other sites. Without Auto-Pagination, it also never clicks Next or Submit.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Passwords &amp; Payment Cards</strong></td>

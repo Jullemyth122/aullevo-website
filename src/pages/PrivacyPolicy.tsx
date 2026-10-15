@@ -108,7 +108,7 @@ const PrivacyPolicy: React.FC = () => {
                             <span>Last Updated: <strong>October 15, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
-                            <span>Product: <strong>Aullevo Browser Extension (v0.6.4) &amp; Aullevo Web</strong></span>
+                            <span>Product: <strong>Aullevo Browser Extension (v0.6.5) &amp; Aullevo Web</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Direct Inquiries: <strong>{CONTACT_EMAIL}</strong></span>
@@ -210,7 +210,7 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Single Purpose Commitment</h4>
-                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell data or build advertising profiles from it. The extension never shows ads; Free users may choose to watch a short ad on our website to unlock features for a few hours (Section 12).</p>
+                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell data or build advertising profiles from it. The extension never shows ads; when a day's free allowance is used, Free users may choose to watch a short ad on our website to unlock more for a few hours (Section 12).</p>
                                 </div>
                             </div>
                         </section>
@@ -230,7 +230,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li><strong>Each account's data is kept apart.</strong> If more than one account uses Aullevo in the same browser, each gets its own separately encrypted profiles, documents, API keys, AI Memories, and link queue. Switching accounts locks the previous one, and no account can see another's data. Display settings belong to the browser; Free-plan ad unlocks belong to your account (see Section 5).</li>
                                 <li><strong>Matching happens locally.</strong> The engine that matches your saved fields to form questions runs inside your browser and works offline.</li>
                                 <li><strong>AI is optional.</strong> Nothing is sent to an AI service unless you turn on AI Smart Fill (see Section 4).</li>
-                                <li><strong>You decide who submits.</strong> By default you submit every form yourself. If you turn on <strong>Auto-Pagination</strong> (Pro, or Free with an ad unlock), Aullevo clicks Next / Continue and <strong>presses Submit on the last page for you</strong>, which sends your answers to that website under its own privacy policy. It pauses instead when a required field is empty or the form shows an error it can't fix.</li>
+                                <li><strong>You decide who submits.</strong> By default you submit every form yourself. If you turn on <strong>Auto-Pagination</strong> (Pro, or Free: 2 hours a day, more with an ad), Aullevo clicks Next / Continue and <strong>presses Submit on the last page for you</strong>, which sends your answers to that website under its own privacy policy. It pauses instead when a required field is empty or the form shows an error it can't fix.</li>
                             </ul>
                         </section>
 
@@ -436,7 +436,7 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li>When you sign in with Google, Firebase Authentication (operated by Google) provides us your <strong>name, email address, profile photo, and account ID</strong>.</li>
                                 <li>We store an account record in our Firebase database containing that information, the date you joined, and your <strong>plan status and plan expiry date</strong>.</li>
-                                <li><strong>Ad unlocks (Free plan):</strong> when you watch a short ad on our website to unlock a feature, we store on your account which feature is unlocked, until when, how many uses are left (for example AI fills or voice sessions), how many ads you watched today, and timestamps. This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import, or voice session) so the limits work across your devices.</li>
+                                <li><strong>Free-plan usage and ad unlocks:</strong> we store on your account how much of each day's free allowance you have used (AI fills, voice sessions, and when your free auto-pagination and typing-speed hours started), and, when you watch a short ad on our website, which feature is unlocked, until when, how many uses are left, how many ads you watched today, and timestamps. This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import from an ad, or voice session, or the start of a free auto-pagination or typing-speed window) so the limits work across your devices. Free JSON imports are counted only on your device.</li>
                                 <li>When you connect the extension, Aullevo Web gives it a short-lived sign-in token so the extension can read <em>your own</em> account record and confirm your plan. Your profiles are never uploaded.</li>
                             </ul>
 
@@ -679,9 +679,6 @@ const PrivacyPolicy: React.FC = () => {
                             </p>
                             <p>
                                 <strong>Google advertising (website only):</strong> Our website uses Google AdSense, and its code is loaded on every page of aullevo.com. When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this and other sites, and Google may also use cookies or similar identifiers to limit how often you see an ad, measure it, and prevent fraud. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can opt out of personalized advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="legal-link">aboutads.info</a>, and read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="legal-link">how Google uses information from sites that use its services</a>. The extension never loads ads or ad code.
-                            </p>
-                            <p>
-                                <strong>Sponsor cards:</strong> Until video ads are available, the same countdown shows sponsor and affiliate cards that we host ourselves (no ad network, no ad cookies). We count how often each card is shown and clicked with our website analytics, without your name or email. Clicking a card opens the other company's website, which handles your data under its own privacy policy; affiliate links may tell that company the visit came from Aullevo.
                             </p>
                             <p>
                                 We do not use Facebook Pixel or other cross-site advertising trackers, and we never share your profile data or form answers with ad networks.

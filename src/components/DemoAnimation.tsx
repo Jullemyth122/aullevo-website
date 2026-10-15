@@ -1248,7 +1248,7 @@ const DemoAnimation: React.FC<DemoAnimationProps> = ({ triggerRef }) => {
                                     </div>
                                     <div>
                                         <div className="av-panel__brand-name">Aullevo</div>
-                                        <div className="av-panel__brand-sub">v0.6.4 &bull; Autofill</div>
+                                        <div className="av-panel__brand-sub">v0.6.5 &bull; Autofill</div>
                                     </div>
                                 </div>
                                 <div className="av-panel__actions">

@@ -10,8 +10,9 @@ import {
     type RewardFeature, type RewardsStatus, type Unlock
 } from '../config/rewards';
 
-// The extension opens /rewards?feature=ai when a Free user needs an unlock. The user watches a short ad here,
-// /api/rewards opens the unlock for their account, and the extension picks it up (AULLEVO_REWARD_GRANTED).
+// The extension opens /rewards?feature=ai when a Free user has used the day's free allowance. The user watches a
+// short ad here, /api/rewards opens the unlock for their account, and the extension picks it up
+// (AULLEVO_REWARD_GRANTED). The server refuses an ad while free uses are left.
 
 type Phase = 'idle' | 'starting' | 'playing' | 'granting' | 'done';
 type AdOutcome = 'granted' | 'closed' | 'no-fill' | 'unsupported';
@@ -25,7 +26,20 @@ function unlockText(feature: RewardFeature, unlock: Unlock | undefined, now: num
         const left = unlock.remaining ?? 0;
         return left > 0 ? `${left} left until ${timeOf(unlock.until)}` : `All used (unlock ends ${timeOf(unlock.until)})`;
     }
-    return `Unlocked until ${timeOf(unlock.until)}`;
+    return `${unlock.free ? 'Free hours run' : 'Unlocked'} until ${timeOf(unlock.until)}`;
+}
+
+/** Today's free allowance: "2 of 3 free today" / "Free today: running until 3:00 PM". Null when it's used up. */
+function freeText(feature: RewardFeature, status: RewardsStatus, now: number): string | null {
+    const info = REWARDS[feature];
+    const left = status.free?.[feature] ?? 0;
+    if (info.freeUses) return left > 0 ? `${left} of ${info.freeUses} free left today. An ad unlocks more once they're used.` : null;
+    if (info.freeHours) {
+        const u = status.unlocks[feature];
+        if (u?.free && u.until > now) return `Your free ${info.freeHours} hours are running until ${timeOf(u.until)}. An ad unlocks more once they end.`;
+        if (left > 0) return `Today's free ${info.freeHours} hours start the first time you use it in Aullevo. An ad unlocks more once they end.`;
+    }
+    return null;
 }
 
 // Tells the Aullevo extension who is signed in (it links its own token from this) — same message as the Login page
@@ -107,70 +121,12 @@ async function showRewardedAd(adUnit: string): Promise<AdOutcome> {
     });
 }
 
-/* ── Sponsor break: until Google video ads are connected, the countdown shows cards from public/sponsors.json ── */
-
-interface SponsorCard {
-    id: string;
-    type: 'house' | 'affiliate' | 'sponsor';
-    enabled?: boolean;
-    weight?: number;
-    title: string;
-    text: string;
-    cta: string;
-    url: string;
-    image?: string;
-}
-
-// Shown when sponsors.json can't be loaded
-const FALLBACK_CARDS: SponsorCard[] = [{
-    id: 'aullevo-pro', type: 'house', weight: 1, title: 'Skip the ads with Aullevo Pro',
-    text: 'Unlimited AI Smart Fill, auto-pagination, the voice agent and automatic resume uploads.', cta: 'See Pro plans', url: '/login'
-}];
-
-const SPONSOR_LABEL: Record<SponsorCard['type'], string> = {
-    house: 'From Aullevo',
-    sponsor: 'Sponsored',
-    affiliate: 'Sponsored · we may earn a commission'
-};
-
-// Weighted order: heavier cards come up more often, none twice in a row
-function sponsorOrder(cards: SponsorCard[]): SponsorCard[] {
-    const pool = cards.flatMap(c => Array.from({ length: Math.max(1, Math.min(10, Math.round(c.weight ?? 1))) }, () => c));
-    for (let i = pool.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-    }
-    return pool.filter((c, i) => i === 0 || c.id !== pool[i - 1].id);
-}
-
-function useSponsors(): { cards: SponsorCard[]; rotateSeconds: number } {
-    const [state, setState] = useState<{ cards: SponsorCard[]; rotateSeconds: number }>({ cards: FALLBACK_CARDS, rotateSeconds: 15 });
-    useEffect(() => {
-        let alive = true;
-        fetch('/sponsors.json', { cache: 'no-cache' })
-            .then(r => (r.ok ? r.json() : null))
-            .then((data: { cards?: SponsorCard[]; rotateSeconds?: number } | null) => {
-                const cards = (data?.cards ?? []).filter(c => c.enabled !== false && c.title && c.url && /^(https:\/\/|\/|mailto:)/.test(c.url));
-                if (alive && cards.length) setState({ cards: sponsorOrder(cards), rotateSeconds: Math.max(5, data?.rotateSeconds ?? 15) });
-            })
-            .catch(() => { /* keep the fallback */ });
-        return () => { alive = false; };
-    }, []);
-    return state;
-}
+/* ── Test ad: until Google rewarded video ads are connected (VITE_REWARDED_AD_UNIT), a countdown stands in ── */
 
 /** The countdown before a reward; it only runs while this tab is visible. */
-const SponsorBreak: React.FC<{ seconds: number; feature: RewardFeature; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
+const TestAd: React.FC<{ seconds: number; feature: RewardFeature; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
     const [left, setLeft] = useState(seconds);
     const finished = useRef(false);
-    const { cards, rotateSeconds } = useSponsors();
-    const elapsed = seconds - left;
-    const card = cards[Math.floor(elapsed / rotateSeconds) % cards.length];
-
-    // One view per card shown (Google Analytics / Vercel events: sponsor_view, sponsor_click)
-    useEffect(() => {
-        if (card) logEvent('sponsor_view', { sponsor: card.id, type: card.type, feature });
-    }, [card, feature]);
 
     useEffect(() => {
         let last = performance.now(), remaining = seconds * 1000;
@@ -189,28 +145,22 @@ const SponsorBreak: React.FC<{ seconds: number; feature: RewardFeature; onFinish
     }, [seconds, onFinished]);
 
     const progress = 1 - left / seconds;
-    const external = card && !card.url.startsWith('/');
     return (
-        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Sponsor break">
+        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Ad break">
             <div className="rewards-ad__frame">
-                <span className="rewards-ad__tag">{card ? SPONSOR_LABEL[card.type] : 'Sponsor break'}</span>
-                {card && (
-                    <div className="rewards-ad__screen" key={card.id}>
-                        {(card.image || card.type === 'house') && (
-                            <img src={card.image || '/logo.png'} alt="" className="rewards-ad__logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        )}
-                        <p className="rewards-ad__title">{card.title}</p>
-                        <p className="rewards-ad__text">{card.text}</p>
-                        <a className="rewards-ad__cta" href={card.url} target="_blank"
-                            rel={card.type === 'house' && !external ? 'noopener' : 'sponsored noopener noreferrer'}
-                            onClick={() => logEvent('sponsor_click', { sponsor: card.id, type: card.type, feature })}>
-                            {card.cta} ↗
-                        </a>
-                    </div>
-                )}
+                <span className="rewards-ad__tag">Ad break</span>
+                <div className="rewards-ad__screen">
+                    <img src="/logo.png" alt="" className="rewards-ad__logo" />
+                    <p className="rewards-ad__title">Skip the ads with Aullevo Pro</p>
+                    <p className="rewards-ad__text">Unlimited AI Smart Fill, auto-pagination, the voice agent and automatic resume uploads. From ₱154.29 for 30 days, no auto-renewal.</p>
+                    <a className="rewards-ad__cta" href="/login" target="_blank" rel="noopener"
+                        onClick={() => logEvent('rewards_pro_click', { feature })}>
+                        See Pro plans ↗
+                    </a>
+                </div>
                 <div className="rewards-ad__bar" aria-hidden="true"><i style={{ width: `${progress * 100}%` }} /></div>
                 <p className="rewards-ad__count" aria-live="polite">{left > 0 ? `Reward in ${left}s` : 'Unlocking…'}</p>
-                <p className="rewards-ad__note">Links open in a new tab; the timer pauses until you come back. These cards help keep Aullevo free.</p>
+                <p className="rewards-ad__note">Keep this tab open: the timer pauses while you're away.</p>
             </div>
         </div>
     );
@@ -333,14 +283,15 @@ const Rewards: React.FC = () => {
     const info = REWARDS[feature];
     const current = status ? unlockText(feature, status.unlocks[feature], Math.max(now, status.now)) : null;
     const outOfAds = Boolean(status && status.adsToday >= status.dailyLimit);
+    const freeNow = status && !status.pro ? freeText(feature, status, Math.max(now, status.now)) : null;
 
     return (
         <div className="rewards-page">
-            <SEO title="Unlock with a short ad | Aullevo" description="Free Aullevo users can unlock AI Smart Fill, auto-pagination, voice and more by watching a short ad." canonicalPath="/rewards" />
+            <SEO title="Unlock with a short ad | Aullevo" description="Aullevo Free includes AI Smart Fill, auto-pagination, voice and more every day; when the day's free uses run out, a short ad gives twice as much." canonicalPath="/rewards" />
             <header className="rewards-head">
                 <span className="rewards-eyebrow">Aullevo Free</span>
                 <h1>Unlock with a short ad</h1>
-                <p>Watch one short ad and Aullevo unlocks a feature on your account for a few hours. Pro skips the ads and keeps everything unlocked.</p>
+                <p>Aullevo Free gives you a little of everything every day. When today's free uses run out, one short ad gives you twice as much for a few hours. Pro skips the ads and keeps everything unlocked.</p>
             </header>
 
             <div className="rewards-layout">
@@ -348,7 +299,7 @@ const Rewards: React.FC = () => {
                     <span className="rewards-label">You’re unlocking</span>
                     <h2 id="rewards-feature">{info.title}</h2>
                     <p className="rewards-gives">Watch a {adLength(info.adSeconds)} ad to get <strong>{info.gives}</strong>.</p>
-                    <p className="rewards-detail">{info.detail}</p>
+                    <p className="rewards-detail">{info.detail} Free: {info.free}.</p>
 
                     {!authReady ? <div className="spinner" aria-label="Loading" /> : !user ? (
                         <div className="rewards-actions">
@@ -367,8 +318,9 @@ const Rewards: React.FC = () => {
                         </div>
                     ) : (
                         <div className="rewards-actions">
-                            {current && <p className="rewards-current">Currently: {current}. Watching again resets it.</p>}
-                            <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds}>
+                            {freeNow && <p className="rewards-current">{freeNow}</p>}
+                            {current && !freeNow && <p className="rewards-current">Currently: {current}. Watching again resets it.</p>}
+                            <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds || Boolean(freeNow)}>
                                 {phase === 'starting' ? 'Starting…' : phase === 'granting' ? 'Unlocking…' : `▶ Watch ad (${adLengthShort(info.adSeconds)})`}
                             </button>
                             {status && <p className="rewards-note">Ads watched today: {status.adsToday} of {status.dailyLimit}.</p>}
@@ -388,18 +340,18 @@ const Rewards: React.FC = () => {
                                 <li key={f}>
                                     <button type="button" className={`rewards-item ${f === feature ? 'is-current' : ''}`} onClick={() => choose(f)} aria-pressed={f === feature}>
                                         <b>{r.title}</b>
-                                        <span>{adLength(r.adSeconds)} ad → {r.gives}</span>
+                                        <span>Free: {r.free} · {adLength(r.adSeconds)} ad → {r.gives}</span>
                                         {active && <em>{active}</em>}
                                     </button>
                                 </li>
                             );
                         })}
                     </ul>
-                    <p className="rewards-note">Keyword fill, 3 active profiles, 3 Multi-link links and 3 JSON imports every 2 weeks stay free without ads. Document uploads need Pro.</p>
+                    <p className="rewards-note">Daily free uses reset at {status ? timeOf(status.freeResetsAt) : 'midnight UTC'}. Keyword fill is always free and unlimited. Document uploads need Pro.</p>
                 </aside>
             </div>
 
-            {phase === 'playing' && adSeconds > 0 && <SponsorBreak seconds={adSeconds} feature={feature} onFinished={grant} />}
+            {phase === 'playing' && adSeconds > 0 && <TestAd seconds={adSeconds} feature={feature} onFinished={grant} />}
         </div>
     );
 };

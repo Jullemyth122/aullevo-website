@@ -6,7 +6,8 @@
  *   POST /api/rewards?action=start    (Bearer ID token, body {feature}) → starts an ad on aullevo-web/rewards
  *   POST /api/rewards?action=grant    (Bearer ID token, body {nonce}) → the ad finished: opens the unlock
  *   POST /api/rewards?action=consume  (Bearer ID token or extension token, body {feature}) → uses one AI fill,
- *                                     JSON import or voice session (time-window unlocks are only checked)
+ *                                     JSON import or voice session (an ad's first, then the day's free ones);
+ *                                     auto-pagination / typing: starts the day's free window when none runs
  *   GET  /api/rewards                 → health check (which env vars are set, never their values)
  *
  * Unlocks are written only here, with the Admin SDK (firestore.rules: rewards/{uid} is read-only for its owner),
@@ -172,9 +173,9 @@ async function handleConsume(request: Request) {
   if (await isProAccount(uid)) return json({ ok: true, pro: true });
   const used = await withRewards(uid, (doc, now) => {
     const c = consume(doc, feature, now);
-    return { doc: c.doc, result: { unlock: c.unlock, sessionUntil: c.sessionUntil, now } };
+    return { doc: c.doc === doc ? undefined : c.doc, result: { source: c.source, sessionUntil: c.sessionUntil, state: publicState(c.doc, now) } };
   });
-  return json({ ok: true, pro: false, feature, ...used });
+  return json({ ok: true, pro: false, live: liveAds(), feature, source: used.source, sessionUntil: used.sessionUntil, ...used.state });
 }
 
 export async function POST(request: Request): Promise<Response> {

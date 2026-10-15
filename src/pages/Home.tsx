@@ -14,7 +14,7 @@ import { CHROME_WEB_STORE_URL } from '../config/store';
 import { logEvent } from '../utils/analytics';
 
 // Bump this whenever a new extension ZIP is uploaded to /public
-const EXTENSION_VERSION = 'v0.6.4';
+const EXTENSION_VERSION = 'v0.6.5';
 
 // Inline SVG icon components — no emojis
 const ShieldIcon = () => (

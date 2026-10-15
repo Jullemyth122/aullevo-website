@@ -1,19 +1,21 @@
 # Free-plan ad unlocks: setup and going live
 
-Free users watch a short ad on **aullevo-web/rewards** and the server unlocks a feature on their account for a few hours.
-Pro accounts never see ads. Until a Google ad unit is configured, the page shows a **test ad** (a countdown that runs
-only while the tab is visible), so everything works end to end but earns nothing.
+Free accounts get a small allowance every day. Once a feature's free uses are gone, the extension offers a short ad on
+**aullevo.com/rewards**, and the server unlocks about twice as much on the account for a few hours. The server refuses an
+ad while free uses are left. Pro accounts never see ads. Until a Google ad unit is configured, the page shows a **test
+ad** (a countdown that runs only while the tab is visible), so everything works end to end but earns nothing.
 
-| Unlock | Ad | Gives |
-|---|---|---|
-| AI Smart Fill | 1 min | 6 AI fills for 2 hours (each AI-filled page uses one, also during auto-pagination) |
-| Auto-pagination | 1 min | 4 hours |
-| Voice agent | 1 min | 2 voice sessions for 2 hours (10 minutes each) |
-| More active profiles | 30 s | more than 3 active profiles for 2 hours |
-| Multi-link queue | 1 min | up to 10 links for 5 hours (Free: 3) |
-| JSON imports | 1 min | 10 imports for 5 hours (on top of 3 free every 2 weeks) |
-| Typing speeds | 20 s | Slow and custom speeds for 4 hours |
+| Feature | Free every day | Ad | One ad gives |
+|---|---|---|---|
+| AI Smart Fill | 3 fills (server) | 1 min | 6 AI fills for 2 hours (each AI-filled page uses one, also during auto-pagination) |
+| Auto-pagination | 2 hours from the first use (server) | 1 min | 4 hours |
+| Voice agent | 1 session (server) | 1 min | 2 voice sessions for 2 hours (10 minutes each) |
+| Typing speeds | 2 hours from the first use (server) | 20 s | Slow and custom speeds for 4 hours |
+| JSON imports | 5 (counted in the extension) | 1 min | 10 imports for 5 hours |
+| Multi-link queue | 5 links | 1 min | up to 10 links for 5 hours |
+| Active profiles | 3 | 30 s | up to 6 active profiles for 2 hours |
 
+The server's daily allowance resets at midnight UTC; an ad's uses are spent before the free ones (they expire sooner).
 Max 24 ads per account per day. The rules live in `api/_rewards-core.ts` (server, authoritative), `src/config/rewards.ts`
 (website text) and the extension's `src/services/rewards.ts`; keep the three in sync.
 

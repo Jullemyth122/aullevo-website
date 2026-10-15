@@ -3,14 +3,16 @@
  * api/rewards.ts stores the result in rewards/{uid}; the extension (src/services/rewards.ts in aullevo) and the
  * website (src/config/rewards.ts) show the same rules. Keep the three in sync when a rule changes.
  *
- * A Free user watches a short ad on aullevo-web/rewards; the server then opens an unlock for that account:
- *   ai        6 AI Smart Fills for 2 hours (each AI-filled page counts as one)
- *   profiles  more than 3 active profiles for 2 hours
- *   paginate  auto-pagination for 4 hours
- *   typing    Slow and custom typing speeds for 4 hours
- *   json      10 JSON imports for 5 hours (on top of the 3 free every 2 weeks)
- *   links     up to 10 links in the Multi-link queue for 5 hours (3 without)
- *   voice     2 voice sessions for 2 hours (one session lasts up to 10 minutes)
+ * Free accounts get a small allowance every day (UTC); once it is used, a short ad on aullevo-web/rewards gives
+ * twice as much for a few hours. Ads are only offered once the day's free allowance is used.
+ *             free every day                        one ad
+ *   ai        3 AI Smart Fills                      6 AI Smart Fills for 2 hours (each AI-filled page counts as one)
+ *   voice     1 voice session                       2 voice sessions for 2 hours (a session lasts up to 10 minutes)
+ *   paginate  2 hours, from the first use           auto-pagination for 4 hours
+ *   typing    2 hours, from the first use           Slow and custom typing speeds for 4 hours
+ *   json      5 imports (counted by the extension)  10 JSON imports for 5 hours
+ *   links     5 links (a queue size, extension)     up to 10 links in the Multi-link queue for 5 hours
+ *   profiles  3 active (extension)                  up to 6 active profiles for 2 hours
  * Pro accounts never need an unlock.
  */
 import { createHmac, timingSafeEqual } from 'node:crypto';
@@ -18,19 +20,22 @@ import { createHmac, timingSafeEqual } from 'node:crypto';
 export type RewardFeature = 'ai' | 'profiles' | 'paginate' | 'typing' | 'json' | 'links' | 'voice';
 
 export interface RewardRule {
-  adSeconds: number; // length of the ad the user watches (the test ad lasts exactly this long)
-  hours: number;     // how long the unlock lasts
-  uses?: number;     // counted unlocks: how many uses one ad gives
+  adSeconds: number;  // length of the ad the user watches (the test ad lasts exactly this long)
+  hours: number;      // how long the unlock lasts
+  uses?: number;      // counted unlocks: how many uses one ad gives
+  freeUses?: number;  // counted, kept here: free uses every day (half of what an ad gives)
+  freeHours?: number; // time window, kept here: one free window a day from the first use (half an ad's)
 }
 
+// json, links and profiles keep their free allowance in the extension (an import count and two limits)
 export const REWARD_RULES: Record<RewardFeature, RewardRule> = {
-  ai: { adSeconds: 60, hours: 2, uses: 6 },
+  ai: { adSeconds: 60, hours: 2, uses: 6, freeUses: 3 },
   profiles: { adSeconds: 30, hours: 2 },
-  paginate: { adSeconds: 60, hours: 4 },
-  typing: { adSeconds: 20, hours: 4 },
+  paginate: { adSeconds: 60, hours: 4, freeHours: 2 },
+  typing: { adSeconds: 20, hours: 4, freeHours: 2 },
   json: { adSeconds: 60, hours: 5, uses: 10 },
   links: { adSeconds: 60, hours: 5 },
-  voice: { adSeconds: 60, hours: 2, uses: 2 },
+  voice: { adSeconds: 60, hours: 2, uses: 2, freeUses: 1 },
 };
 
 export const REWARD_FEATURES = Object.keys(REWARD_RULES) as RewardFeature[];
@@ -53,6 +58,7 @@ const HOUR_MS = 60 * 60 * 1000;
 export interface Unlock {
   until: number;      // epoch ms
   remaining?: number; // counted unlocks only
+  free?: boolean;     // the day's free window (time-window features), not an ad
 }
 
 export interface PendingAd {
@@ -68,6 +74,12 @@ export interface RewardsDoc {
   day?: string;      // UTC day of adsToday, "2026-10-15"
   adsToday?: number;
   totalAds?: number;
+  free?: FreeDay;    // the day's free allowance used so far
+}
+
+export interface FreeDay {
+  day: string;       // UTC day, "2026-10-15"
+  used: Partial<Record<RewardFeature, number>>;
 }
 
 export interface PublicRewards {
@@ -75,6 +87,8 @@ export interface PublicRewards {
   unlocks: Partial<Record<RewardFeature, Unlock>>;
   adsToday: number;
   dailyLimit: number;
+  free: Partial<Record<RewardFeature, number>>; // free uses (or free windows) left today
+  freeResetsAt: number;                          // next UTC midnight
 }
 
 export class RewardError extends Error {
@@ -88,6 +102,23 @@ export class RewardError extends Error {
 }
 
 const utcDay = (now: number) => new Date(now).toISOString().slice(0, 10);
+const nextUtcMidnight = (now: number) => Date.parse(`${utcDay(now)}T00:00:00.000Z`) + 24 * HOUR_MS;
+
+/** Free uses (counted) or free windows (time) a day; 0 = no daily allowance kept on the server. */
+export const dailyFree = (feature: RewardFeature) => REWARD_RULES[feature].freeUses ?? (REWARD_RULES[feature].freeHours ? 1 : 0);
+export const FREE_FEATURES = (Object.keys(REWARD_RULES) as RewardFeature[]).filter(f => dailyFree(f) > 0);
+
+export function freeLeft(doc: RewardsDoc, feature: RewardFeature, now: number): number {
+  const used = doc.free?.day === utcDay(now) ? doc.free.used[feature] ?? 0 : 0;
+  return Math.max(0, dailyFree(feature) - used);
+}
+
+function spendFree(doc: RewardsDoc, feature: RewardFeature, now: number): FreeDay {
+  const day = utcDay(now);
+  const used = doc.free?.day === day ? { ...doc.free.used } : {};
+  used[feature] = (used[feature] ?? 0) + 1;
+  return { day, used };
+}
 
 export function isActive(feature: RewardFeature, unlock: Unlock | undefined, now: number): boolean {
   if (!unlock || unlock.until <= now) return false;
@@ -99,13 +130,41 @@ export function publicState(doc: RewardsDoc, now: number): PublicRewards {
   const unlocks: Partial<Record<RewardFeature, Unlock>> = {};
   for (const feature of REWARD_FEATURES) {
     const u = doc.unlocks?.[feature];
-    if (u && u.until > now) unlocks[feature] = isCounted(feature) ? { until: u.until, remaining: Math.max(0, u.remaining ?? 0) } : { until: u.until };
+    if (u && u.until > now) unlocks[feature] = isCounted(feature) ? { until: u.until, remaining: Math.max(0, u.remaining ?? 0) } : { until: u.until, ...(u.free ? { free: true } : {}) };
   }
-  return { now, unlocks, adsToday: doc.day === utcDay(now) ? doc.adsToday ?? 0 : 0, dailyLimit: DAILY_AD_LIMIT };
+  const free: Partial<Record<RewardFeature, number>> = {};
+  for (const feature of FREE_FEATURES) free[feature] = freeLeft(doc, feature, now);
+  return {
+    now, unlocks, adsToday: doc.day === utcDay(now) ? doc.adsToday ?? 0 : 0, dailyLimit: DAILY_AD_LIMIT,
+    free, freeResetsAt: nextUtcMidnight(now),
+  };
+}
+
+const FREE_NOUN: Partial<Record<RewardFeature, [string, string]>> = {
+  ai: ['free AI Smart Fill', 'free AI Smart Fills'],
+  voice: ['free voice session', 'free voice sessions'],
+};
+
+/** Why an ad can't be watched yet: the day's free allowance isn't used up. Null when an ad is allowed. */
+export function freeStillAvailable(doc: RewardsDoc, feature: RewardFeature, now: number): string | null {
+  const rule = REWARD_RULES[feature];
+  const left = freeLeft(doc, feature, now);
+  if (rule.freeUses && left > 0) {
+    const [one, many] = FREE_NOUN[feature] ?? ['free use', 'free uses'];
+    return `You still have ${left} ${left === 1 ? one : many} today. Use ${left === 1 ? 'it' : 'them'} first; an ad gives you more after that.`;
+  }
+  if (rule.freeHours) {
+    const u = doc.unlocks?.[feature];
+    if (u?.free && u.until > now) return `Your free ${rule.freeHours} hours for today are still running. You can watch an ad once they end.`;
+    if (left > 0) return `Today's free ${rule.freeHours} hours haven't started yet: they start the first time you use it. You can watch an ad once they end.`;
+  }
+  return null;
 }
 
 /** The rewards page starts an ad: remembers which feature it is for and when it began. */
 export function startAd(doc: RewardsDoc, feature: RewardFeature, now: number, nonce: string): { doc: RewardsDoc; pending: PendingAd } {
+  const notYet = freeStillAvailable(doc, feature, now);
+  if (notYet) throw new RewardError(409, 'free-left', notYet);
   const adsToday = doc.day === utcDay(now) ? doc.adsToday ?? 0 : 0;
   if (adsToday >= DAILY_AD_LIMIT) {
     throw new RewardError(429, 'daily-limit', `You've watched the most ads allowed today (${DAILY_AD_LIMIT}). Come back tomorrow, or upgrade to Pro for unlimited use.`);
@@ -142,21 +201,51 @@ export function grantAd(doc: RewardsDoc, nonce: string, now: number, live: boole
   };
 }
 
+export interface Consumed {
+  doc: RewardsDoc;
+  source: 'ad' | 'free';
+  sessionUntil?: number; // voice: when the session started now ends
+}
+
 /**
- * Uses one AI fill / JSON import / voice session. Time-window unlocks are only checked.
- * Voice also returns when the session started now ends.
+ * Uses one AI fill / JSON import / voice session: an ad's uses first (they expire sooner), then the day's free ones.
+ * Time-window features: a running unlock is only checked; without one, the day's free window starts now.
  */
-export function consume(doc: RewardsDoc, feature: RewardFeature, now: number): { doc: RewardsDoc; unlock: Unlock; sessionUntil?: number } {
+export function consume(doc: RewardsDoc, feature: RewardFeature, now: number): Consumed {
+  const rule = REWARD_RULES[feature];
   const unlock = doc.unlocks?.[feature];
-  if (!unlock || unlock.until <= now) throw new RewardError(403, 'locked', 'Watch a short ad to unlock this.');
-  if (!isCounted(feature)) return { doc, unlock };
-  if ((unlock.remaining ?? 0) <= 0) throw new RewardError(403, 'used-up', 'All uses from your last ad are used. Watch another short ad to continue.');
-  const next: Unlock = { until: unlock.until, remaining: (unlock.remaining ?? 0) - 1 };
-  return {
-    doc: { ...doc, unlocks: { ...doc.unlocks, [feature]: next } },
-    unlock: next,
-    ...(feature === 'voice' ? { sessionUntil: Math.min(now + VOICE_SESSION_MS, unlock.until) } : {}),
-  };
+  const running = Boolean(unlock && unlock.until > now);
+
+  if (!isCounted(feature)) {
+    if (unlock && running) return { doc, source: unlock.free ? 'free' : 'ad' };
+    if (rule.freeHours && freeLeft(doc, feature, now) > 0) {
+      const window: Unlock = { until: now + rule.freeHours * HOUR_MS, free: true };
+      return { doc: { ...doc, unlocks: { ...doc.unlocks, [feature]: window }, free: spendFree(doc, feature, now) }, source: 'free' };
+    }
+    throw new RewardError(403, 'locked', rule.freeHours
+      ? `Today's free ${rule.freeHours} hours are used. Watch a short ad to keep going, or come back tomorrow.`
+      : 'Watch a short ad to unlock this.');
+  }
+
+  if (unlock && running && (unlock.remaining ?? 0) > 0) {
+    const next: Unlock = { until: unlock.until, remaining: (unlock.remaining ?? 0) - 1 };
+    return {
+      doc: { ...doc, unlocks: { ...doc.unlocks, [feature]: next } },
+      source: 'ad',
+      ...(feature === 'voice' ? { sessionUntil: Math.min(now + VOICE_SESSION_MS, unlock.until) } : {}),
+    };
+  }
+  if (freeLeft(doc, feature, now) > 0) {
+    return {
+      doc: { ...doc, free: spendFree(doc, feature, now) },
+      source: 'free',
+      ...(feature === 'voice' ? { sessionUntil: now + VOICE_SESSION_MS } : {}),
+    };
+  }
+  if (running) throw new RewardError(403, 'used-up', 'All uses from your last ad are used. Watch another short ad to continue.');
+  throw new RewardError(403, 'locked', rule.freeUses
+    ? "Today's free uses are used. Watch a short ad for more, or come back tomorrow."
+    : 'Watch a short ad to unlock this.');
 }
 
 /* ── Extension token: the extension's own long-lived sign-in for this API (Firebase ID tokens last 1 hour) ── */
