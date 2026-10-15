@@ -190,22 +190,22 @@ const TermsOfService: React.FC = () => {
                                 Free Plan, Ads &amp; Aullevo Pro
                             </h2>
                             <p>
-                                <strong>Free Plan:</strong> Aullevo is free to use. The Free plan always includes keyword autofill, 3 active profiles, and a Multi-link queue of 5 links. With an Aullevo account it also includes, <strong>every day</strong>: 3 AI Smart Fills, 1 voice session, 2 hours of auto-pagination and 2 hours of Slow and custom typing speeds (each starting the first time you use it that day), and 5 JSON imports. Daily allowances reset at midnight UTC and do not carry over.
+                                <strong>Free Plan:</strong> Aullevo is free to use. The Free plan always includes keyword autofill, 3 active profiles, and a Multi-link queue of 5 links. With an Aullevo account it also includes, <strong>every day</strong>: 6 AI Smart Fills, 3 voice sessions, 2 hours of auto-pagination and 2 hours of Slow and custom typing speeds (each starting the first time you use it that day), and 4 JSON imports. Daily allowances reset at midnight UTC and do not carry over.
                             </p>
                             <p>
-                                <strong>Ads (Free Plan):</strong> When a day's free allowance for a feature is used up, you may watch a short ad on the Aullevo website while signed in to get about twice as much for a limited time. Ads are only offered once the free allowance is used; you never have to watch one.
+                                <strong>Ads (Free Plan):</strong> When a day's free allowance for a feature is used up, you may watch a short ad on the Aullevo website while signed in to unlock more for a limited time. Ads are only offered once the free allowance is used; you never have to watch one. Each additional ad adds its uses and time to what is already unlocked.
                             </p>
                             <ul>
-                                <li><strong>AI Smart Fill:</strong> a 1-minute ad gives 6 AI fills, usable for 2 hours. Each page the AI helps fill (including each page during auto-pagination) uses one fill.</li>
+                                <li><strong>AI Smart Fill:</strong> a 1-minute ad gives 10 AI fills and 2 more hours to use them. Each page the AI helps fill (including each page during auto-pagination) uses one fill.</li>
                                 <li><strong>Auto-pagination:</strong> a 1-minute ad unlocks it for 4 hours.</li>
-                                <li><strong>Voice mode:</strong> a 1-minute ad gives 2 voice sessions, usable for 2 hours; each session lasts up to 10 minutes.</li>
+                                <li><strong>Voice mode:</strong> a 1-minute ad gives 6 voice sessions and 2 more hours to use them; each session lasts up to 10 minutes.</li>
                                 <li><strong>More active profiles:</strong> a 30-second ad allows up to 6 active profiles for 2 hours.</li>
                                 <li><strong>Multi-link:</strong> a 1-minute ad allows up to 10 links in the queue for 5 hours.</li>
                                 <li><strong>JSON imports:</strong> a 1-minute ad gives 10 more imports, usable for 5 hours.</li>
                                 <li><strong>Typing speeds:</strong> a 20-second ad unlocks Slow and custom speeds for 4 hours.</li>
                             </ul>
                             <p>
-                                Unlocks are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. You may watch at most 24 ads a day. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain unlocks; we may remove unlocks or suspend ad unlocks on accounts that do. We may change the unlock rules (lengths, durations, and limits) with notice on this page.
+                                Unlocks are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. When an unlock ends, nothing you saved is deleted: profiles or links beyond the Free limits are kept and paused until another unlock or Pro. We may limit unusually high numbers of ads per account to prevent abuse. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain unlocks; we may remove unlocks or suspend ad unlocks on accounts that do. We may change the unlock rules (lengths, durations, and limits) with notice on this page.
                             </p>
                             <p>
                                 <strong>Aullevo Pro:</strong> Pro removes these limits with no ads, including unlimited AI Smart Fill, auto-pagination, Voice mode, active profiles, Multi-link links, typing speeds and JSON imports, and adds automatic document uploads and JSON file download. Features may change as Aullevo improves.

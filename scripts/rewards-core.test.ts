@@ -29,22 +29,22 @@ const code = (fn: () => unknown) => {
   return 'ok';
 };
 
-test('the rules match the plan: free every day is half of what one ad gives', () => {
+test('the rules match the plan: free every day, more per ad', () => {
   assert.deepEqual(REWARD_RULES, {
-    ai: { adSeconds: 60, hours: 2, uses: 6, freeUses: 3 },
+    ai: { adSeconds: 60, hours: 2, uses: 10, freeUses: 6 },
     profiles: { adSeconds: 30, hours: 2 },
     paginate: { adSeconds: 60, hours: 4, freeHours: 2 },
     typing: { adSeconds: 20, hours: 4, freeHours: 2 },
     json: { adSeconds: 60, hours: 5, uses: 10 },
     links: { adSeconds: 60, hours: 5 },
-    voice: { adSeconds: 60, hours: 2, uses: 2, freeUses: 1 },
+    voice: { adSeconds: 60, hours: 2, uses: 6, freeUses: 3 },
   });
 });
 
-test('every day: 3 free AI fills, then an ad is needed', () => {
+test('every day: 6 free AI fills, then an ad is needed', () => {
   let doc: RewardsDoc = {};
-  assert.deepEqual(publicState(doc, T0).free, { ai: 3, paginate: 1, typing: 1, voice: 1 });
-  for (let left = 2; left >= 0; left--) {
+  assert.deepEqual(publicState(doc, T0).free, { ai: 6, paginate: 1, typing: 1, voice: 3 });
+  for (let left = 5; left >= 0; left--) {
     const r = consume(doc, 'ai', T0);
     assert.equal(r.source, 'free');
     doc = r.doc;
@@ -58,7 +58,7 @@ test('the free allowance comes back at UTC midnight', () => {
   const state = publicState(doc, T0);
   assert.equal(state.free.ai, 0);
   assert.equal(state.freeResetsAt, Date.UTC(2026, 9, 16));
-  assert.equal(freeLeft(doc, 'ai', Date.UTC(2026, 9, 16, 0, 0, 1)), 3);
+  assert.equal(freeLeft(doc, 'ai', Date.UTC(2026, 9, 16, 0, 0, 1)), 6);
 });
 
 test('no ad while free uses are left', () => {
@@ -69,13 +69,13 @@ test('no ad while free uses are left', () => {
   for (const f of ['json', 'links', 'profiles'] as RewardFeature[]) assert.equal(code(() => startAd({}, f, T0, 'n')), 'ok', f);
 });
 
-test('one ad gives 6 AI fills for 2 hours, spent before the free ones', () => {
+test('one ad gives 10 AI fills for 2 hours, spent before the free ones', () => {
   const granted = watch(freeUsedUp('ai'), 'ai');
   const unlock = granted.unlock;
   let doc = granted.doc;
-  assert.equal(unlock.remaining, 6);
+  assert.equal(unlock.remaining, 10);
   assert.equal(unlock.until, T0 + 60_000 + 2 * HOUR);
-  for (let i = 5; i >= 0; i--) {
+  for (let i = 9; i >= 0; i--) {
     const r = consume(doc, 'ai', T0 + 2 * MIN);
     doc = r.doc;
     assert.equal(r.source, 'ad');
@@ -89,7 +89,7 @@ test('ad uses left on a new day are spent before that day\'s free ones', () => {
   const { doc } = watch(freeUsedUp('ai'), 'ai', Date.UTC(2026, 9, 15, 23, 0, 0));
   const r = consume(doc, 'ai', Date.UTC(2026, 9, 16, 0, 30, 0));
   assert.equal(r.source, 'ad');
-  assert.equal(freeLeft(r.doc, 'ai', Date.UTC(2026, 9, 16, 0, 30, 0)), 3);
+  assert.equal(freeLeft(r.doc, 'ai', Date.UTC(2026, 9, 16, 0, 30, 0)), 6);
 });
 
 test('AI fills left over expire after 2 hours', () => {
@@ -122,16 +122,19 @@ test('profiles and links: an ad opens 2 / 5 hours, checked, not spent', () => {
   }
 });
 
-test('voice: 1 free session a day, then 2 per ad, each up to 10 minutes', () => {
-  const free = consume({}, 'voice', T0);
-  assert.equal(free.source, 'free');
-  assert.equal(free.sessionUntil, T0 + 10 * MIN);
-  assert.equal(code(() => consume(free.doc, 'voice', T0 + 20 * MIN)), 'locked');
-  let { doc } = watch(free.doc, 'voice', T0 + 20 * MIN);
-  const first = consume(doc, 'voice', T0 + 25 * MIN);
-  assert.equal(first.sessionUntil, T0 + 35 * MIN);
-  doc = consume(first.doc, 'voice', T0 + 40 * MIN).doc;
-  assert.equal(code(() => consume(doc, 'voice', T0 + 50 * MIN)), 'used-up');
+test('voice: 3 free sessions a day, then 6 per ad, each up to 10 minutes', () => {
+  let doc: RewardsDoc = {};
+  for (let i = 0; i < 3; i++) {
+    const free = consume(doc, 'voice', T0 + i * 15 * MIN);
+    assert.equal(free.source, 'free');
+    assert.equal(free.sessionUntil, T0 + i * 15 * MIN + 10 * MIN);
+    doc = free.doc;
+  }
+  assert.equal(code(() => consume(doc, 'voice', T0 + HOUR)), 'locked');
+  doc = watch(doc, 'voice', T0 + HOUR).doc;
+  assert.equal(doc.unlocks?.voice?.remaining, 6);
+  for (let i = 0; i < 6; i++) doc = consume(doc, 'voice', T0 + HOUR + 2 * MIN).doc;
+  assert.equal(code(() => consume(doc, 'voice', T0 + HOUR + 3 * MIN)), 'used-up');
 });
 
 test('a session from an ad never outlives the unlock', () => {
@@ -147,12 +150,25 @@ test('JSON imports: 10 per ad (the free ones are counted by the extension)', () 
   assert.equal(code(() => consume(doc, 'json', T0 + 2 * MIN)), 'used-up');
 });
 
-test('watching again renews the unlock to full uses', () => {
+test('watching again adds to the running unlock: uses and hours stack up', () => {
   let { doc } = watch(freeUsedUp('ai'), 'ai');
-  doc = consume(doc, 'ai', T0 + 2 * MIN).doc;
+  doc = consume(doc, 'ai', T0 + 2 * MIN).doc;                    // 9 left, ends at T0 + 1 min + 2 h
   const again = watch(doc, 'ai', T0 + 30 * MIN);
-  assert.equal(again.unlock.remaining, 6);
-  assert.equal(again.unlock.until, T0 + 31 * MIN + 2 * HOUR);
+  assert.equal(again.unlock.remaining, 19);
+  assert.equal(again.unlock.until, T0 + MIN + 4 * HOUR);
+  const third = watch(again.doc, 'ai', T0 + 40 * MIN);
+  assert.equal(third.unlock.remaining, 29);
+  assert.equal(third.unlock.until, T0 + MIN + 6 * HOUR);
+  // Time windows stack too
+  const pag = watch(watch(freeUsedUp('paginate'), 'paginate').doc, 'paginate', T0 + 10 * MIN);
+  assert.equal(pag.unlock.until, T0 + MIN + 8 * HOUR);
+});
+
+test('an ad after it ran out starts fresh (old leftovers are gone)', () => {
+  const { doc } = watch(freeUsedUp('ai'), 'ai');
+  const later = watch(doc, 'ai', T0 + 3 * HOUR);
+  assert.equal(later.unlock.remaining, 10);
+  assert.equal(later.unlock.until, T0 + 3 * HOUR + MIN + 2 * HOUR);
 });
 
 test('the test ad must run its full length; a real ad at least 10 s', () => {

@@ -1,5 +1,5 @@
-// The Free plan as shown on the site: a small allowance every day, and a short ad that gives twice as much once it
-// is used. The server decides what is granted (api/_rewards-core.ts); keep these numbers in sync with REWARD_RULES
+// The Free plan as shown on the site: an allowance every day, and short ads that unlock more once it is used
+// (each ad adds to what is running). The server decides what is granted (api/_rewards-core.ts); keep these numbers in sync with REWARD_RULES
 // there and in the extension (src/services/rewards.ts).
 export type RewardFeature = 'ai' | 'profiles' | 'paginate' | 'typing' | 'json' | 'links' | 'voice';
 
@@ -11,16 +11,16 @@ export interface RewardInfo {
     uses?: number;
     freeUses?: number;  // free every day, counted on the server
     freeHours?: number; // one free window a day, from the first use
-    free: string;    // "3 AI Smart Fills every day"
-    gives: string;   // "6 AI Smart Fills for 2 hours"
+    free: string;    // "6 AI Smart Fills every day"
+    gives: string;   // "10 AI Smart Fills for 2 hours"
     detail: string;
 }
 
 export const REWARDS: Record<RewardFeature, RewardInfo> = {
     ai: {
-        id: 'ai', title: 'AI Smart Fill', adSeconds: 60, hours: 2, uses: 6, freeUses: 3,
-        free: '3 AI Smart Fills every day',
-        gives: '6 AI Smart Fills for 2 hours',
+        id: 'ai', title: 'AI Smart Fill', adSeconds: 60, hours: 2, uses: 10, freeUses: 6,
+        free: '6 AI Smart Fills every day',
+        gives: '10 AI Smart Fills for 2 hours',
         detail: 'AI answers the questions keyword fill can’t. Each page the AI helps fill counts as one fill, also during auto-pagination.'
     },
     profiles: {
@@ -43,7 +43,7 @@ export const REWARDS: Record<RewardFeature, RewardInfo> = {
     },
     json: {
         id: 'json', title: 'JSON imports', adSeconds: 60, hours: 5, uses: 10,
-        free: '5 imports every day',
+        free: '4 imports every day',
         gives: '10 JSON imports for 5 hours',
         detail: 'Set up a profile from your resume in a minute. Free counts imports in the extension.'
     },
@@ -54,9 +54,9 @@ export const REWARDS: Record<RewardFeature, RewardInfo> = {
         detail: 'Free holds 5 links. Queue up to 10 applications and fill them in one batch.'
     },
     voice: {
-        id: 'voice', title: 'Voice agent', adSeconds: 60, hours: 2, uses: 2, freeUses: 1,
-        free: '1 voice session every day',
-        gives: '2 voice sessions for 2 hours',
+        id: 'voice', title: 'Voice agent', adSeconds: 60, hours: 2, uses: 6, freeUses: 3,
+        free: '3 voice sessions every day',
+        gives: '6 voice sessions for 2 hours',
         detail: 'Talk to Aullevo to fill pages and answer questions. One session lasts up to 10 minutes.'
     }
 };

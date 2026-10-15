@@ -57,12 +57,12 @@ const EXTENSION_STATUS_LABELS: Record<ExtensionStatus, string> = {
 
 const PRO_FEATURES = [
     { title: 'No ads, everything unlocked', description: 'Free gives a little of everything each day, then asks for a short ad. Pro never shows an ad.' },
-    { title: 'Unlimited Voice mode', description: 'Talk to Aullevo to fill pages or single questions, dictate answers, and manage profiles hands-free (your ElevenLabs key). Free gets 1 session a day, plus 2 per ad.' },
-    { title: 'Unlimited AI Smart Fill', description: 'No limit on AI answers (Gemini, ChatGPT, Claude, or your own server). Free gets 3 fills a day, plus 6 per ad.' },
+    { title: 'Unlimited Voice mode', description: 'Talk to Aullevo to fill pages or single questions, dictate answers, and manage profiles hands-free (your ElevenLabs key). Free gets 3 sessions a day, plus 6 per ad.' },
+    { title: 'Unlimited AI Smart Fill', description: 'No limit on AI answers (Gemini, ChatGPT, Claude, or your own server). Free gets 6 fills a day, plus 10 per ad.' },
     { title: 'Unlimited active profiles & links', description: 'Keep every profile on at once and queue as many Multi-link applications as you like. Free allows 3 profiles and 5 links.' },
     { title: 'Automatic document uploads', description: 'Your resume, cover letter, and IDs go to the right upload fields.' },
     { title: 'Every typing speed', description: 'Slow and custom typing speeds, any time.' },
-    { title: 'Unlimited JSON imports & download', description: 'Import as often as you like (Free allows 5 a day, plus 10 per ad) and download profiles as backup files.' },
+    { title: 'Unlimited JSON imports & download', description: 'Import as often as you like (Free allows 4 a day, plus 10 per ad) and download profiles as backup files.' },
     { title: 'Auto-Pagination', description: 'Fills every page of multi-step forms, clicks Next, and submits for you. Free gets 2 hours a day, plus 4 per ad.' }
 ];
 

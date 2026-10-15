@@ -287,11 +287,11 @@ const Rewards: React.FC = () => {
 
     return (
         <div className="rewards-page">
-            <SEO title="Unlock with a short ad | Aullevo" description="Aullevo Free includes AI Smart Fill, auto-pagination, voice and more every day; when the day's free uses run out, a short ad gives twice as much." canonicalPath="/rewards" />
+            <SEO title="Unlock with a short ad | Aullevo" description="Aullevo Free includes AI Smart Fill, auto-pagination, voice and more every day; when the day's free uses run out, short ads unlock more." canonicalPath="/rewards" />
             <header className="rewards-head">
                 <span className="rewards-eyebrow">Aullevo Free</span>
                 <h1>Unlock with a short ad</h1>
-                <p>Aullevo Free gives you a little of everything every day. When today's free uses run out, one short ad gives you twice as much for a few hours. Pro skips the ads and keeps everything unlocked.</p>
+                <p>Aullevo Free gives you part of every feature each day. When today's free uses run out, a short ad unlocks more for a few hours, and every extra ad adds more uses and time. Pro skips the ads and keeps everything unlocked.</p>
             </header>
 
             <div className="rewards-layout">
@@ -319,11 +319,11 @@ const Rewards: React.FC = () => {
                     ) : (
                         <div className="rewards-actions">
                             {freeNow && <p className="rewards-current">{freeNow}</p>}
-                            {current && !freeNow && <p className="rewards-current">Currently: {current}. Watching again resets it.</p>}
+                            {current && !freeNow && <p className="rewards-current">Currently: {current}. Watching another ad adds to it.</p>}
                             <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds || Boolean(freeNow)}>
                                 {phase === 'starting' ? 'Starting…' : phase === 'granting' ? 'Unlocking…' : `▶ Watch ad (${adLengthShort(info.adSeconds)})`}
                             </button>
-                            {status && <p className="rewards-note">Ads watched today: {status.adsToday} of {status.dailyLimit}.</p>}
+                            {status && <p className="rewards-note">Ads watched today: {status.adsToday}.</p>}
                         </div>
                     )}
                     {error && <p className="rewards-error" role="alert">{error}</p>}

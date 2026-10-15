@@ -251,7 +251,7 @@ const About: React.FC = () => {
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
                                                 <strong className="arch-spec-label">Plan Limits:</strong>{' '}
-                                                Free users get 3 AI fills every day, and a short ad gives 6 more for 2 hours. Pro removes the limit, with no ads.
+                                                Free users get 6 AI fills every day, and each short ad gives 10 more for 2 hours. Pro removes the limit, with no ads.
                                             </div>
                                         </li>
                                     </ul>

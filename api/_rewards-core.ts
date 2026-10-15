@@ -3,16 +3,17 @@
  * api/rewards.ts stores the result in rewards/{uid}; the extension (src/services/rewards.ts in aullevo) and the
  * website (src/config/rewards.ts) show the same rules. Keep the three in sync when a rule changes.
  *
- * Free accounts get a small allowance every day (UTC); once it is used, a short ad on aullevo-web/rewards gives
- * twice as much for a few hours. Ads are only offered once the day's free allowance is used.
+ * Free accounts get an allowance every day (UTC); once it is used, a short ad on aullevo-web/rewards unlocks more
+ * for a few hours. Ads are only offered once the day's free allowance is used. Each ad adds to what is already
+ * unlocked (more uses, more time), so watching several stacks up.
  *             free every day                        one ad
- *   ai        3 AI Smart Fills                      6 AI Smart Fills for 2 hours (each AI-filled page counts as one)
- *   voice     1 voice session                       2 voice sessions for 2 hours (a session lasts up to 10 minutes)
- *   paginate  2 hours, from the first use           auto-pagination for 4 hours
- *   typing    2 hours, from the first use           Slow and custom typing speeds for 4 hours
- *   json      5 imports (counted by the extension)  10 JSON imports for 5 hours
- *   links     5 links (a queue size, extension)     up to 10 links in the Multi-link queue for 5 hours
- *   profiles  3 active (extension)                  up to 6 active profiles for 2 hours
+ *   ai        6 AI Smart Fills                      10 AI Smart Fills, +2 hours (each AI-filled page counts as one)
+ *   voice     3 voice sessions                      6 voice sessions, +2 hours (a session lasts up to 10 minutes)
+ *   paginate  2 hours, from the first use           +4 hours of auto-pagination
+ *   typing    2 hours, from the first use           +4 hours of Slow and custom typing speeds
+ *   json      4 imports (counted by the extension)  10 JSON imports, +5 hours
+ *   links     5 links (a queue size, extension)     up to 10 links in the Multi-link queue, +5 hours
+ *   profiles  3 active (extension)                  up to 6 active profiles, +2 hours
  * Pro accounts never need an unlock.
  */
 import { createHmac, timingSafeEqual } from 'node:crypto';
@@ -23,19 +24,19 @@ export interface RewardRule {
   adSeconds: number;  // length of the ad the user watches (the test ad lasts exactly this long)
   hours: number;      // how long the unlock lasts
   uses?: number;      // counted unlocks: how many uses one ad gives
-  freeUses?: number;  // counted, kept here: free uses every day (half of what an ad gives)
-  freeHours?: number; // time window, kept here: one free window a day from the first use (half an ad's)
+  freeUses?: number;  // counted, kept here: free uses every day
+  freeHours?: number; // time window, kept here: one free window a day from the first use
 }
 
 // json, links and profiles keep their free allowance in the extension (an import count and two limits)
 export const REWARD_RULES: Record<RewardFeature, RewardRule> = {
-  ai: { adSeconds: 60, hours: 2, uses: 6, freeUses: 3 },
+  ai: { adSeconds: 60, hours: 2, uses: 10, freeUses: 6 },
   profiles: { adSeconds: 30, hours: 2 },
   paginate: { adSeconds: 60, hours: 4, freeHours: 2 },
   typing: { adSeconds: 20, hours: 4, freeHours: 2 },
   json: { adSeconds: 60, hours: 5, uses: 10 },
   links: { adSeconds: 60, hours: 5 },
-  voice: { adSeconds: 60, hours: 2, uses: 2, freeUses: 1 },
+  voice: { adSeconds: 60, hours: 2, uses: 6, freeUses: 3 },
 };
 
 export const REWARD_FEATURES = Object.keys(REWARD_RULES) as RewardFeature[];
@@ -46,8 +47,8 @@ export const isRewardFeature = (value: unknown): value is RewardFeature =>
 export const isCounted = (feature: RewardFeature) => typeof REWARD_RULES[feature].uses === 'number';
 
 export const VOICE_SESSION_MS = 10 * 60 * 1000;
-// Most ads one account can watch in a day (protects the ad account from abuse flags)
-export const DAILY_AD_LIMIT = 24;
+// Safety net against bots farming ads (a person never gets near it); protects the ad account from abuse flags
+export const DAILY_AD_LIMIT = 100;
 // Real (Google) ads decide their own length; the server still refuses a reward claimed this fast
 export const MIN_LIVE_AD_SECONDS = 10;
 // A started ad must be finished within this time
@@ -174,7 +175,7 @@ export function startAd(doc: RewardsDoc, feature: RewardFeature, now: number, no
 }
 
 /**
- * The ad finished: opens (or renews) the feature's unlock. `live` = a real ad network served it (it decides the
+ * The ad finished: opens the feature's unlock, or adds to the one running (uses and hours stack up). `live` = a real ad network served it (it decides the
  * length); otherwise the test ad ran, and it must have lasted the rule's full length.
  */
 export function grantAd(doc: RewardsDoc, nonce: string, now: number, live: boolean): { doc: RewardsDoc; feature: RewardFeature; unlock: Unlock } {
@@ -186,7 +187,12 @@ export function grantAd(doc: RewardsDoc, nonce: string, now: number, live: boole
   if (now - pending.startedAt < minSeconds * 1000) throw new RewardError(409, 'too-early', 'The ad has not finished yet.');
 
   const today = utcDay(now);
-  const unlock: Unlock = { until: now + rule.hours * HOUR_MS, ...(isCounted(pending.feature) ? { remaining: rule.uses } : {}) };
+  const running = doc.unlocks?.[pending.feature];
+  const ad = running && running.until > now && !running.free ? running : null; // a free window is not carried over
+  const unlock: Unlock = {
+    until: Math.max(ad?.until ?? now, now) + rule.hours * HOUR_MS,
+    ...(isCounted(pending.feature) ? { remaining: (ad?.remaining ?? 0) + (rule.uses ?? 0) } : {}),
+  };
   return {
     feature: pending.feature,
     unlock,

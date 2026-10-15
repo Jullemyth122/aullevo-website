@@ -226,7 +226,7 @@ const featuresList = [
         color: 'blue',
         icon: <BrainIcon />,
         desc: 'For questions keywords cannot answer, the AI you choose (Google Gemini, ChatGPT, Claude, or any OpenAI-compatible server such as OpenRouter, Groq, or Ollama) picks the best multiple-choice option (several for checkbox questions), combines fields (like First + Last Name into Full Name), follows format instructions such as "Surname, Given Names", and drafts short answers. Uses your own API key; Gemini has a free tier.',
-        pill: 'Free: 3 / Day (+6 per Ad) · Pro: Unlimited'
+        pill: 'Free: 6 / Day (+10 per Ad) · Pro: Unlimited'
     },
     {
         title: 'Privacy Controls for AI',
@@ -259,7 +259,7 @@ const featuresList = [
         color: 'blue',
         icon: <MicIcon />,
         desc: 'Switch the side panel to the agent orb and just say it: "fill this page", "highlight the fields", "use my job profile", "create a profile called Work", "set my phone to…", "fill my links", "open settings". The agent answers in a natural ElevenLabs voice. English and Tagalog.',
-        pill: 'Free: 1 Session / Day · Your ElevenLabs Key'
+        pill: 'Free: 3 Sessions / Day · Your ElevenLabs Key'
     },
     {
         title: 'Fill Exactly What You Name',
@@ -300,7 +300,7 @@ const featuresList = [
         color: 'yellow',
         icon: <RepeatIcon />,
         desc: 'Copy your profile as JSON, give it to Gemini, Claude, or ChatGPT together with your resume, and paste the filled-in result back. Your whole profile is set up in a minute. Pro adds unlimited imports and a JSON file download for backups.',
-        pill: 'Free: 5 Imports / Day · Pro: Unlimited'
+        pill: 'Free: 4 Imports / Day · Pro: Unlimited'
     },
     {
         title: 'Auto-Pagination for Multi-Page Forms',
