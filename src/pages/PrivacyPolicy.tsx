@@ -681,6 +681,9 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>Rewarded ads (website only):</strong> When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Google may set cookies or use similar identifiers on that page to show the ad, limit how often you see it, measure it, and prevent fraud, and, where you have agreed to it, to personalize ads. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can manage Google ad personalization at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">adssettings.google.com</a>. Ads are not loaded on any other page, and never inside the extension.
                             </p>
                             <p>
+                                <strong>Sponsor cards:</strong> Until video ads are available, the same countdown shows sponsor and affiliate cards that we host ourselves (no ad network, no ad cookies). We count how often each card is shown and clicked with our website analytics, without your name or email. Clicking a card opens the other company's website, which handles your data under its own privacy policy; affiliate links may tell that company the visit came from Aullevo.
+                            </p>
+                            <p>
                                 We do not use Facebook Pixel or other cross-site advertising trackers, and we never share your profile data or form answers with ad networks.
                             </p>
                         </section>

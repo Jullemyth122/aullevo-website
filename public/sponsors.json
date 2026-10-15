@@ -1,0 +1,37 @@
+{
+    "_help": "Cards shown during the unlock countdown on /rewards. Edit and redeploy. type: house (your own offer), affiliate (you earn per signup: keep the disclosure), sponsor (a brand paid you for the slot). enabled: false hides a card. weight: how often it shows compared to the others. image: optional, https:// or /file-in-public.",
+    "rotateSeconds": 15,
+    "cards": [
+        {
+            "id": "aullevo-pro",
+            "type": "house",
+            "enabled": true,
+            "weight": 3,
+            "title": "Skip the ads with Aullevo Pro",
+            "text": "Unlimited AI Smart Fill, auto-pagination, the voice agent and automatic resume uploads. From ₱154.29 for 30 days, no auto-renewal.",
+            "cta": "See Pro plans",
+            "url": "/login"
+        },
+        {
+            "id": "advertise",
+            "type": "house",
+            "enabled": true,
+            "weight": 1,
+            "title": "Advertise on Aullevo",
+            "text": "Reach job seekers while they apply. Resume tools, courses and job boards: email mythicalxenon12@gmail.com for a sponsor slot.",
+            "cta": "Email us",
+            "url": "mailto:mythicalxenon12@gmail.com?subject=Sponsor%20slot%20on%20Aullevo"
+        },
+        {
+            "id": "example-affiliate",
+            "type": "affiliate",
+            "enabled": false,
+            "weight": 2,
+            "title": "Example: an ATS-friendly resume builder",
+            "text": "Replace this with a product from an affiliate program you joined, then set enabled to true.",
+            "cta": "Try it free",
+            "url": "https://example.com/your-affiliate-link",
+            "image": ""
+        }
+    ]
+}

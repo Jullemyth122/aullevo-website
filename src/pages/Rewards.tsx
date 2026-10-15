@@ -4,6 +4,7 @@ import { onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { auth, db, googleProvider } from '../config/firebase';
 import SEO from '../components/SEO';
+import { logEvent } from '../utils/analytics';
 import {
     REWARDS, REWARD_ORDER, REWARDED_AD_UNIT, adLength, adLengthShort, isRewardFeature, rewardsApi,
     type RewardFeature, type RewardsStatus, type Unlock
@@ -106,11 +107,71 @@ async function showRewardedAd(adUnit: string): Promise<AdOutcome> {
     });
 }
 
-/* ── Test ad: a countdown that only runs while the page is visible ── */
+/* ── Sponsor break: until Google video ads are connected, the countdown shows cards from public/sponsors.json ── */
 
-const TestAd: React.FC<{ seconds: number; onFinished: () => void }> = ({ seconds, onFinished }) => {
+interface SponsorCard {
+    id: string;
+    type: 'house' | 'affiliate' | 'sponsor';
+    enabled?: boolean;
+    weight?: number;
+    title: string;
+    text: string;
+    cta: string;
+    url: string;
+    image?: string;
+}
+
+// Shown when sponsors.json can't be loaded
+const FALLBACK_CARDS: SponsorCard[] = [{
+    id: 'aullevo-pro', type: 'house', weight: 1, title: 'Skip the ads with Aullevo Pro',
+    text: 'Unlimited AI Smart Fill, auto-pagination, the voice agent and automatic resume uploads.', cta: 'See Pro plans', url: '/login'
+}];
+
+const SPONSOR_LABEL: Record<SponsorCard['type'], string> = {
+    house: 'From Aullevo',
+    sponsor: 'Sponsored',
+    affiliate: 'Sponsored · we may earn a commission'
+};
+
+// Weighted order: heavier cards come up more often, none twice in a row
+function sponsorOrder(cards: SponsorCard[]): SponsorCard[] {
+    const pool = cards.flatMap(c => Array.from({ length: Math.max(1, Math.min(10, Math.round(c.weight ?? 1))) }, () => c));
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.filter((c, i) => i === 0 || c.id !== pool[i - 1].id);
+}
+
+function useSponsors(): { cards: SponsorCard[]; rotateSeconds: number } {
+    const [state, setState] = useState<{ cards: SponsorCard[]; rotateSeconds: number }>({ cards: FALLBACK_CARDS, rotateSeconds: 15 });
+    useEffect(() => {
+        let alive = true;
+        fetch('/sponsors.json', { cache: 'no-cache' })
+            .then(r => (r.ok ? r.json() : null))
+            .then((data: { cards?: SponsorCard[]; rotateSeconds?: number } | null) => {
+                const cards = (data?.cards ?? []).filter(c => c.enabled !== false && c.title && c.url && /^(https:\/\/|\/|mailto:)/.test(c.url));
+                if (alive && cards.length) setState({ cards: sponsorOrder(cards), rotateSeconds: Math.max(5, data?.rotateSeconds ?? 15) });
+            })
+            .catch(() => { /* keep the fallback */ });
+        return () => { alive = false; };
+    }, []);
+    return state;
+}
+
+/** The countdown before a reward; it only runs while this tab is visible. */
+const SponsorBreak: React.FC<{ seconds: number; feature: RewardFeature; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
     const [left, setLeft] = useState(seconds);
     const finished = useRef(false);
+    const { cards, rotateSeconds } = useSponsors();
+    const elapsed = seconds - left;
+    const card = cards[Math.floor(elapsed / rotateSeconds) % cards.length];
+
+    // One view per card shown (Google Analytics / Vercel events: sponsor_view, sponsor_click)
+    useEffect(() => {
+        if (card) logEvent('sponsor_view', { sponsor: card.id, type: card.type, feature });
+    }, [card, feature]);
+
     useEffect(() => {
         let last = performance.now(), remaining = seconds * 1000;
         const id = window.setInterval(() => {
@@ -128,17 +189,26 @@ const TestAd: React.FC<{ seconds: number; onFinished: () => void }> = ({ seconds
     }, [seconds, onFinished]);
 
     const progress = 1 - left / seconds;
+    const external = card && !card.url.startsWith('/');
     return (
-        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Advertisement">
+        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Sponsor break">
             <div className="rewards-ad__frame">
-                <span className="rewards-ad__tag">Advertisement · test mode</span>
-                <div className="rewards-ad__screen">
-                    <img src="/logo.png" alt="" className="rewards-ad__logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                    <p className="rewards-ad__title">Your ad plays here</p>
-                    <p className="rewards-ad__text">Real video ads appear once Google Ad Manager is connected. Keep this tab open until the timer ends.</p>
-                </div>
+                <span className="rewards-ad__tag">{card ? SPONSOR_LABEL[card.type] : 'Sponsor break'}</span>
+                {card && (
+                    <div className="rewards-ad__screen" key={card.id}>
+                        <img src={card.image || '/logo.png'} alt="" className="rewards-ad__logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        <p className="rewards-ad__title">{card.title}</p>
+                        <p className="rewards-ad__text">{card.text}</p>
+                        <a className="rewards-ad__cta" href={card.url} target="_blank"
+                            rel={card.type === 'house' && !external ? 'noopener' : 'sponsored noopener noreferrer'}
+                            onClick={() => logEvent('sponsor_click', { sponsor: card.id, type: card.type, feature })}>
+                            {card.cta} ↗
+                        </a>
+                    </div>
+                )}
                 <div className="rewards-ad__bar" aria-hidden="true"><i style={{ width: `${progress * 100}%` }} /></div>
                 <p className="rewards-ad__count" aria-live="polite">{left > 0 ? `Reward in ${left}s` : 'Unlocking…'}</p>
+                <p className="rewards-ad__note">Links open in a new tab; the timer pauses until you come back. These cards help keep Aullevo free.</p>
             </div>
         </div>
     );
@@ -299,7 +369,7 @@ const Rewards: React.FC = () => {
                             <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds}>
                                 {phase === 'starting' ? 'Starting…' : phase === 'granting' ? 'Unlocking…' : `▶ Watch ad (${adLengthShort(info.adSeconds)})`}
                             </button>
-                            {status && <p className="rewards-note">Ads watched today: {status.adsToday} of {status.dailyLimit}.{!status.live && ' Test mode: ads are a timer for now.'}</p>}
+                            {status && <p className="rewards-note">Ads watched today: {status.adsToday} of {status.dailyLimit}.</p>}
                         </div>
                     )}
                     {error && <p className="rewards-error" role="alert">{error}</p>}
@@ -327,7 +397,7 @@ const Rewards: React.FC = () => {
                 </aside>
             </div>
 
-            {phase === 'playing' && adSeconds > 0 && <TestAd seconds={adSeconds} onFinished={grant} />}
+            {phase === 'playing' && adSeconds > 0 && <SponsorBreak seconds={adSeconds} feature={feature} onFinished={grant} />}
         </div>
     );
 };

@@ -208,6 +208,9 @@ const TermsOfService: React.FC = () => {
                                 Unlocks are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. You may watch at most 24 ads a day. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain unlocks; we may remove unlocks or suspend ad unlocks on accounts that do. We may change the unlock rules (lengths, durations, and limits) with notice on this page.
                             </p>
                             <p>
+                                <strong>Sponsor cards &amp; affiliate links:</strong> Until video ads are available, the countdown shows sponsor cards instead: our own offers (such as Aullevo Pro), paid sponsor placements, and affiliate links, each labelled. If a card is marked as an affiliate link, we may earn a commission when you sign up or buy, at no extra cost to you. Products on sponsor cards are offered by third parties under their own terms; listing them is not an endorsement. You never have to click a card to get an unlock.
+                            </p>
+                            <p>
                                 <strong>Aullevo Pro:</strong> Pro removes these limits with no ads, including unlimited AI Smart Fill, auto-pagination, Voice mode, active profiles, Multi-link links, typing speeds and JSON imports, and adds automatic document uploads and JSON file download. Features may change as Aullevo improves.
                             </p>
                             <ul>
