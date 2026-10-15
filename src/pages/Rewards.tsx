@@ -196,7 +196,9 @@ const SponsorBreak: React.FC<{ seconds: number; feature: RewardFeature; onFinish
                 <span className="rewards-ad__tag">{card ? SPONSOR_LABEL[card.type] : 'Sponsor break'}</span>
                 {card && (
                     <div className="rewards-ad__screen" key={card.id}>
-                        <img src={card.image || '/logo.png'} alt="" className="rewards-ad__logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        {(card.image || card.type === 'house') && (
+                            <img src={card.image || '/logo.png'} alt="" className="rewards-ad__logo" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        )}
                         <p className="rewards-ad__title">{card.title}</p>
                         <p className="rewards-ad__text">{card.text}</p>
                         <a className="rewards-ad__cta" href={card.url} target="_blank"

@@ -23,6 +23,17 @@
             "url": "mailto:mythicalxenon12@gmail.com?subject=Sponsor%20slot%20on%20Aullevo"
         },
         {
+            "id": "shopee-webcam",
+            "type": "affiliate",
+            "enabled": true,
+            "weight": 3,
+            "title": "Webcam with mic for online interviews",
+            "text": "Look and sound clear in video interviews: a 1080p USB webcam with a built-in microphone. Plug and play on Shopee.",
+            "cta": "View on Shopee",
+            "url": "https://s.shopee.ph/7KxlUQLnWE",
+            "image": ""
+        },
+        {
             "id": "example-affiliate",
             "type": "affiliate",
             "enabled": false,
