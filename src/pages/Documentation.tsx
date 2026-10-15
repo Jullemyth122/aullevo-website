@@ -564,7 +564,7 @@ const Documentation: React.FC = () => {
                                 <pre><code>
                                     <span className="comment"># 1. Download the latest release archive</span>
                                     <br />
-                                    <span className="keyword">curl</span> -O https://aullevo-web.vercel.app/aullevo-extension.zip
+                                    <span className="keyword">curl</span> -O https://aullevo.com/aullevo-extension.zip
                                     <br />
                                     <span className="comment"># 2. Extract the archive</span>
                                     <br />

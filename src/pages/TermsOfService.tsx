@@ -312,7 +312,7 @@ const TermsOfService: React.FC = () => {
                             </p>
                             <ul>
                                 <li><strong>Email:</strong> <a href="mailto:xenexashura@gmail.com" className="legal-link">xenexashura@gmail.com</a></li>
-                                <li><strong>Website:</strong> <a href="https://aullevo-web.vercel.app" className="legal-link">https://aullevo-web.vercel.app</a></li>
+                                <li><strong>Website:</strong> <a href="https://aullevo.com" className="legal-link">https://aullevo.com</a></li>
                             </ul>
 
                             <div className="legal-action-bar">

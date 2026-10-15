@@ -16,7 +16,7 @@ import { spawnSync } from 'node:child_process';
 import { createInterface } from 'node:readline/promises';
 import { stdin, stdout, env, exit, argv } from 'node:process';
 
-const SITE = (argv[2] || 'https://aullevo-web.vercel.app').replace(/\/+$/, '');
+const SITE = (argv[2] || 'https://aullevo.com').replace(/\/+$/, '');
 const WEBHOOK_URL = `${SITE}/api/paymongo?action=webhook`;
 const WEBHOOK_EVENTS = ['checkout_session.payment.paid'];
 const FIREBASE_PROJECT_ID = 'aullevo-data';

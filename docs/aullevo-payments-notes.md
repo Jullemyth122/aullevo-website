@@ -114,11 +114,11 @@ sequenceDiagram
   - Google Cloud Console → IAM → project `aullevo-data` → ✏️ on `firebase-adminsdk-fbsvc@aullevo-data.iam.gserviceaccount.com` → **Add another role** → **Cloud Datastore User** → Save
 - [ ] Run `npm run setup:payments` in a real terminal. It:
   1. checks the PayMongo key (typing is hidden)
-  2. creates or reuses the webhook → `https://aullevo-web.vercel.app/api/paymongo?action=webhook`
+  2. creates or reuses the webhook → `https://aullevo.com/api/paymongo?action=webhook`
   3. checks the service-account file belongs to `aullevo-data`
   4. saves the three env vars to Vercel Production
   5. optionally deploys the Firestore rules and runs `vercel --prod`
-- [ ] Open `https://aullevo-web.vercel.app/api/paymongo`. Everything under `configured` should be `true`, and `paymongoLiveMode: true`
+- [ ] Open `https://aullevo.com/api/paymongo`. Everything under `configured` should be `true`, and `paymongoLiveMode: true`
 - [ ] Make one real test payment with my own account; Pro should turn on within seconds
 - [ ] Move the service-account `.json` out of the project folder
 
@@ -144,7 +144,7 @@ The webhook can also be created in the PayMongo Dashboard → Developers → Web
 ```bash
 vercel logs --environment production --since 30m --source serverless --expand
 ```
-And the health check: `https://aullevo-web.vercel.app/api/paymongo`
+And the health check: `https://aullevo.com/api/paymongo`
 
 | Symptom | Cause | Fix |
 |---|---|---|
@@ -170,7 +170,7 @@ And the health check: `https://aullevo-web.vercel.app/api/paymongo`
 
 - **Change a price or length:** `PLANS` in `api/paymongo.ts` (what PayMongo really charges, in centavos) **and** `PLANS` in `src/config/plans.ts` (what the site shows + the PayPal USD amount). Then the wording on the Docs/Terms/Privacy pages and the offers in `index.html`. Deploy.
 - **Grant or remove Pro by hand:** Firebase Console → Firestore → `users/{uid}` → set `isPro` and `proExpiresAt` (ISO date string, e.g. `2026-10-29T12:00:00.000Z`). **Delete** `proExpiresAt` for lifetime. Set `subscriptionPlan` to `monthly` / `yearly` / `lifetime` so the Account page shows the right plan.
-- **Approve PayPal payments (best way): https://aullevo-web.vercel.app/admin.** Sign in with the admin Google account. The **Pending** tab has a card per claim: *Open in PayPal ↗* → check the money arrived → pick the plan → **Approve** (or **Reject** with a reason). The card previews the exact expiry before you click. **History** shows every decision and who made it; **Users** shows everyone's plan and flags "no-expiry" accounts. *Check with PayMongo* on unfinished GCash checkouts grants Pro if they actually paid, or clears expired ones. Admins = `ADMIN_UIDS` env var on Vercel (comma list of Firebase uids); default is only my uid. Everything runs through `/api/paymongo?action=admin-*`, which checks the Google ID token + admin list and writes with the Admin SDK; the Firestore rules stay closed.
+- **Approve PayPal payments (best way): https://aullevo.com/admin.** Sign in with the admin Google account. The **Pending** tab has a card per claim: *Open in PayPal ↗* → check the money arrived → pick the plan → **Approve** (or **Reject** with a reason). The card previews the exact expiry before you click. **History** shows every decision and who made it; **Users** shows everyone's plan and flags "no-expiry" accounts. *Check with PayMongo* on unfinished GCash checkouts grants Pro if they actually paid, or clears expired ones. Admins = `ADMIN_UIDS` env var on Vercel (comma list of Firebase uids); default is only my uid. Everything runs through `/api/paymongo?action=admin-*`, which checks the Google ID token + admin list and writes with the Admin SDK; the Firestore rules stay closed.
 - **Security of approvals (2026-10-01 review):** a claim's amount/plan are typed by the buyer's browser and can be faked. With `PAYPAL_CLIENT_SECRET` (PayPal developer → Apps & Credentials → **Live** → Secret) set in Vercel, `/admin` asks PayPal for the real amount and status and the server refuses plans the payment doesn't cover, refunded/unknown payments, and reuse. Every approved PayPal payment writes `payments/paypal_<ID>` for its capture ID **and** order ID (uppercased), so one payment can't be approved twice. PayPal orders carry `custom_id` = `<plan>:<uid>` (since 2026-10-04; older ones are just `<plan>`), and the server refuses a claim whose uid doesn't match, so nobody can claim someone else's transaction ID. Admin calls check token revocation (Firebase console → Authentication → user → "Revoke"/disable kills admin access immediately). The function refuses to start in production if `FIREBASE_*_EMULATOR_HOST` is set. Without the PayPal secret the page shows a yellow "check by hand" warning on each claim.
 - **Approve PayPal payments (terminal backup):** `npm run approve:payments` goes through pending claims one by one: check the shown Transaction ID in PayPal → Activity, then press `a` (approve), `r` (reject) or `s` (skip). Approving asks for the USD amount PayPal shows as received and refuses plans above it, and writes/checks the same `payments/paypal_<ID>` records as `/admin` (it can't check the account binding, so prefer `/admin`). It sets `isPro` / `proExpiresAt` / `subscriptionPlan` and marks the claim in one transaction. `-- --list` only shows them.
 - **Approve a PayPal payment (by hand in the console):** the claim's `note` starts with the plan (`Monthly plan · …`, `Yearly plan · …`, `Lifetime plan · …`) and `amount` is what PayPal captured. Check the transaction in PayPal → set Pro on `users/{uid}` (+30 days, +365 days, or delete `proExpiresAt` for lifetime) → set the claim `status` to `approved`.

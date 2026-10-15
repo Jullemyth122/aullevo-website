@@ -195,7 +195,7 @@ const PrivacyPolicy: React.FC = () => {
                                 Introduction & Overview
                             </h2>
                             <p>
-                                Welcome to <strong>Aullevo</strong> (&quot;Aullevo&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). Aullevo consists of the Aullevo browser extension for Chrome, Brave, and Edge, and the Aullevo Web website at aullevo-web.vercel.app (together, the &quot;Service&quot;).
+                                Welcome to <strong>Aullevo</strong> (&quot;Aullevo&quot;, &quot;we&quot;, &quot;us&quot;, or &quot;our&quot;). Aullevo consists of the Aullevo browser extension for Chrome, Brave, and Edge, and the Aullevo Web website at aullevo.com (together, the &quot;Service&quot;).
                             </p>
                             <p>
                                 This Privacy Policy explains what information the Service handles, where it is stored, when it leaves your device, and the choices you have. We have written it to match exactly how the Service works today.
@@ -675,7 +675,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>The Aullevo extension does not use cookies, analytics, or tracking.</strong> It uses only the browser's extension storage described in Section 3.
                             </p>
                             <p>
-                                <strong>Our website (aullevo-web.vercel.app)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
+                                <strong>Our website (aullevo.com)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
                             </p>
                             <p>
                                 <strong>Rewarded ads (website only):</strong> When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Google may set cookies or use similar identifiers on that page to show the ad, limit how often you see it, measure it, and prevent fraud, and, where you have agreed to it, to personalize ads. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can manage Google ad personalization at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">adssettings.google.com</a>. Ads are not loaded on any other page, and never inside the extension.
@@ -739,7 +739,7 @@ const PrivacyPolicy: React.FC = () => {
                             </p>
                             <ul>
                                 <li><strong>Email:</strong> <a href={`mailto:${CONTACT_EMAIL}`} className="legal-link">{CONTACT_EMAIL}</a></li>
-                                <li><strong>Official Website:</strong> <a href="https://aullevo-web.vercel.app" className="legal-link">https://aullevo-web.vercel.app</a></li>
+                                <li><strong>Official Website:</strong> <a href="https://aullevo.com" className="legal-link">https://aullevo.com</a></li>
                             </ul>
 
                             <div className="legal-action-bar">

@@ -34,7 +34,7 @@ Max 24 ads per account per day. The rules live in `api/_rewards-core.ts` (server
    - `FIREBASE_SERVICE_ACCOUNT` — already set for PayMongo; nothing to do.
 2. **Deploy the Firestore rules** (adds the read-only `rewards/{uid}` rule): `firebase deploy --only firestore:rules`
 3. **Deploy the website** (push to the branch Vercel builds).
-4. Check `https://aullevo-web.vercel.app/api/rewards` → `rewardsTokenSecret: true`, `firebaseServiceAccount: true`.
+4. Check `https://aullevo.com/api/rewards` → `rewardsTokenSecret: true`, `firebaseServiceAccount: true`.
 5. **Release the extension update.** Users connect their account once in Settings (existing users: sign in on the website
    again, or just open `/rewards`, which links the extension automatically).
 
