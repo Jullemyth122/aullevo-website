@@ -2,5 +2,6 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin
 
 Sitemap: https://aullevo-web.vercel.app/sitemap.xml

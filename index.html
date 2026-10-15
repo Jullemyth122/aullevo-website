@@ -30,6 +30,16 @@
     </script>
     <!-- End Google Tag Manager -->
 
+    <!-- Google Analytics 4 (same property as Firebase measurementId). Enhanced measurement
+         counts SPA route changes as page views via browser history events. -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T715FHZTDJ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag("js", new Date());
+      gtag("config", "G-T715FHZTDJ");
+    </script>
+
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" sizes="16x16" href="/icon16.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/icon48.png" />
@@ -67,7 +77,7 @@
     ══════════════════════════════════════════════════════ -->
     <meta
       name="description"
-      content="Aullevo is a free form filler and autofill extension for Chrome, Brave, and Edge. Fill job applications, HR paperwork, government forms, and school surveys in seconds, encrypted on your device, with optional Gemini AI."
+      content="Aullevo is a free form filler and autofill extension for Chrome, Brave, and Edge. Fill job applications, HR paperwork, government forms, and school surveys in seconds, encrypted on your device, with optional AI (Gemini, ChatGPT, Claude, or your own server)."
     />
     <meta
       name="keywords"
@@ -77,7 +87,7 @@
         hr form automation, hr paperwork autofill, onboarding form filler,
         government form autofill, government paperwork automation, tax form filler,
         school survey autofill, student form automation,
-        gemini form filler, local ai autofill, secure form automation,
+        gemini form filler, chatgpt form filler, claude form filler, aullevo chrome web store, local ai autofill, secure form automation,
         browser extension form filler, chrome autofill extension, edge autofill,
         complex form automation, online form autofill, smart autofill tool
       "
@@ -99,7 +109,7 @@
     ══════════════════════════════════════════════════════ -->
     <meta
       name="speakable"
-      content="Aullevo is a browser extension that fills job, HR, government, and school forms automatically. Your profiles are encrypted on your device, and optional Gemini AI never sees fields you mark sensitive."
+      content="Aullevo is a browser extension that fills job, HR, government, and school forms automatically. Your profiles are encrypted on your device, and optional AI never sees fields you mark sensitive."
     />
 
     <!-- ══════════════════════════════════════════════════════
@@ -115,7 +125,7 @@
     />
     <meta
       property="og:description"
-      content="Stop filling forms by hand. Aullevo autofills job applications, HR, government, and school forms in seconds, with your data encrypted on your device and optional Gemini AI."
+      content="Stop filling forms by hand. Aullevo autofills job applications, HR, government, and school forms in seconds, with your data encrypted on your device and optional AI (Gemini, ChatGPT, Claude, or your own server)."
     />
     <meta
       property="og:image"
@@ -138,7 +148,7 @@
     />
     <meta
       name="twitter:description"
-      content="Stop filling forms by hand. Aullevo autofills job applications, HR, government, and school forms in seconds, with your data encrypted on your device and optional Gemini AI."
+      content="Stop filling forms by hand. Aullevo autofills job applications, HR, government, and school forms in seconds, with your data encrypted on your device and optional AI (Gemini, ChatGPT, Claude, or your own server)."
     />
     <meta
       name="twitter:image"
@@ -184,17 +194,24 @@
         "applicationSubCategory": "Productivity",
         "operatingSystem": "Chrome, Edge, Brave",
         "url": "https://aullevo-web.vercel.app/",
-        "description": "Aullevo is a form filler and autofill browser extension for Chrome, Brave, and Edge. It fills job applications, HR onboarding forms, government paperwork, school surveys, and other online forms using profiles encrypted on your device, with optional Google Gemini AI for harder questions.",
+        "description": "Aullevo is a form filler and autofill browser extension for Chrome, Brave, and Edge. It fills job applications, HR onboarding forms, government paperwork, school surveys, and other online forms using profiles encrypted on your device, with optional AI for harder questions from Google Gemini, OpenAI, Anthropic, or any OpenAI-compatible server.",
         "featureList": [
           "One-shortcut autofill for job applications and web forms",
           "Works with Shadow DOM components and iframes",
           "Seven ready-made profile types plus custom profiles",
-          "Optional Google Gemini AI Smart Fill with per-field privacy controls",
+          "Optional AI Smart Fill with your choice of Google Gemini, ChatGPT, Claude, or an OpenAI-compatible server, with per-field privacy controls",
+          "Voice mode: fill forms by talking (Pro)",
+          "Auto-Pagination for multi-page forms (Pro)",
           "Profiles encrypted on your device with AES-256-GCM",
           "Automatic document uploads (Pro)",
-          "Works on Chrome, Edge, and Brave"
+          "JSON quick setup: fill a profile from your resume with any AI chatbot",
+          "Guided tour of every feature",
+          "Extension available in 34 languages",
+          "Works on Chrome, Edge, and Brave",
+          "Install from the Chrome Web Store or as a ZIP"
         ],
-        "keywords": "ai form filler, autofill extension, workday automation, hr form automation, government form filler, gemini ai autofill",
+        "softwareVersion": "0.6.4",
+        "keywords": "ai form filler, autofill extension, workday automation, hr form automation, government form filler, gemini ai autofill, chatgpt autofill, claude autofill",
         "inLanguage": "en",
         "isAccessibleForFree": true,
         "offers": [
@@ -209,6 +226,20 @@
             "@type": "Offer",
             "name": "Aullevo Pro (30 days)",
             "price": "2.50",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Aullevo Pro (1 year)",
+            "price": "20.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          {
+            "@type": "Offer",
+            "name": "Aullevo Pro (Lifetime)",
+            "price": "50.00",
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock"
           }
@@ -235,7 +266,7 @@
             "name": "How does Aullevo autofill Workday job applications?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Aullevo detects the form fields on job application pages, matches them to your saved profile using an offline matching engine, and fills them, including dropdowns, radio buttons, checkboxes, and file uploads. With AI Smart Fill on, Google Gemini helps with unusual questions. On multi-page applications, you press the shortcut on each page."
+              "text": "Aullevo detects the form fields on job application pages, matches them to your saved profile using an offline matching engine, and fills them, including dropdowns, radio buttons, checkboxes, and file uploads. With AI Smart Fill on, the AI you choose (Gemini, ChatGPT, Claude, or your own server) helps with unusual questions. On multi-page applications, Pro's Auto-Pagination clicks Next for you; on Free, you press the shortcut on each page."
             }
           },
           {
@@ -243,7 +274,7 @@
             "name": "Is Aullevo safe to use? Does it send my data anywhere?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Aullevo is designed with privacy first. Your profiles and documents are encrypted on your device with your own passphrase and are never sent to Aullevo's servers. AI Smart Fill is optional: when on, the form's questions, your field labels, and values of fields you mark AI SAFE are sent to Google Gemini using your own API key. Fields marked SENSITIVE are never sent."
+              "text": "Aullevo is designed with privacy first. Your profiles and documents are encrypted on your device with your own passphrase and are never sent to Aullevo's servers. AI Smart Fill is optional: when on, the form's questions, your field labels, and values of fields you mark AI SAFE are sent to the AI provider you choose (Google Gemini, OpenAI, Anthropic, or your own server) using your own API key. Fields marked SENSITIVE are never sent."
             }
           },
           {
@@ -264,10 +295,18 @@
           },
           {
             "@type": "Question",
+            "name": "Is Aullevo on the Chrome Web Store?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. If you'd rather not download the ZIP, open the Chrome Web Store, search for Aullevo, and click Add to Chrome. You can also download the ZIP from aullevo-web.vercel.app and load it with Developer mode."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "Is Aullevo free?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Yes. The free plan includes the full form engine, all profile types, the encrypted vault, and 10 AI fills per week. Aullevo Pro ($2.50 or PHP 154.29 for 30 days, no auto-renewal) adds unlimited AI fills, unlimited active profiles, automatic document uploads, extra typing speeds, and JSON import/export."
+              "text": "Yes. The free plan includes the full form engine, all profile types, the encrypted vault, and 10 AI fills per week. Aullevo Pro ($2.50 for 30 days, $20 for a year, or $50 once for lifetime; no auto-renewal) adds unlimited AI fills, unlimited active profiles, Voice mode, Auto-Pagination for multi-page forms, automatic document uploads, extra typing speeds, and JSON import/export."
             }
           },
           {
@@ -301,7 +340,7 @@
             "@type": "HowToStep",
             "position": 1,
             "name": "Install Aullevo",
-            "text": "Download Aullevo from aullevo-web.vercel.app and load it into Chrome, Edge, or Brave, then create your vault passphrase."
+            "text": "Add Aullevo from the Chrome Web Store (search for Aullevo), or download it from aullevo-web.vercel.app and load it into Chrome, Edge, or Brave. Then create your vault passphrase."
           },
           {
             "@type": "HowToStep",
@@ -319,7 +358,7 @@
             "@type": "HowToStep",
             "position": 4,
             "name": "Press Alt+Shift+L",
-            "text": "Press Alt+Shift+L or click Fill in the side panel. Aullevo matches the form fields to your profile and fills them, with optional Gemini AI for unusual questions."
+            "text": "Press Alt+Shift+L or click Fill in the side panel. Aullevo matches the form fields to your profile and fills them, with optional AI (Gemini, ChatGPT, Claude, or your own server) for unusual questions."
           },
           {
             "@type": "HowToStep",

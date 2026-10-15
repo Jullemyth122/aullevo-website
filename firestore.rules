@@ -75,6 +75,13 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Free-plan ad unlocks (6 AI fills, auto-pagination for 4 hours, ...). Written only by /api/rewards with the
+    // Admin SDK after an ad finishes, so nobody can unlock features for themselves; owners may read their own.
+    match /rewards/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if false;
+    }
+
     match /reviews/{userId} {
       // Anyone can read reviews
       allow read: if true;

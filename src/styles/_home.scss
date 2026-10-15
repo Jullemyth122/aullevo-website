@@ -128,6 +128,40 @@
     inset 0 -1px 2px rgba(0, 0, 0, 0.04);
 }
 
+// Current extension version notice — first thing in the hero
+.hero-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 100%;
+  padding: 0.3rem 0.9rem 0.3rem 0.35rem;
+  margin-bottom: 1.5rem;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: $text-muted;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+
+  &__tag {
+    flex-shrink: 0;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  @media (max-width: 560px) {
+    border-radius: 1rem;
+    font-size: 0.78rem;
+  }
+}
+
 .hero-badge-dot {
   position: relative;
   width: 8px;
@@ -196,6 +230,23 @@
   gap: 1rem;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.hero-store-note {
+  margin: 1rem 0 0;
+  text-align: center;
+  color: $text-muted;
+  font-size: 0.9rem;
+
+  a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+
+  strong { color: var(--text-main); }
 }
 
 // Trust Bar
@@ -272,10 +323,12 @@ $ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
 // Hidden until the intro plays, so nothing flashes before its entrance
 .hero:not([data-intro]) {
+  .hero-version,
   .hero-emblem,
   .hero-badge,
   .hero-subtitle,
   .hero-ctas > *,
+  .hero-store-note,
   .hero-shortcut,
   .trust-bar,
   .hero-visual {
@@ -289,6 +342,7 @@ $ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
 // The choreography — one timeline, expressed as delays
 .hero[data-intro="play"] {
+  .hero-version { animation: heroRise 1s $ease-out 0s backwards; --rise: 8px; }
   .hero-emblem { animation: heroRise 1.3s $ease-out 0s backwards; --rise: 18px; }
   .hero-badge { animation: heroRise 1s $ease-out 0.15s backwards; --rise: 10px; }
   .hero-line--main .hero-line__inner { animation: heroLine 1.15s $ease-out 0.25s backwards; }
@@ -297,6 +351,7 @@ $ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   .hero-ctas > * { animation: heroRise 1s $ease-out 0.7s backwards; }
   .hero-ctas > :nth-child(2) { animation-delay: 0.77s; }
   .hero-ctas > :nth-child(3) { animation-delay: 0.84s; }
+  .hero-store-note { animation: heroRise 1s $ease-out 0.9s backwards; --rise: 8px; }
   .hero-shortcut { animation: heroRise 1s $ease-out 0.95s backwards; --rise: 8px; }
   .trust-bar { animation: heroRise 1s $ease-out 1.03s backwards; --rise: 8px; }
   // The demo mounts after the intro (see Home.tsx), then rises in as the final beat

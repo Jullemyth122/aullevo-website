@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { auth, db, googleProvider } from '../config/firebase';
 import { onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { PLANS, PLAN_ORDER, PAYPAL_ENABLED, formatUsd, type PlanId } from '../config/plans';
+import { useProStatus } from '../hooks/useProStatus';
 
 /* ── SVG Icons ── */
 
@@ -108,11 +110,18 @@ function useFocusTrap(isActive: boolean) {
 interface DonateButtonProps {
     className?: string;
     children?: React.ReactNode;
+    defaultPlan?: PlanId;
 }
 
-const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children }) => {
+const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children, defaultPlan = 'yearly' }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [planId, setPlanId] = useState<PlanId>(defaultPlan);
+    // PayPal's buttons are rendered once per open; they read the current plan from here when clicked
+    const planRef = useRef<PlanId>(planId);
+    const plan = PLANS[planId];
+    // Lifetime Pro has nothing left to buy (the server refuses it too)
+    const { isLifetime } = useProStatus();
     const [user, setUser] = useState<User | null>(null);
     const [authLoading, setAuthLoading] = useState(false);
     const [paypalError, setPaypalError] = useState<string | null>(null);
@@ -130,6 +139,10 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
         });
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        planRef.current = planId;
+    }, [planId]);
 
     // Body overflow lock
     useEffect(() => {
@@ -163,7 +176,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
 
     // PayPal SDK loader
     useEffect(() => {
-        if (!isOpen || !user) return;
+        if (!PAYPAL_ENABLED || !isOpen || !user) return;
 
         let isMounted = true;
 
@@ -172,6 +185,9 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
 
             const container = document.getElementById('paypal-button-container');
             if (container) container.innerHTML = '';
+
+            // The plan the open PayPal order was created for (the picker may change before approval)
+            let orderPlan: PlanId = planRef.current;
 
             try {
                 const paypalButtons = (window as any).paypal.Buttons({
@@ -183,30 +199,50 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                         height: 45
                     },
                     createOrder: (_data: any, actions: any) => {
+                        orderPlan = planRef.current;
+                        const selected = PLANS[orderPlan];
                         return actions.order.create({
                             purchase_units: [{
-                                amount: { value: '2.50' },
-                                description: 'Aullevo Pro Monthly Subscription - 1 Month Access'
+                                amount: { value: selected.usd },
+                                description: selected.days === null
+                                    ? 'Aullevo Pro - Lifetime Access'
+                                    : `Aullevo Pro ${selected.name} - ${selected.days} Days Access`,
+                                // "<plan>:<uid>": the server refuses claims for this payment from any other account
+                                custom_id: `${orderPlan}:${user.uid}`
                             }]
                         });
                     },
                     onApprove: async (_data: any, actions: any) => {
+                        let details: any;
                         try {
                             setAuthLoading(true);
-                            const details = await actions.order.capture();
+                            details = await actions.order.capture();
+                        } catch (err: any) {
+                            console.error("PayPal capture error", err);
+                            // Card or funding source declined: reopen PayPal so the buyer can pick another one
+                            if (String(err?.message || '').includes('INSTRUMENT_DECLINED')) return actions.restart();
+                            if (isMounted) {
+                                setPaypalError("PayPal couldn't complete the payment. Please try again or use another payment method.");
+                                setAuthLoading(false);
+                            }
+                            return;
+                        }
+                        try {
                             if (isMounted) {
                                 // Pro is NOT granted here: the browser can't be trusted to do that.
                                 // Record a pending claim; the owner verifies it in PayPal and activates Pro
                                 // from the Firebase console (Firestore rules block isPro writes from clients).
                                 // Transaction ID = what PayPal's Activity page shows (capture id); order id kept in the note
-                                const captureId = details.purchase_units?.[0]?.payments?.captures?.[0]?.id;
+                                const capture = details.purchase_units?.[0]?.payments?.captures?.[0];
+                                const paidPlan = PLANS[orderPlan];
                                 await recordPaymentClaim({
                                     provider: 'paypal',
-                                    orderId: String(captureId || details.id || ''),
+                                    orderId: String(capture?.id || details.id || ''),
                                     payerEmail: String(details.payer?.email_address || ''),
-                                    amount: '2.50',
+                                    amount: String(capture?.amount?.value || paidPlan.usd),
                                     currency: 'USD',
-                                    note: `PayPal ${String(details.status || 'COMPLETED')} · order ${String(details.id || '')}`
+                                    // Tells the reviewer what to grant: 30 days, 365 days, or lifetime (no expiry)
+                                    note: `${paidPlan.name} plan · PayPal ${String(details.status || 'COMPLETED')} · order ${String(details.id || '')}`
                                 });
                                 setPaymentSuccess(true);
                             }
@@ -298,7 +334,8 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
         try {
             const res = await fetch('/api/paymongo?action=checkout', {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${await user.getIdToken()}` }
+                headers: { Authorization: `Bearer ${await user.getIdToken()}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ plan: planId })
             });
             const data = await res.json().catch(() => ({}));
             if (!res.ok || (!data.checkoutUrl && data.status !== 'paid')) {
@@ -351,13 +388,42 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                         <div className="donate-shield" aria-hidden="true"><HeartIcon /></div>
                         <h2 id="donate-dialog-title">Upgrade to Aullevo Pro</h2>
                         <p id="donate-dialog-desc">
-                            30 days of Pro: unlimited AI Smart Fill, unlimited active profiles, automatic
-                            document uploads, Slow &amp; custom typing speeds, and JSON import/export.
+                            Voice mode, unlimited AI Smart Fill, unlimited active profiles, automatic document uploads,
+                            Auto-Pagination, Slow &amp; custom typing speeds, unlimited JSON imports, and JSON download.
                         </p>
-                        <div className="donate-price-tag" aria-label="Price: $2.50 per month">
-                            <span className="donate-price">$2.50</span>
-                            <span className="donate-price-label">/ 30 days · No auto-renewal</span>
-                        </div>
+
+                        {!isLifetime && (<>
+                        <fieldset className="donate-plans">
+                            <legend>Choose a plan</legend>
+                            {PLAN_ORDER.map((id) => {
+                                const option = PLANS[id];
+                                return (
+                                    <label key={id} className={`donate-plan ${id === planId ? 'is-selected' : ''}`}>
+                                        <input
+                                            type="radio"
+                                            name="aullevo-plan"
+                                            value={id}
+                                            checked={id === planId}
+                                            onChange={() => {
+                                                setPlanId(id);
+                                                setPaymongoStatus('idle');
+                                                setPaymongoError(null);
+                                            }}
+                                        />
+                                        {option.badge && <span className="donate-plan-badge">{option.badge}</span>}
+                                        <span className="donate-plan-name">{option.name}</span>
+                                        <span className="donate-plan-price">{formatUsd(option)}</span>
+                                        <span className="donate-plan-period">{option.period}</span>
+                                    </label>
+                                );
+                            })}
+                        </fieldset>
+                        <p className="donate-plan-note" aria-live="polite">
+                            {plan.days === null
+                                ? `${formatUsd(plan)} once (₱${plan.php}). Pro forever, no renewals.`
+                                : `${formatUsd(plan)} (₱${plan.php}) for ${plan.days} days of Pro. ${plan.note}.`}
+                        </p>
+                        </>)}
                     </header>
 
                     {/* Divider */}
@@ -382,6 +448,15 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                 <span>{authLoading ? 'Signing in…' : 'Sign In with Google'}</span>
                             </button>
                         </div>
+                    ) : isLifetime ? (
+                        /* ── Lifetime Pro: nothing to buy ── */
+                        <div className="donate-ph-done" role="status">
+                            <CheckCircleIcon />
+                            <div>
+                                <strong>You have lifetime Pro</strong>
+                                <span>Every Pro feature is unlocked on {user.email} for good. There&apos;s nothing more to buy.</span>
+                            </div>
+                        </div>
                     ) : (
                         /* ── Authenticated: Payment Options ── */
                         <div className="donate-cards">
@@ -395,21 +470,26 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                             <ol className="donate-steps" aria-label="How Pro activation works">
                                 <li>
                                     <span className="donate-step-num" aria-hidden="true">1</span>
-                                    <span>Pay with <strong>PayPal</strong>, <strong>card</strong>, <strong>GCash</strong>, or <strong>Maya</strong></span>
+                                    {PAYPAL_ENABLED
+                                        ? <span>Pay with <strong>PayPal</strong>, <strong>card</strong>, <strong>GCash</strong>, or <strong>Maya</strong></span>
+                                        : <span>Pay with <strong>GCash</strong>, <strong>Maya</strong>, or any <strong>QR Ph</strong> bank app</span>}
                                 </li>
                                 <li>
                                     <span className="donate-step-num" aria-hidden="true">2</span>
                                     <span><strong>GCash / Maya / QR Ph:</strong> Pro turns on <strong>automatically</strong> right after you pay</span>
                                 </li>
-                                <li>
-                                    <span className="donate-step-num" aria-hidden="true">3</span>
-                                    <span><strong>PayPal / card:</strong> we verify your payment and activate Pro <strong>within 24 hours</strong></span>
-                                </li>
+                                {PAYPAL_ENABLED && (
+                                    <li>
+                                        <span className="donate-step-num" aria-hidden="true">3</span>
+                                        <span><strong>PayPal / card:</strong> we verify your payment and activate Pro <strong>within 24 hours</strong></span>
+                                    </li>
+                                )}
                             </ol>
 
                             {/* Section label */}
                             <h3 className="donate-section-label">Choose a payment method</h3>
 
+                            {PAYPAL_ENABLED && (<>
                             {/* PayPal SDK Checkout */}
                             <div className="paypal-checkout-section" aria-label="Pay with PayPal">
                                 <div className="paypal-section-header">
@@ -418,7 +498,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                     </div>
                                     <div className="paypal-section-title">
                                         <span>Pay with PayPal or Card</span>
-                                        <small>$2.50 / month · activated within 24 hours</small>
+                                        <small>{formatUsd(plan)} {plan.period} · activated within 24 hours</small>
                                     </div>
                                 </div>
 
@@ -446,6 +526,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                 <small>Philippines Local Payments</small>
                                 <span />
                             </div>
+                            </>)}
 
                             {/* PayMongo: GCash, Maya & QR Ph — personal checkout, activated automatically */}
                             <div className="donate-ph-block">
@@ -455,7 +536,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                     disabled={paymongoStatus === 'loading' || paymongoStatus === 'paid'}
                                     aria-busy={paymongoStatus === 'loading'}
                                     className="donate-option-card donate-option-card--ph"
-                                    aria-label="Pay 154.29 Philippine Pesos for 30 days via GCash, Maya, or QR Ph"
+                                    aria-label={`Pay ${plan.php} Philippine Pesos for ${plan.days === null ? 'lifetime Pro' : `${plan.days} days`} via GCash, Maya, or QR Ph`}
                                 >
                                     <div className="donate-card-icon donate-card-icon--paymongo">
                                         <WalletIcon />
@@ -463,7 +544,7 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                                     <div className="donate-card-text">
                                         <div className="donate-card-header-row">
                                             <h4>GCash, Maya & QR Ph</h4>
-                                            <span className="donate-card-badge donate-card-badge--green">₱154.29 / mo</span>
+                                            <span className="donate-card-badge donate-card-badge--green">₱{plan.php} {plan.period}</span>
                                         </div>
                                         <p>
                                             {paymongoStatus === 'loading'
@@ -533,7 +614,10 @@ const DonateButton: React.FC<DonateButtonProps> = ({ className = '', children })
                 ref={triggerRef}
                 id="donate-button"
                 className={`btn btn-donate ${className}`}
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    setPlanId(defaultPlan);
+                    setIsOpen(true);
+                }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 aria-label="Upgrade to Aullevo Pro"

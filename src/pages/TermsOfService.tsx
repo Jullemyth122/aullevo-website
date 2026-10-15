@@ -12,7 +12,7 @@ const TermsOfService: React.FC = () => {
         { id: 'license-access', label: '3. Software License & Scope' },
         { id: 'user-responsibilities', label: '4. User Responsibilities & Data Accuracy' },
         { id: 'ai-disclaimer', label: '5. AI Processing & Accuracy Disclaimer' },
-        { id: 'pro-payments', label: '6. Aullevo Pro, Payments & Activation' },
+        { id: 'pro-payments', label: '6. Free Plan, Ad Unlocks & Aullevo Pro' },
         { id: 'acceptable-use', label: '7. Acceptable Use Policy' },
         { id: 'intellectual-property', label: '8. Intellectual Property' },
         { id: 'disclaimer-warranties', label: '9. Disclaimer of Warranties' },
@@ -79,7 +79,7 @@ const TermsOfService: React.FC = () => {
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            Effective Date: September 30, 2026
+                            Effective Date: October 12, 2026
                         </span>
                     </div>
 
@@ -87,7 +87,7 @@ const TermsOfService: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>September 30, 2026</strong></span>
+                            <span>Last Updated: <strong>October 15, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Applicability: <strong>All Aullevo Extensions &amp; Services</strong></span>
@@ -141,7 +141,7 @@ const TermsOfService: React.FC = () => {
                                 Description of Service
                             </h2>
                             <p>
-                                Aullevo provides form automation software that fills web forms, job applications, and questionnaires with information you save. Aullevo is local-first: your profile data is encrypted and stored on your own device and matched to form fields by an offline matching engine, with optional AI assistance from Google Gemini using your own API key.
+                                Aullevo provides form automation software that fills web forms, job applications, and questionnaires with information you save. Aullevo is local-first: your profile data is encrypted and stored on your own device and matched to form fields by an offline matching engine, with optional AI assistance from the provider you choose (Google Gemini, OpenAI, Anthropic, or an OpenAI-compatible server) using your own API key.
                             </p>
                         </section>
 
@@ -177,26 +177,41 @@ const TermsOfService: React.FC = () => {
                                 AI Processing & Accuracy Disclaimer
                             </h2>
                             <p>
-                                Aullevo can use artificial intelligence (Google Gemini models) to match form fields and suggest answers. AI systems are probabilistic and may misinterpret a question, pick an unintended option, or draft an inaccurate answer. AI features are provided on an &quot;as-is&quot; assistive basis, and you must review every AI-filled answer.
+                                Aullevo can use artificial intelligence (Google Gemini, OpenAI, or Anthropic models, or a model on an OpenAI-compatible server you choose) to match form fields and suggest answers. AI systems are probabilistic and may misinterpret a question, pick an unintended option, or draft an inaccurate answer. AI features are provided on an &quot;as-is&quot; assistive basis, and you must review every AI-filled answer.
                             </p>
                             <p>
-                                AI Smart Fill uses your own Gemini API key. Your use of the Gemini API is subject to Google&apos;s terms, and any usage costs on your Google account are your responsibility.
+                                AI Smart Fill uses your own API key for the provider you select. Your use of that provider&apos;s API is subject to its own terms (for example Google&apos;s Gemini API terms, OpenAI&apos;s terms, or Anthropic&apos;s terms), and any usage costs on your account with that provider are your responsibility. If you use a custom server, its operator&apos;s terms apply.
                             </p>
                         </section>
 
                         <section id="pro-payments" className="legal-section">
                             <h2>
                                 <span className="section-num">6</span>
-                                Aullevo Pro, Payments &amp; Activation
+                                Free Plan, Ad Unlocks &amp; Aullevo Pro
                             </h2>
                             <p>
-                                <strong>Free Plan:</strong> Aullevo is free to use, with limits that include 2 active profiles and 10 AI Smart Fill uses per week.
+                                <strong>Free Plan:</strong> Aullevo is free to use. Without ads, the Free plan includes keyword autofill, 3 active profiles, a Multi-link queue of 3 links, and 3 JSON imports every 2 weeks.
                             </p>
                             <p>
-                                <strong>Aullevo Pro:</strong> Pro removes those limits and adds features described on our website, such as automatic document uploads, extra typing speeds, and JSON import/export. Features may change as Aullevo improves.
+                                <strong>Ad Unlocks (Free Plan):</strong> Some features unlock for a limited time when you watch a short ad on the Aullevo website while signed in:
                             </p>
                             <ul>
-                                <li><strong>Price &amp; Term:</strong> Each payment ($2.50 USD via PayPal or card, or ₱154.29 via GCash, Maya, or QR Ph) gives 30 days of Pro. Pro does <strong>not</strong> renew automatically; you choose whether to pay again.</li>
+                                <li><strong>AI Smart Fill:</strong> a 1-minute ad gives 6 AI fills, usable for 2 hours. Each page the AI helps fill (including each page during auto-pagination) uses one fill.</li>
+                                <li><strong>Auto-pagination:</strong> a 1-minute ad unlocks it for 4 hours.</li>
+                                <li><strong>Voice mode:</strong> a 1-minute ad gives 2 voice sessions, usable for 2 hours; each session lasts up to 10 minutes.</li>
+                                <li><strong>More active profiles:</strong> a 30-second ad allows more than 3 active profiles for 2 hours.</li>
+                                <li><strong>Multi-link:</strong> a 1-minute ad allows up to 10 links in the queue for 5 hours.</li>
+                                <li><strong>JSON imports:</strong> a 1-minute ad gives 10 more imports, usable for 5 hours.</li>
+                                <li><strong>Typing speeds:</strong> a 20-second ad unlocks Slow and custom speeds for 4 hours.</li>
+                            </ul>
+                            <p>
+                                Unlocks are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. You may watch at most 24 ads a day. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain unlocks; we may remove unlocks or suspend ad unlocks on accounts that do. We may change the unlock rules (lengths, durations, and limits) with notice on this page.
+                            </p>
+                            <p>
+                                <strong>Aullevo Pro:</strong> Pro removes these limits with no ads, including unlimited AI Smart Fill, auto-pagination, Voice mode, active profiles, Multi-link links, typing speeds and JSON imports, and adds automatic document uploads and JSON file download. Features may change as Aullevo improves.
+                            </p>
+                            <ul>
+                                <li><strong>Price &amp; Term:</strong> Pro comes in three plans, paid in USD via PayPal or card, or in pesos via GCash, Maya, or QR Ph: <strong>Monthly</strong> ($2.50 or ₱154.29) gives 30 days, <strong>Yearly</strong> ($20 or ₱1,234.32) gives 365 days, and <strong>Lifetime</strong> ($50 or ₱3,085.80) is a one-time payment for Pro on that account for as long as Aullevo Pro is offered. Monthly and yearly time is added on top of any Pro time you have left. Pro does <strong>not</strong> renew automatically; you choose whether to pay again.</li>
                                 <li><strong>Payment Processors:</strong> Payments are handled by PayPal and PayMongo under their own terms. We never receive your full card or wallet details.</li>
                                 <li><strong>Activation:</strong> Pro is activated on the Aullevo account you were signed in with when you paid. GCash, Maya, and QR Ph payments activate automatically once PayMongo confirms them; PayPal and card payments are verified and activated, normally within 24 hours.</li>
                                 <li><strong>Problems &amp; Refunds:</strong> If Pro isn&apos;t activated within 24 hours, or you were charged by mistake, contact us with your transaction or Payment ID and we will activate Pro or refund the payment.</li>

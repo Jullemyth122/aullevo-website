@@ -223,6 +223,103 @@
   }
 }
 
+/* Plan picker (Monthly / Yearly / Lifetime) */
+.donate-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+
+  @media (max-width: 380px) {
+    gap: 0.4rem;
+  }
+
+  legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}
+
+.donate-plan {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 1rem 0.4rem 0.8rem;
+  border: 1px solid var(--border-glass);
+  border-radius: 14px;
+  background: var(--bg-input);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &:hover {
+    border-color: var(--border-glass-hover);
+  }
+
+  &:has(input:focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &.is-selected {
+    border-color: var(--primary);
+    background: rgba(37, 99, 235, 0.1);
+    box-shadow: 0 0 0 1px var(--primary) inset;
+  }
+
+  .donate-plan-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .donate-plan-price {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.2;
+  }
+
+  .donate-plan-period {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .donate-plan-badge {
+    position: absolute;
+    top: -0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.1rem 0.5rem;
+    border-radius: 99px;
+    background: var(--accent-pop);
+    color: #fff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+
+.donate-plan-note {
+  margin-top: 0.75rem !important;
+  font-size: 0.85rem !important;
+}
+
 .donate-divider {
   height: 1px;
   background: rgba(255, 255, 255, 0.08);

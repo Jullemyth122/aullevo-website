@@ -9,6 +9,12 @@ import DonateButton from './DonateButton';
 import Reviews from '../components/Reviews';
 import SEO from '../components/SEO';
 import { useScrollReveal } from '../hooks/useScrollReveal';
+import { useProStatus } from '../hooks/useProStatus';
+import { CHROME_WEB_STORE_URL } from '../config/store';
+import { logEvent } from '../utils/analytics';
+
+// Bump this whenever a new extension ZIP is uploaded to /public
+const EXTENSION_VERSION = 'v0.6.4';
 
 // Inline SVG icon components — no emojis
 const ShieldIcon = () => (
@@ -77,6 +83,7 @@ const LockShieldIcon = () => (
 );
 
 const Home: React.FC = () => {
+    const proStatus = useProStatus();
     const heroRef = useRef<HTMLElement>(null);
     const demoRef = useRef<HTMLDivElement>(null);
     const demoTriggerRef = useRef<(() => void) | null>(null);
@@ -186,9 +193,9 @@ const Home: React.FC = () => {
         {
             icon: <ZapIcon />,
             title: 'Two Engines, One Shortcut',
-            desc: 'Offline keyword matching fills standard fields instantly. Turn on Gemini AI Smart Fill for multiple-choice picks and open-ended questions, with keywords filling anything the AI skips.',
+            desc: 'Offline keyword matching fills standard fields instantly. Turn on AI Smart Fill (Gemini, ChatGPT, Claude, or your own server) for multiple-choice picks and open-ended questions, with keywords filling anything the AI skips.',
             color: 'blue',
-            metric: 'Keywords + Gemini AI'
+            metric: 'Keywords + your choice of AI'
         },
         {
             icon: <FolderIcon />,
@@ -217,8 +224,8 @@ const Home: React.FC = () => {
         <div className="home-page" ref={pageRef}>
             <SEO
                 title="Aullevo | AI Form Filler & Autofill Extension for Chrome"
-                description="Aullevo fills job applications, surveys, and web forms for you. Save your details once, press one shortcut, and let smart matching and optional Gemini AI do the typing. Encrypted on your device."
-                keywords="ai form filler, autofill browser extension, workday autofill, job application automator, gemini form filler, secure local autofill, form automation"
+                description="Aullevo fills job applications, surveys, and web forms for you. Save your details once, press one shortcut, and let smart matching and optional AI (Gemini, ChatGPT, or Claude) do the typing. Encrypted on your device. Get it on the Chrome Web Store or as a ZIP."
+                keywords="ai form filler, autofill browser extension, workday autofill, job application automator, gemini form filler, chatgpt form filler, claude autofill, aullevo chrome web store, secure local autofill, form automation"
             />
 
             {/* Animated Mesh Background */}
@@ -230,6 +237,12 @@ const Home: React.FC = () => {
                 <HeroSpotlight />
                 <div className="container hero-grid">
                     <div className="hero-text">
+                        <div className="hero-version" role="note">
+                            <span className="hero-version__tag">{EXTENSION_VERSION}</span>
+                            <span className="hero-version__text">
+                                Every download is the latest build. We update the extension manually with each new version.
+                            </span>
+                        </div>
                         <HeroEmblem playRef={emblemFireRef} />
                         <div className="hero-badge">
                             <span className="hero-badge-dot"></span>
@@ -253,8 +266,29 @@ const Home: React.FC = () => {
                                 </svg>
                                 Guides & Docs
                             </Link>
-                            <DonateButton className="btn-lg" />
+                            {/* Pro users manage (or extend) their plan on the Account page instead */}
+                            {proStatus.isPro ? (
+                                <Link to="/login" className="btn btn-secondary btn-lg" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    {proStatus.isLifetime ? 'Pro · Lifetime' : 'Pro Active'}
+                                </Link>
+                            ) : !proStatus.loading && (
+                                <DonateButton className="btn-lg" />
+                            )}
                         </div>
+
+                        <p className="hero-store-note">
+                            Rather not download a ZIP? Install it from the{' '}
+                            <a
+                                href={CHROME_WEB_STORE_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => logEvent('open_chrome_web_store', { method: 'home_hero' })}
+                            >Chrome Web Store</a>
+                            : just search <strong>Aullevo</strong>.
+                        </p>
 
                         <HeroShortcut onTrigger={runHeroDemo} />
 
@@ -274,6 +308,15 @@ const Home: React.FC = () => {
                                     <path d="M8 11V7a4 4 0 0 1 8 0v4" />
                                 </svg>
                                 Encrypted on your device
+                            </span>
+                            <span className="trust-bar__sep" aria-hidden="true" />
+                            <span className="trust-bar__item">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <line x1="2" y1="12" x2="22" y2="12" />
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                </svg>
+                                34 languages
                             </span>
                             <span className="trust-bar__sep" aria-hidden="true" />
                             <span className="trust-bar__item">
@@ -837,7 +880,7 @@ const Home: React.FC = () => {
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', textAlign: 'left' }}>
                                     <h3 style={{ margin: 0, fontSize: '1.25rem', color: 'var(--text-main)' }}>Privacy You Control</h3>
                                     <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-muted)', lineHeight: '1.6' }}>
-                                        Your profiles are encrypted on your machine. Fields marked SENSITIVE never reach the AI, and you decide which answers Gemini may see.
+                                        Your profiles are encrypted on your machine. Fields marked SENSITIVE never reach the AI, and you decide which answers the AI may see.
                                     </p>
                                 </div>
                             </div>
@@ -868,8 +911,7 @@ const Home: React.FC = () => {
                                     Cons (Limitations)
                                 </h4>
                                 <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>AI Needs a Key:</strong> AI Smart Fill uses your free Gemini API key and adds a few seconds.</li>
-                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Manual Install:</strong> Loaded via Developer Mode until the Chrome Web Store listing is live.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>AI Needs a Key:</strong> AI Smart Fill uses your own API key (Gemini has a free tier) or your own AI server, and adds a few seconds.</li>
                                     <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>CAPTCHAs Stay Manual:</strong> Aullevo never solves or bypasses CAPTCHAs.</li>
                                     <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Unusual Widgets:</strong> Some highly custom inputs may need a manual touch.</li>
                                 </ul>
@@ -929,10 +971,10 @@ const Home: React.FC = () => {
                                     <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8" />
                                 </svg>
                             </div>
-                            <h3>Gemini AI Integration</h3>
+                            <h3>Choose Your AI Provider</h3>
                             <p>
-                                Powered by Google's Gemini models for smart question matching and
-                                answer picking, with SENSITIVE fields never sent.
+                                AI Smart Fill runs on Google Gemini, ChatGPT (OpenAI), Claude (Anthropic), or any
+                                OpenAI-compatible server, with SENSITIVE fields never sent.
                             </p>
                         </div>
 
@@ -987,8 +1029,8 @@ const Home: React.FC = () => {
                             </div>
                             <h3>Local-AI Only Mode</h3>
                             <p>
-                                We're planning a fully local-AI mode running on-device models directly in your browser.
-                                Complete privacy with zero external API/cloud calls.
+                                You can already point AI Smart Fill at a model on your own computer (Ollama, LM Studio). Next: models that
+                                run inside the browser itself, with no setup and zero external API/cloud calls.
                             </p>
                         </div>
 

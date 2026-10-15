@@ -1248,7 +1248,7 @@ const DemoAnimation: React.FC<DemoAnimationProps> = ({ triggerRef }) => {
                                     </div>
                                     <div>
                                         <div className="av-panel__brand-name">Aullevo</div>
-                                        <div className="av-panel__brand-sub">v0.5.0 &bull; Autofill</div>
+                                        <div className="av-panel__brand-sub">v0.6.4 &bull; Autofill</div>
                                     </div>
                                 </div>
                                 <div className="av-panel__actions">
@@ -1496,7 +1496,7 @@ const DemoAnimation: React.FC<DemoAnimationProps> = ({ triggerRef }) => {
                                         </div>
 
                                         <div className="av-card">
-                                            <div className="av-label">Typing Stealth & Speed</div>
+                                            <div className="av-label">Human Typing Speed</div>
                                             <div className="av-speed-presets">
                                                 <button className="av-speed-preset-btn">
                                                     <ZapIcon size={10} />
@@ -1504,11 +1504,11 @@ const DemoAnimation: React.FC<DemoAnimationProps> = ({ triggerRef }) => {
                                                 </button>
                                                 <button className="av-speed-preset-btn active">
                                                     <UsersIcon size={10} />
-                                                    <span>Human (35ms)</span>
+                                                    <span>Natural (25ms)</span>
                                                 </button>
                                                 <button className="av-speed-preset-btn">
                                                     <ShieldIcon size={10} />
-                                                    <span>Stealth (80ms)</span>
+                                                    <span>Slow (65ms)</span>
                                                 </button>
                                             </div>
                                         </div>

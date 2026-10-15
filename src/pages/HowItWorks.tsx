@@ -1,13 +1,15 @@
 import React from 'react';
 import TrustDownloadButton from '../components/TrustDownloadButton';
 import SEO from '../components/SEO';
+import { CHROME_WEB_STORE_URL } from '../config/store';
+import { logEvent } from '../utils/analytics';
 
 const HowItWorks: React.FC = () => {
     const steps = [
         {
             num: "01",
             title: 'Install & Create Your Vault',
-            desc: 'Download Aullevo and load it into Chrome, Brave, or Edge. Open the side panel with Alt+Q and choose a passphrase. It encrypts everything you save, so only you can open your profiles. No account needed to start.',
+            desc: 'Add Aullevo from the Chrome Web Store (just search "Aullevo"), or download the ZIP and load it into Chrome, Brave, or Edge. Open the side panel with Alt+Q and choose a passphrase. It encrypts everything you save, so only you can open your profiles. A guided tour then walks you through every tab, in your browser\'s language (34 are supported). No account needed to start.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -19,7 +21,7 @@ const HowItWorks: React.FC = () => {
         {
             num: "02",
             title: 'Fill In Your Profile',
-            desc: 'Pick a ready-made profile (Job, Academic, Government, and more) and fill in your details once. Add custom fields with context hints, attach documents like your resume, and mark anything private as SENSITIVE.',
+            desc: 'Pick a ready-made profile (Job, Academic, Government, and more) and fill in your details once. In a hurry? Copy the profile as JSON, have an AI chatbot fill it from your resume, and import the result. Add custom fields with context hints, attach documents like your resume, and mark anything private as SENSITIVE.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
@@ -29,7 +31,7 @@ const HowItWorks: React.FC = () => {
         {
             num: "03",
             title: 'Optional: Turn On AI Smart Fill',
-            desc: 'Get a free Gemini API key from Google AI Studio and paste it into Settings. AI handles open-ended and multiple-choice questions keywords cannot. Your key talks directly to Google, and SENSITIVE fields are never sent.',
+            desc: 'Pick an AI provider in Settings (Google Gemini, ChatGPT, Claude, or any OpenAI-compatible server such as OpenRouter, Groq, or Ollama) and paste your API key. Gemini has a free tier. AI handles open-ended and multiple-choice questions keywords cannot. Your key talks directly to the provider you chose, and SENSITIVE fields are never sent.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
@@ -64,8 +66,8 @@ const HowItWorks: React.FC = () => {
         <div className="how-it-works-page animate-fade-in">
             <SEO
                 title="How Aullevo Works | AI-Powered Web Form Filling"
-                description="Install Aullevo, create your encrypted vault, fill in your profile once, and autofill any web form with one shortcut. Optional Gemini AI for harder questions."
-                keywords="how to autofill forms, chrome form filler setup, gemini api key setup, job application autofill, browser extension setup"
+                description="Install Aullevo, create your encrypted vault, fill in your profile once, and autofill any web form with one shortcut. Optional AI (Gemini, ChatGPT, Claude, or your own server) for harder questions."
+                keywords="how to autofill forms, chrome form filler setup, gemini api key setup, openai api key setup, claude api key setup, aullevo chrome web store, job application autofill, browser extension setup"
             />
             {/* Hero Section */}
             <section className="hiw-hero">
@@ -107,11 +109,26 @@ const HowItWorks: React.FC = () => {
                 <div className="container text-center">
                     <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>Ready to stop typing?</h2>
                     <p style={{ fontSize: '1.2rem', marginBottom: '2.5rem', maxWidth: '600px', margin: '0 auto 2.5rem' }}>
-                        Download Aullevo and load it into Chrome, Brave, or Edge in under a minute. Free to start, and Pro when you need more.
+                        Add Aullevo from the Chrome Web Store, or download the ZIP and load it into Chrome, Brave, or Edge in under a minute. Free to start, and Pro when you need more.
                     </p>
-                    <TrustDownloadButton className="btn btn-primary btn-lg">
-                        Download Extension (ZIP)
-                    </TrustDownloadButton>
+                    <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+                        <TrustDownloadButton className="btn btn-primary btn-lg">
+                            Download Extension (ZIP)
+                        </TrustDownloadButton>
+                        <a
+                            href={CHROME_WEB_STORE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-secondary btn-lg"
+                            style={{ textDecoration: 'none' }}
+                            onClick={() => logEvent('open_chrome_web_store', { method: 'how_it_works_cta' })}
+                        >
+                            Chrome Web Store
+                        </a>
+                    </div>
+                    <p style={{ marginTop: '1rem', fontSize: '0.95rem', color: 'var(--text-muted)' }}>
+                        On the Chrome Web Store, just search <strong>Aullevo</strong>.
+                    </p>
                 </div>
             </section>
         </div>

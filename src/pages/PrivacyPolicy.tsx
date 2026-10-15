@@ -13,7 +13,8 @@ const PrivacyPolicy: React.FC = () => {
         { id: 'introduction', label: '1. Introduction & Overview' },
         { id: 'local-first', label: '2. Local-First Design' },
         { id: 'data-stored', label: '3. Data Stored in the Extension' },
-        { id: 'data-transmitted', label: '4. AI Smart Fill & Google Gemini' },
+        { id: 'data-transmitted', label: '4. AI Smart Fill & Your AI Provider' },
+        { id: 'voice-mode', label: '4a. Voice Mode & ElevenLabs' },
         { id: 'account-payments', label: '5. Accounts, Payments & Website' },
         { id: 'permissions', label: '6. Browser Extension Permissions' },
         { id: 'chrome-store-compliance', label: '7. Chrome Web Store Compliance' },
@@ -76,8 +77,8 @@ const PrivacyPolicy: React.FC = () => {
         <div className="legal-page animate-fade-in">
             <SEO
                 title="Privacy Policy | Aullevo - Private, Local-First Form Automation"
-                description="How Aullevo handles your data: profiles encrypted on your device with AES-256-GCM, optional Gemini AI with SENSITIVE-field controls, and exactly what our website, accounts, and payments collect."
-                keywords="aullevo privacy policy, chrome extension privacy, encrypted autofill, gemini form filling privacy, form autofill data security"
+                description="How Aullevo handles your data: profiles encrypted on your device with AES-256-GCM, optional AI (Google Gemini, OpenAI, Anthropic, or your own server) with SENSITIVE-field controls, and exactly what our website, accounts, and payments collect."
+                keywords="aullevo privacy policy, chrome extension privacy, encrypted autofill, gemini form filling privacy, openai form filling privacy, claude form filling privacy, form autofill data security"
                 canonicalPath="/privacy"
             />
 
@@ -96,7 +97,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            Effective Date: September 30, 2026
+                            Effective Date: October 11, 2026
                         </span>
                     </div>
 
@@ -104,10 +105,10 @@ const PrivacyPolicy: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>September 30, 2026</strong></span>
+                            <span>Last Updated: <strong>October 15, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
-                            <span>Product: <strong>Aullevo Browser Extension (v0.6.0) &amp; Aullevo Web</strong></span>
+                            <span>Product: <strong>Aullevo Browser Extension (v0.6.4) &amp; Aullevo Web</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Direct Inquiries: <strong>{CONTACT_EMAIL}</strong></span>
@@ -127,7 +128,7 @@ const PrivacyPolicy: React.FC = () => {
                             </svg>
                         </div>
                         <h3>Encrypted on Your Device</h3>
-                        <p>Your profiles, documents, and Gemini API key are encrypted with your own passphrase (AES-256-GCM) and stored only in your browser. They are never uploaded to Aullevo.</p>
+                        <p>Your profiles, documents, and AI provider and ElevenLabs API keys are encrypted with your own passphrase (AES-256-GCM) and stored only in your browser. They are never uploaded to Aullevo.</p>
                     </div>
 
                     <div className="legal-summary-card">
@@ -137,7 +138,7 @@ const PrivacyPolicy: React.FC = () => {
                             </svg>
                         </div>
                         <h3>AI Is Optional &amp; Controlled</h3>
-                        <p>AI Smart Fill is off by default. When on, Google Gemini receives the form's questions and your field labels, plus values only from fields you mark AI SAFE and the AI Memories you enable. SENSITIVE values are never sent.</p>
+                        <p>AI Smart Fill is off by default. When on, the AI provider you choose (Google Gemini, OpenAI, Anthropic, or your own server) receives the form's questions and your field labels, plus values only from fields you mark AI SAFE and the AI Memories you enable. SENSITIVE values are never sent.</p>
                     </div>
 
                     <div className="legal-summary-card">
@@ -209,7 +210,7 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Single Purpose Commitment</h4>
-                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell data, show ads, or build advertising profiles.</p>
+                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell data or build advertising profiles from it. The extension never shows ads; Free users may choose to watch a short ad on our website to unlock features for a few hours (Section 12).</p>
                                 </div>
                             </div>
                         </section>
@@ -226,9 +227,10 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li><strong>Your profile data stays on your device.</strong> Profiles, custom fields, and documents are stored in your browser's extension storage (<code>chrome.storage.local</code>), encrypted with your passphrase.</li>
                                 <li><strong>No server copy of your profiles.</strong> We do not operate any database that stores your profiles, documents, form answers, or browsing activity.</li>
+                                <li><strong>Each account's data is kept apart.</strong> If more than one account uses Aullevo in the same browser, each gets its own separately encrypted profiles, documents, API keys, AI Memories, and link queue. Switching accounts locks the previous one, and no account can see another's data. Display settings belong to the browser; Free-plan ad unlocks belong to your account (see Section 5).</li>
                                 <li><strong>Matching happens locally.</strong> The engine that matches your saved fields to form questions runs inside your browser and works offline.</li>
                                 <li><strong>AI is optional.</strong> Nothing is sent to an AI service unless you turn on AI Smart Fill (see Section 4).</li>
-                                <li><strong>You decide who submits.</strong> By default you submit every form yourself. If you turn on <strong>Auto-Pagination</strong> (Pro), Aullevo clicks Next / Continue and <strong>presses Submit on the last page for you</strong>, which sends your answers to that website under its own privacy policy. It pauses instead when a required field is empty or the form shows an error it can't fix.</li>
+                                <li><strong>You decide who submits.</strong> By default you submit every form yourself. If you turn on <strong>Auto-Pagination</strong> (Pro, or Free with an ad unlock), Aullevo clicks Next / Continue and <strong>presses Submit on the last page for you</strong>, which sends your answers to that website under its own privacy policy. It pauses instead when a required field is empty or the form shows an error it can't fix.</li>
                             </ul>
                         </section>
 
@@ -247,7 +249,7 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Encrypted Vault</h4>
-                                    <p>Your profiles, documents, and API key are encrypted with AES-256-GCM using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored. If you forget it, the data cannot be recovered, by you or by us.</p>
+                                    <p>Your profiles, documents, and API keys are encrypted with AES-256-GCM using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored. If you forget it, the data cannot be recovered, by you or by us.</p>
                                 </div>
                             </div>
 
@@ -279,9 +281,15 @@ const PrivacyPolicy: React.FC = () => {
                                             <td><strong>NO</strong>, only attached to forms you fill</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Gemini API Key</strong><br />(Optional, your own key)</td>
+                                            <td><strong>AI Provider API Keys</strong><br />(Optional, your own keys: one each for Google Gemini, OpenAI, Anthropic, or an OpenAI-compatible server)</td>
                                             <td>Inside the encrypted vault</td>
-                                            <td>AES-256-GCM; sent only to Google's Gemini API</td>
+                                            <td>AES-256-GCM; each key is sent only to its own provider</td>
+                                            <td><strong>NO</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ElevenLabs API Key</strong><br />(Optional, your own key, for Voice mode)</td>
+                                            <td>Inside the encrypted vault</td>
+                                            <td>AES-256-GCM; sent only to ElevenLabs</td>
                                             <td><strong>NO</strong></td>
                                         </tr>
                                         <tr>
@@ -291,7 +299,7 @@ const PrivacyPolicy: React.FC = () => {
                                             <td><strong>NO</strong></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Settings &amp; Link Queue</strong><br />(Theme, typing speed, AI toggle, Auto-Pagination toggle, floating button, Multi-link URLs, weekly AI-fill counter)</td>
+                                            <td><strong>Settings &amp; Link Queue</strong><br />(Theme, language, typing speed, AI toggle, chosen AI provider, model, and custom server address, Auto-Pagination toggle, floating button, guided-tour progress, Voice mode preferences such as voice language and chosen voice, Multi-link URLs, the JSON-import counter, and a copy of your account's ad unlocks with the extension's sign-in token for them)</td>
                                             <td><code>chrome.storage.local</code></td>
                                             <td>Stored unencrypted (no profile data)</td>
                                             <td><strong>NO</strong></td>
@@ -300,7 +308,7 @@ const PrivacyPolicy: React.FC = () => {
                                             <td><strong>AI Memories</strong><br />(Optional short notes you add for AI Smart Fill, e.g. "Work style: remote only")</td>
                                             <td><code>chrome.storage.local</code></td>
                                             <td>Stored unencrypted; don't add passwords or ID numbers</td>
-                                            <td><strong>NO</strong> (enabled ones go to Google Gemini when AI Smart Fill is on)</td>
+                                            <td><strong>NO</strong> (enabled ones go to your selected AI provider when AI Smart Fill is on)</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Account Snapshot</strong><br />(Only if you connect an account: name, email, photo, account ID, plan, plan expiry)</td>
@@ -317,7 +325,7 @@ const PrivacyPolicy: React.FC = () => {
                         <section id="data-transmitted" className="legal-section">
                             <h2>
                                 <span className="section-num">4</span>
-                                AI Smart Fill &amp; Google Gemini
+                                AI Smart Fill &amp; Your AI Provider
                             </h2>
 
                             <div className="legal-callout callout-info">
@@ -330,30 +338,35 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Off by Default</h4>
-                                    <p>AI Smart Fill only runs if you turn it on and add your own Gemini API key. Requests go directly from your browser to Google's Gemini API; they do not pass through Aullevo servers.</p>
+                                    <p>AI Smart Fill only runs if you turn it on and set up an AI provider with your own API key (or a custom server's address). Requests go directly from your browser to that provider; they do not pass through Aullevo servers.</p>
                                 </div>
                             </div>
 
                             <p>
+                                You choose which AI provider runs AI Smart Fill in Settings: <strong>Google Gemini</strong>, <strong>OpenAI</strong> (ChatGPT models), <strong>Anthropic</strong> (Claude models), or a <strong>custom server</strong> that uses the OpenAI-compatible API (for example OpenRouter, Groq, or a model running on your own computer). <strong>Only the provider you have selected receives data.</strong>
+                            </p>
+                            <p>
                                 Every field in your profile has a <strong>SENSITIVE / AI SAFE</strong> setting. Email, phone, address, ID numbers, and medical and financial fields start as SENSITIVE; you can change any field at any time.
                             </p>
 
-                            <h3>What IS Sent to Gemini (only when AI Smart Fill is on):</h3>
+                            <h3>What IS Sent to Your AI Provider (only when AI Smart Fill is on):</h3>
                             <ul>
                                 <li>The text of the form's questions and their answer options, plus a short note on the format an input expects (for example &quot;whole number only&quot;)</li>
+                                <li>The helper text the form shows with each question (its description, example, placeholder text, and any error message currently shown), so answers follow the form's instructions (for example &quot;Format: Surname, Given Names&quot;)</li>
+                                <li>For checkbox questions, which options Aullevo already ticked from AI SAFE fields</li>
                                 <li>The labels and context hints of your enabled profile fields</li>
                                 <li>The <strong>values</strong> of enabled fields marked <strong>AI SAFE</strong> (for example your name or skills), so the AI can choose better answers</li>
                                 <li>The title and content of your <strong>enabled AI Memories</strong></li>
                                 <li>When Auto-Pagination asks the AI to fix an answer a form rejected: the form's error message, and the rejected answer <strong>only if</strong> the AI wrote it or it came from an AI SAFE field</li>
                             </ul>
 
-                            <h3>What is NEVER Sent to Gemini:</h3>
+                            <h3>What is NEVER Sent to Your AI Provider:</h3>
                             <ul>
-                                <li>Values of fields marked SENSITIVE</li>
-                                <li>Values a website filled in by itself</li>
+                                <li>Values of fields marked SENSITIVE, including which checkbox options were ticked from them</li>
+                                <li>Values a website filled in by itself, including checkboxes the website ticked</li>
                                 <li>Your uploaded documents</li>
                                 <li>Your passphrase or encryption key</li>
-                                <li>Your browsing history, cookies, or other page content beyond the form's questions</li>
+                                <li>Your browsing history, cookies, or other page content beyond the form's questions and their helper text</li>
                             </ul>
 
                             <div className="legal-callout callout-success">
@@ -364,13 +377,48 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Two-Stage Matching</h4>
-                                    <p>Stage 1: Gemini replies with <em>which</em> of your fields answers each question (e.g. <code>question_3 → email</code>), or picks an option from the list.<br />
-                                        Stage 2: Your browser looks up the real value locally and fills the form, so SENSITIVE values never enter the AI request.</p>
+                                    <p>Stage 1: The AI replies with <em>which</em> of your fields answers each question (e.g. <code>question_3 → email</code>), or picks an option from the list.<br />
+                                        Stage 2: Your browser looks up the real value locally and fills the form, so SENSITIVE values never enter the AI request.<br />
+                                        When a form wants your details in a specific format (e.g. &quot;LAST NAME, First Name&quot;), the AI returns only a pattern such as <code>{'{lastName|upper}, {firstName}'}</code>, and your browser fills in the real values.</p>
                                 </div>
                             </div>
 
                             <p>
-                                Google processes these requests under its own terms: the <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="legal-link">Gemini API Terms</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Google Privacy Policy</a>. Depending on your Google account and API tier, Google's terms may allow it to use submitted data to improve its services. Keep anything you don't want shared marked SENSITIVE, or leave AI Smart Fill off.
+                                Each provider processes these requests under its own terms and privacy policy:
+                            </p>
+                            <ul>
+                                <li><strong>Google Gemini:</strong> <a href="https://ai.google.dev/gemini-api/terms" target="_blank" rel="noopener noreferrer" className="legal-link">Gemini API Terms</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Google Privacy Policy</a>. Depending on your Google account and API tier, Google's terms may allow it to use submitted data to improve its services.</li>
+                                <li><strong>OpenAI:</strong> <a href="https://openai.com/policies/business-terms" target="_blank" rel="noopener noreferrer" className="legal-link">Business Terms</a> and <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="legal-link">Privacy Policy</a>.</li>
+                                <li><strong>Anthropic:</strong> <a href="https://www.anthropic.com/legal/commercial-terms" target="_blank" rel="noopener noreferrer" className="legal-link">Commercial Terms</a> and <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Privacy Policy</a>.</li>
+                                <li><strong>A custom server:</strong> whoever operates that server (you, if it runs on your own computer) receives the data under their own terms.</li>
+                            </ul>
+                            <p>
+                                Keep anything you don't want shared marked SENSITIVE, or leave AI Smart Fill off.
+                            </p>
+
+                            <h3>Voice Mode and Your AI Provider</h3>
+                            <p>
+                                If your selected AI provider is set up (its API key, or a custom server's address), Voice mode uses it to understand each spoken command and which question on the page you mean (for example &quot;fill my birthday&quot;, &quot;the first question&quot; or &quot;answer the gym question with…&quot;). Only &quot;stop&quot;, &quot;stop talking&quot;, &quot;end conversation&quot; and &quot;mute&quot; are handled without it. For each command it sends <strong>what you said</strong>, the names of your profiles, and the form's question texts with their answer options and state (answered or empty, on screen, last clicked). Without one, built-in rules decide instead. It does not send your saved field values. If you say a value aloud (for example &quot;set my phone to 0917…&quot;), that sentence is part of what you said.
+                            </p>
+                        </section>
+
+                        {/* 4a. Voice Mode */}
+                        <section id="voice-mode" className="legal-section">
+                            <h2>
+                                <span className="section-num">4a</span>
+                                Voice Mode &amp; ElevenLabs
+                            </h2>
+                            <p>
+                                Voice mode is <strong>optional and off by default</strong>. It lets you talk to Aullevo (for example &quot;fill the email&quot; or &quot;fill the first question&quot;) and hear its replies. It uses ElevenLabs with the API key you provide, and requests go directly from your browser to ElevenLabs, not through Aullevo servers.
+                            </p>
+                            <ul>
+                                <li><strong>Microphone:</strong> used only after you tap the microphone button, and only while Aullevo is listening (one command, or until you end a live conversation). Chrome asks your permission first. Aullevo does not keep recordings.</li>
+                                <li><strong>Sent to ElevenLabs for speech-to-text:</strong> the short audio recording of each spoken command. ElevenLabs returns the text.</li>
+                                <li><strong>Sent to ElevenLabs for the agent's voice:</strong> the text of the agent's replies (for example &quot;Filled Email address.&quot;), which can include the names of form questions.</li>
+                                <li><strong>Never sent to ElevenLabs:</strong> your saved profile values, documents, or other data, unless you say them aloud.</li>
+                            </ul>
+                            <p>
+                                ElevenLabs processes this data under its own <a href="https://elevenlabs.io/terms-of-use" target="_blank" rel="noopener noreferrer" className="legal-link">Terms of Use</a> and <a href="https://elevenlabs.io/privacy-policy" target="_blank" rel="noopener noreferrer" className="legal-link">Privacy Policy</a>. To stop using it, switch back to the classic view or remove your ElevenLabs key in Voice settings.
                             </p>
                         </section>
 
@@ -388,6 +436,7 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li>When you sign in with Google, Firebase Authentication (operated by Google) provides us your <strong>name, email address, profile photo, and account ID</strong>.</li>
                                 <li>We store an account record in our Firebase database containing that information, the date you joined, and your <strong>plan status and plan expiry date</strong>.</li>
+                                <li><strong>Ad unlocks (Free plan):</strong> when you watch a short ad on our website to unlock a feature, we store on your account which feature is unlocked, until when, how many uses are left (for example AI fills or voice sessions), how many ads you watched today, and timestamps. This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import, or voice session) so the limits work across your devices.</li>
                                 <li>When you connect the extension, Aullevo Web gives it a short-lived sign-in token so the extension can read <em>your own</em> account record and confirm your plan. Your profiles are never uploaded.</li>
                             </ul>
 
@@ -395,7 +444,7 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li>Payments are processed by <strong>PayPal</strong> (PayPal and cards) and <strong>PayMongo</strong> (GCash, Maya, QR Ph, and bank apps). We never see or store your card or wallet details.</li>
                                 <li>After a payment, we store a <strong>payment record</strong> so we can verify it and activate Pro: your account ID and email, the payment method, the transaction or Payment ID, the PayPal account email used to pay (for PayPal), the amount and currency, and the time.</li>
-                                <li>GCash, Maya, and QR Ph payments are confirmed directly with PayMongo, which activates Pro on your account automatically. PayPal payments are checked in our PayPal dashboard before we activate Pro. Pro lasts 30 days per payment and does not renew automatically.</li>
+                                <li>GCash, Maya, and QR Ph payments are confirmed directly with PayMongo, which activates Pro on your account automatically. PayPal payments are checked in our PayPal dashboard before we activate Pro. Depending on the plan you choose, a payment adds 30 days or 365 days of Pro, or gives lifetime Pro; nothing renews automatically. We also store which plan you bought.</li>
                             </ul>
 
                             <h3>Reviews</h3>
@@ -433,11 +482,15 @@ const PrivacyPolicy: React.FC = () => {
                                         </tr>
                                         <tr>
                                             <td><code>scripting</code></td>
-                                            <td>Re-activates Aullevo in tabs that were already open when you install or update the extension, so you don't have to refresh every page. During Auto-Pagination it also checks which frame of the page holds the form. It never runs code from outside the extension.</td>
+                                            <td>Re-activates Aullevo in tabs that were already open when you install or update the extension, so you don't have to refresh every page. When you fill a form, it checks which frames of the page hold form fields so forms inside embedded frames are filled too, and reconnects Aullevo to a frame that lost its connection. It never runs code from outside the extension.</td>
                                         </tr>
                                         <tr>
                                             <td><code>sidePanel</code></td>
                                             <td>Shows Aullevo's interface in the browser's native side panel.</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Microphone (asked by Chrome, not a manifest permission)</td>
+                                            <td>Only for Voice mode, and only after you tap the microphone button. Chrome shows its own permission prompt the first time.</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -464,9 +517,9 @@ const PrivacyPolicy: React.FC = () => {
                             <ol>
                                 <li><strong>Single Purpose:</strong> Aullevo exists to fill web forms with information you save.</li>
                                 <li><strong>No Sale of Data:</strong> We do not sell, rent, or trade user data to anyone.</li>
-                                <li><strong>Limited Transfers:</strong> Data is only shared with Google Gemini (if you turn on AI Smart Fill), Google Firebase (account and plan), and PayPal or PayMongo (payments), as described in this policy.</li>
+                                <li><strong>Limited Transfers:</strong> Data is only shared with the AI provider you select (Google Gemini, OpenAI, Anthropic, or a custom server you choose) if you turn on AI Smart Fill or use Voice mode with it set up, ElevenLabs (if you use Voice mode), Google Firebase (account, plan, and ad unlocks), PayPal or PayMongo (payments), and, on our website's ad page only, Google's ad network, as described in this policy.</li>
                                 <li><strong>No Creditworthiness or Lending Use:</strong> Data is never used to assess credit or lending eligibility.</li>
-                                <li><strong>No Advertising or Profiling:</strong> We do not build advertising profiles or track you across websites through the extension.</li>
+                                <li><strong>No Advertising Profiles from Your Data:</strong> We do not build advertising profiles or track you across websites through the extension. Profile data and form answers are never shared with ad networks; the only ads are the optional ones you choose to watch on our website's ad page.</li>
                             </ol>
                         </section>
 
@@ -499,8 +552,9 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li><strong>Edit or Delete:</strong> Change or remove any field, profile, document, or queued link from the extension at any time.</li>
                                 <li><strong>Export:</strong> Pro users can copy or download their profile fields as a JSON file from the extension.</li>
-                                <li><strong>Reset Everything:</strong> On the unlock screen, &quot;Forgot passphrase? Reset Aullevo&quot; permanently deletes your encrypted vault.</li>
-                                <li><strong>Disconnect:</strong> The Disconnect button in Settings removes the account snapshot from the extension.</li>
+                                <li><strong>Reset Everything:</strong> On the unlock screen, &quot;Forgot passphrase?&quot; permanently deletes the encrypted vault, AI Memories, and link queue of the account in use (or of your local profiles when no account is connected). Other accounts on the device are not affected.</li>
+                                <li><strong>Disconnect:</strong> The Disconnect button in Settings removes the account snapshot from the extension and locks that account's data.</li>
+                                <li><strong>Other Accounts:</strong> Settings → Data on this device lists every account with Aullevo data in this browser and lets you permanently delete the ones you no longer use.</li>
                                 <li><strong>Uninstall:</strong> Uninstalling Aullevo deletes all data the extension stored in your browser. We hold no copy of your profiles.</li>
                                 <li><strong>Account &amp; Payment Records:</strong> Email us at {CONTACT_EMAIL} to access or delete your account record. We may keep payment records as long as needed for accounting, refunds, and legal obligations.</li>
                             </ul>
@@ -516,9 +570,9 @@ const PrivacyPolicy: React.FC = () => {
                                 We use industry-standard safeguards to protect your information:
                             </p>
                             <ul>
-                                <li><strong>AES-256-GCM Vault Encryption:</strong> Profile data, documents, and your API key are encrypted before being written to storage, with a fresh random value for every save.</li>
+                                <li><strong>AES-256-GCM Vault Encryption:</strong> Profile data, documents, and your API keys are encrypted before being written to storage, with a fresh random value for every save.</li>
                                 <li><strong>Passphrase-Derived Key:</strong> PBKDF2-SHA256 with 600,000 iterations turns your passphrase into the encryption key. The unlocked key lives only in memory and is never readable by websites.</li>
-                                <li><strong>HTTPS in Transit:</strong> Connections to Google Gemini, Firebase, PayPal, and PayMongo are encrypted with HTTPS.</li>
+                                <li><strong>HTTPS in Transit:</strong> Connections to Google Gemini, OpenAI, Anthropic, ElevenLabs, Firebase, PayPal, and PayMongo are encrypted with HTTPS. A custom AI server uses whatever address you enter (a local server on your own computer may use plain HTTP).</li>
                                 <li><strong>Protected Plan Status:</strong> Database rules prevent anyone from changing their own plan. Pro is only activated by Aullevo after a payment is verified.</li>
                                 <li><strong>No Remote Code:</strong> The extension runs only code packaged with it, as required by Manifest V3.</li>
                             </ul>
@@ -548,8 +602,28 @@ const PrivacyPolicy: React.FC = () => {
                                     <tbody>
                                         <tr>
                                             <td><strong>Google Gemini API</strong></td>
-                                            <td>AI Smart Fill (optional, uses your own API key)</td>
+                                            <td>AI Smart Fill and Voice mode understanding, if you select Gemini (optional, uses your own API key)</td>
                                             <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Google Privacy Policy</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>OpenAI API</strong></td>
+                                            <td>AI Smart Fill and Voice mode understanding, if you select OpenAI (optional, uses your own API key)</td>
+                                            <td><a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener noreferrer" className="legal-link">OpenAI Privacy Policy</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Anthropic API</strong></td>
+                                            <td>AI Smart Fill and Voice mode understanding, if you select Claude (optional, uses your own API key)</td>
+                                            <td><a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Anthropic Privacy Policy</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Custom AI server</strong></td>
+                                            <td>AI Smart Fill and Voice mode understanding, if you enter an OpenAI-compatible server (for example OpenRouter, Groq, or Ollama)</td>
+                                            <td>That server operator's policy</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ElevenLabs API</strong></td>
+                                            <td>Voice mode speech-to-text and the agent's voice (optional, uses your own API key)</td>
+                                            <td><a href="https://elevenlabs.io/privacy-policy" target="_blank" rel="noopener noreferrer" className="legal-link">ElevenLabs Privacy Policy</a></td>
                                         </tr>
                                         <tr>
                                             <td><strong>Google Firebase</strong></td>
@@ -568,13 +642,18 @@ const PrivacyPolicy: React.FC = () => {
                                         </tr>
                                         <tr>
                                             <td><strong>Vercel</strong></td>
-                                            <td>Website hosting and downloads</td>
+                                            <td>Website hosting, downloads, and Web Analytics (cookie-free visit statistics, website only)</td>
                                             <td><a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer" className="legal-link">Vercel Privacy Policy</a></td>
                                         </tr>
                                         <tr>
                                             <td><strong>Google Tag Manager / Google Analytics</strong></td>
                                             <td>Website visit and download statistics (website only)</td>
                                             <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Google Privacy Policy</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Google Ad Manager / Google AdSense</strong></td>
+                                            <td>Optional rewarded ads on the website's /rewards page (Free-plan unlocks). Google may use cookies or similar identifiers to show and measure ads, subject to your ad and consent choices.</td>
+                                            <td><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="legal-link">How Google uses data in ads</a></td>
                                         </tr>
                                         <tr>
                                             <td><strong>Google Fonts</strong></td>
@@ -596,10 +675,13 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>The Aullevo extension does not use cookies, analytics, or tracking.</strong> It uses only the browser's extension storage described in Section 3.
                             </p>
                             <p>
-                                <strong>Our website (aullevo-web.vercel.app)</strong> uses Google Tag Manager to measure visits, page views, and extension downloads. These Google tools may set cookies or similar identifiers. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
+                                <strong>Our website (aullevo-web.vercel.app)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
                             </p>
                             <p>
-                                We do not use advertising cookies, Facebook Pixel, or cross-site advertising trackers.
+                                <strong>Rewarded ads (website only):</strong> When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Google may set cookies or use similar identifiers on that page to show the ad, limit how often you see it, measure it, and prevent fraud, and, where you have agreed to it, to personalize ads. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can manage Google ad personalization at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">adssettings.google.com</a>. Ads are not loaded on any other page, and never inside the extension.
+                            </p>
+                            <p>
+                                We do not use Facebook Pixel or other cross-site advertising trackers, and we never share your profile data or form answers with ad networks.
                             </p>
                         </section>
 

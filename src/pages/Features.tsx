@@ -128,6 +128,47 @@ const NoteIcon = () => (
     </svg>
 );
 
+const GlobeIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+);
+
+const CompassIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+    </svg>
+);
+
+const MicIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="9" y="2" width="6" height="12" rx="3" />
+        <path d="M5 10a7 7 0 0 0 14 0" />
+        <line x1="12" y1="17" x2="12" y2="22" />
+    </svg>
+);
+
+const TargetIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <circle cx="12" cy="12" r="5" />
+        <circle cx="12" cy="12" r="1.5" />
+    </svg>
+);
+
+const WaveIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="4" y1="10" x2="4" y2="14" />
+        <line x1="8" y1="6" x2="8" y2="18" />
+        <line x1="12" y1="3" x2="12" y2="21" />
+        <line x1="16" y1="7" x2="16" y2="17" />
+        <line x1="20" y1="10" x2="20" y2="14" />
+    </svg>
+);
+
 const featuresList = [
     // Form Engine
     {
@@ -180,11 +221,11 @@ const featuresList = [
     },
     // AI
     {
-        title: 'Gemini AI Smart Fill',
+        title: 'AI Smart Fill, Your Choice of AI',
         badge: 'AI',
         color: 'blue',
         icon: <BrainIcon />,
-        desc: 'For questions keywords cannot answer, Google Gemini picks the best multiple-choice option, combines fields (like First + Last Name into Full Name), and drafts short answers. Uses your own free Gemini API key.',
+        desc: 'For questions keywords cannot answer, the AI you choose (Google Gemini, ChatGPT, Claude, or any OpenAI-compatible server such as OpenRouter, Groq, or Ollama) picks the best multiple-choice option (several for checkbox questions), combines fields (like First + Last Name into Full Name), follows format instructions such as "Surname, Given Names", and drafts short answers. Uses your own API key; Gemini has a free tier.',
         pill: 'Free: 10 / week · Pro: Unlimited'
     },
     {
@@ -192,7 +233,7 @@ const featuresList = [
         badge: 'AI',
         color: 'yellow',
         icon: <ShieldAlertIcon />,
-        desc: 'Mark any field SENSITIVE and its value never reaches the AI, only its label. Gemini replies with which of your fields to use, and the real value is filled in locally on your device.',
+        desc: 'Mark any field SENSITIVE and its value never reaches the AI, only its label. The AI replies with which of your fields to use, and the real value is filled in locally on your device.',
         pill: 'Sensitive = Never Sent'
     },
     {
@@ -211,6 +252,31 @@ const featuresList = [
         desc: 'Save short facts about yourself, like "Prefers remote roles" or "Available from March", and the AI uses them for open-ended questions your profile fields don\'t cover. Switch any memory off at any time.',
         pill: 'Your Context for AI'
     },
+    // Voice
+    {
+        title: 'Voice Mode: Talk to Aullevo',
+        badge: 'Voice',
+        color: 'blue',
+        icon: <MicIcon />,
+        desc: 'Switch the side panel to the agent orb and just say it: "fill this page", "highlight the fields", "use my job profile", "create a profile called Work", "set my phone to…", "fill my links", "open settings". The agent answers in a natural ElevenLabs voice. English and Tagalog.',
+        pill: 'Pro · Your ElevenLabs Key'
+    },
+    {
+        title: 'Fill Exactly What You Name',
+        badge: 'Voice',
+        color: 'yellow',
+        icon: <TargetIcon />,
+        desc: 'Say "fill the email", "fill this one", "fill my birthday" or "the one about market risk", and only that question is filled. Your AI provider reads what you said with the form\'s questions (never your saved values) and picks the exact ones. Dictate your own answer too: "answer the gym question with: I jog every morning".',
+        pill: 'Pro · Targeted Fills'
+    },
+    {
+        title: 'Live, Hands-Free Conversation',
+        badge: 'Voice',
+        color: 'blue',
+        icon: <WaveIcon />,
+        desc: 'Turn on Live conversation and give one command after another without touching the mouse. Say "stop talking" to cut the agent off, "stop" to cancel a fill, "next" or "submit" to move on, and "end conversation" when you\'re done.',
+        pill: 'Pro · Interrupt Anytime'
+    },
     // Profiles & Files
     {
         title: '7 Ready-Made Profiles, Plus Your Own',
@@ -218,7 +284,7 @@ const featuresList = [
         color: 'yellow',
         icon: <UserGroupIcon />,
         desc: 'Start from Job, Medical, Government, Survey, Academic, Financial, or Custom profiles, or create your own. Add unlimited custom fields with context hints that help matching and AI understand your data.',
-        pill: 'Free: 2 Active · Pro: Unlimited'
+        pill: 'Free: 3 Active (more with a short ad) · Pro: Unlimited'
     },
     {
         title: 'Document Upload into Forms',
@@ -229,12 +295,12 @@ const featuresList = [
         pill: 'Auto-Attach Files'
     },
     {
-        title: 'JSON Import & Export',
-        badge: 'Pro',
+        title: 'JSON Quick Setup',
+        badge: 'Profiles & Files',
         color: 'yellow',
         icon: <RepeatIcon />,
-        desc: 'Back up your profile to a JSON file, move it to another browser, or bulk-import fields from existing data in seconds.',
-        pill: 'Portable Data'
+        desc: 'Copy your profile as JSON, give it to Gemini, Claude, or ChatGPT together with your resume, and paste the filled-in result back. Your whole profile is set up in a minute. Pro adds unlimited imports and a JSON file download for backups.',
+        pill: 'Free: 3 Imports / 2 Weeks · Pro: Unlimited'
     },
     {
         title: 'Auto-Pagination for Multi-Page Forms',
@@ -260,6 +326,31 @@ const featuresList = [
         icon: <FrameIcon />,
         desc: 'Aullevo has no server that stores your profile data. Connecting your Aullevo account only syncs your plan status. There is no tracking or analytics inside the extension.',
         pill: 'Local-First'
+    },
+    {
+        title: 'One Vault per Account',
+        badge: 'Privacy',
+        color: 'blue',
+        icon: <UserGroupIcon />,
+        desc: 'Share a browser with family or teammates? Each Aullevo account gets its own separately encrypted profiles, documents, API key, memories, and link queue. Switching accounts locks the previous one, and Settings → Data on this device removes accounts you no longer use.',
+        pill: 'Accounts Kept Apart'
+    },
+    // Ease of use
+    {
+        title: '34 Languages',
+        badge: 'Ease of Use',
+        color: 'yellow',
+        icon: <GlobeIcon />,
+        desc: 'The whole extension, from the side panel and guided tour to the badges it shows on web pages, follows your browser\'s language automatically. Pick another from the globe button at any time; English is always one click away.',
+        pill: 'Auto-Detects Your Language'
+    },
+    {
+        title: 'Guided Tour',
+        badge: 'Ease of Use',
+        color: 'blue',
+        icon: <CompassIcon />,
+        desc: 'A step-by-step walkthrough of every tab points at each button and explains what it does, and checks whether your keyboard shortcuts are active. It shows again until your first profile has data, and you can replay it from Settings anytime.',
+        pill: 'Learn in 2 Minutes'
     }
 ];
 
@@ -268,8 +359,8 @@ const Features: React.FC = () => {
         <div className="features-page animate-fade-in">
             <SEO
                 title="Aullevo Features | AI Form Filler for Chrome, Brave & Edge"
-                description="Everything Aullevo does: fills nearly any web form, Shadow DOM and iframe support, Gemini AI Smart Fill with privacy controls, multi-profile vault, document upload into forms, auto-pagination for multi-page forms, and passphrase encryption."
-                keywords="ai form filler features, chrome autofill extension, gemini form filling, job application autofill, encrypted profile vault, shadow dom autofill"
+                description="Everything Aullevo does: fills nearly any web form, Shadow DOM and iframe support, AI Smart Fill with Gemini, ChatGPT, Claude or your own server and privacy controls, Voice mode with targeted fills, multi-profile vault, document upload into forms, auto-pagination for multi-page forms, passphrase encryption, a guided tour, and 34 languages."
+                keywords="ai form filler features, chrome autofill extension, gemini form filling, chatgpt form filling, claude form filling, voice form filling, voice autofill assistant, job application autofill, encrypted profile vault, shadow dom autofill, multilingual autofill extension"
             />
             
             {/* Features Hero */}
@@ -282,7 +373,7 @@ const Features: React.FC = () => {
                             <span className="gradient-text">Keep your data yours.</span>
                         </h1>
                         <p className="hero-subtitle">
-                            Every web form is different. Aullevo combines a fast offline matching engine with optional Gemini AI to fill them, while your profiles stay encrypted on your own device.
+                            Every web form is different. Aullevo combines a fast offline matching engine with optional AI (Gemini, ChatGPT, Claude, or your own server) to fill them, while your profiles stay encrypted on your own device.
                         </p>
                     </div>
                 </div>

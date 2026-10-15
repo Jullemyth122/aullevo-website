@@ -8,11 +8,14 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "setup:payments": "node scripts/setup-payments.mjs"
+    "setup:payments": "node scripts/setup-payments.mjs",
+    "approve:payments": "node scripts/approve-payments.mjs",
+    "test:rewards": "node --test scripts/rewards-core.test.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.8.0",
+    "@vercel/analytics": "^2.0.1",
     "firebase": "^12.12.0",
     "firebase-admin": "^13.10.0",
     "gsap": "^3.14.2",

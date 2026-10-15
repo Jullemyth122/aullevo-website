@@ -6,7 +6,7 @@ const About: React.FC = () => {
         <div className="about-page animate-fade-in">
             <SEO
                 title="About Aullevo | Private, Local-First Form Automation"
-                description="Aullevo's mission is to make repetitive web forms effortless without giving up your privacy. Learn how the encrypted vault, offline matching engine, and privacy-controlled Gemini AI work."
+                description="Aullevo's mission is to make repetitive web forms effortless without giving up your privacy. Learn how the encrypted vault, offline matching engine, and privacy-controlled AI (Gemini, ChatGPT, Claude, or your own server) work."
                 keywords="about aullevo, private autofill, encrypted form filler, local-first browser extension, gemini form filling privacy"
             />
             {/* Minimal hero section */}
@@ -60,7 +60,7 @@ const About: React.FC = () => {
                                     </svg>
                                 </div>
                                 <h3>Smart Matching, Optional AI</h3>
-                                <p>A fast matching engine fills standard fields <strong>offline, with no AI at all</strong>. When you turn on AI Smart Fill, Google Gemini helps with multiple-choice and open-ended questions, and <strong>you decide which of your answers it may see.</strong></p>
+                                <p>A fast matching engine fills standard fields <strong>offline, with no AI at all</strong>. When you turn on AI Smart Fill, the AI provider you pick (Google Gemini, ChatGPT, Claude, or your own OpenAI-compatible server) helps with multiple-choice and open-ended questions, and <strong>you decide which of your answers it may see.</strong></p>
                             </div>
                             <div className="solution-card">
                                 <div className="solution-icon yellow">
@@ -81,7 +81,7 @@ const About: React.FC = () => {
                 <div className="container">
                     <div className="text-center mb-12">
                         <h2 className="section-title">Privacy by Design</h2>
-                        <p className="section-description">AI Smart Fill is off by default. When you turn it on, here is exactly what Google Gemini can and cannot see.</p>
+                        <p className="section-description">AI Smart Fill is off by default. When you turn it on, here is exactly what your chosen AI provider can and cannot see.</p>
                     </div>
 
                     <div className="privacy-comparison">
@@ -100,7 +100,7 @@ const About: React.FC = () => {
                         <div className="privacy-card positive">
                             <div className="privacy-header">
                                 <div className="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg></div>
-                                <h3>Sent to Gemini (AI Smart Fill Only)</h3>
+                                <h3>Sent to Your AI Provider (AI Smart Fill Only)</h3>
                             </div>
                             <ul>
                                 <li>The form's questions and answer options</li>
@@ -237,7 +237,7 @@ const About: React.FC = () => {
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
                                                 <strong className="arch-spec-label">Privacy-Filtered AI Prompt:</strong>{' '}
-                                                Before calling Gemini, values of SENSITIVE fields are stripped out. Gemini replies with <em>which</em> of your fields answers each question, and the real value is filled in locally.
+                                                Before calling the AI, values of SENSITIVE fields are stripped out. The AI replies with <em>which</em> of your fields answers each question, and the real value is filled in locally.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
@@ -251,7 +251,7 @@ const About: React.FC = () => {
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
                                                 <strong className="arch-spec-label">Plan Limits:</strong>{' '}
-                                                Free includes 10 AI fills per week (reset every Monday). Pro removes the limit.
+                                                Free users unlock AI fills by watching a short ad (6 fills for 2 hours per ad). Pro removes the limit, with no ads.
                                             </div>
                                         </li>
                                     </ul>
@@ -279,7 +279,7 @@ const About: React.FC = () => {
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
                                                 <strong className="arch-spec-label">Passphrase Encryption:</strong>{' '}
-                                                Profiles, documents, and your Gemini key are encrypted with <strong>AES-256-GCM</strong> using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored.
+                                                Profiles, documents, and your AI provider keys are encrypted with <strong>AES-256-GCM</strong> using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SEO from '../components/SEO';
 import { logEvent } from '../utils/analytics';
+import { PAYPAL_ENABLED } from '../config/plans';
+import { CHROME_WEB_STORE_URL } from '../config/store';
 
 
 const Documentation: React.FC = () => {
     const [activeSection, setActiveSection] = useState('what-is-aullevo');
-    const [installMethod, setInstallMethod] = useState<'standard' | 'developer'>('standard');
+    const [installMethod, setInstallMethod] = useState<'standard' | 'store' | 'developer'>('standard');
 
     // Smooth scroll and spy functionality
     useEffect(() => {
@@ -41,14 +43,14 @@ const Documentation: React.FC = () => {
         <div className="documentation-page animate-fade-in">
             <SEO
                 title="Aullevo Documentation | Setup, Plans & User Guide"
-                description="The complete Aullevo guide: installation, creating your encrypted vault, profiles and documents, Gemini AI Smart Fill, Free vs Pro plans, privacy, and known limitations."
-                keywords="aullevo guide, form autofill instructions, gemini api key setup, chrome extension install, encrypted autofill, aullevo pro"
+                description="The complete Aullevo guide: installation, creating your encrypted vault, profiles and documents, AI Smart Fill with Gemini, ChatGPT, Claude or your own server, JSON quick setup, the guided tour, 34 languages, Free vs Pro plans, privacy, and known limitations."
+                keywords="aullevo guide, form autofill instructions, gemini api key setup, openai api key setup, claude api key setup, aullevo chrome web store, chrome extension install, encrypted autofill, aullevo pro"
             />
             {/* Docs Header */}
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.5.0</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.4</span>
                     </div>
                     <h1 className="docs-title">User Guide</h1>
                     <p className="docs-subtitle">Everything you need to install, set up, and get the most out of Aullevo.</p>
@@ -75,6 +77,7 @@ const Documentation: React.FC = () => {
                             <h4>Core Concepts</h4>
                             <ul>
                                 <li><a href="#profiles-vault" className={activeSection === 'profiles-vault' ? 'active' : ''} onClick={(e) => scrollTo('profiles-vault', e)}>Profiles & Documents</a></li>
+                                <li><a href="#language-tour" className={activeSection === 'language-tour' ? 'active' : ''} onClick={(e) => scrollTo('language-tour', e)}>Languages & Guided Tour</a></li>
                                 <li><a href="#filling-process" className={activeSection === 'filling-process' ? 'active' : ''} onClick={(e) => scrollTo('filling-process', e)}>How Filling Works</a></li>
                             </ul>
                         </div>
@@ -98,14 +101,14 @@ const Documentation: React.FC = () => {
                     <section id="what-is-aullevo" className="docs-section">
                         <h2>1. What is Aullevo?</h2>
                         <p>
-                            Aullevo is a browser extension for Chrome, Brave, and Edge that fills web forms for you: job applications, surveys, school and government forms, and everyday sign-ups. You save your details once, and Aullevo fills them in with one shortcut using a fast offline matching engine, with optional help from Google's Gemini AI for harder questions.
+                            Aullevo is a browser extension for Chrome, Brave, and Edge that fills web forms for you: job applications, surveys, school and government forms, and everyday sign-ups. You save your details once, and Aullevo fills them in with one shortcut using a fast offline matching engine, with optional AI help for harder questions from the provider you choose: Google Gemini, ChatGPT (OpenAI), Claude (Anthropic), or any OpenAI-compatible server.
                         </p>
                         <div className="docs-note">
                             <div className="note-icon">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>
                             </div>
                             <div className="note-content">
-                                <strong>Privacy First:</strong> Your profiles are encrypted on your device with your own passphrase and never uploaded to Aullevo. AI Smart Fill is optional, uses your own Gemini API key, and never sees fields you mark SENSITIVE.
+                                <strong>Privacy First:</strong> Your profiles are encrypted on your device with your own passphrase and never uploaded to Aullevo. AI Smart Fill is optional, uses your own API key with the AI provider you pick, and never sees fields you mark SENSITIVE.
                             </div>
                         </div>
                     </section>
@@ -172,8 +175,8 @@ const Documentation: React.FC = () => {
                                         <td>Standard fields: names, contact details, addresses, IDs, school and work info.</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>AI Smart Fill (Gemini)</strong></td>
-                                        <td>Reads the questions a keyword can't solve, picks the best multiple-choice option, combines fields (First + Last → Full Name), and drafts short answers.</td>
+                                        <td><strong>AI Smart Fill (Gemini, ChatGPT, Claude, or your own server)</strong></td>
+                                        <td>Reads the questions a keyword can't solve, picks the best multiple-choice option (several for checkbox questions), combines fields (First + Last → Full Name), follows the form's format instructions (e.g. &quot;Surname, Given Names&quot;), and drafts short answers.</td>
                                         <td><strong>A few extra seconds</strong></td>
                                         <td>Unusual wording, dropdown and radio choices, short open-ended questions.</td>
                                     </tr>
@@ -187,14 +190,14 @@ const Documentation: React.FC = () => {
                         </p>
                         <div className="docs-note" style={{ margin: '1.5rem 0' }}>
                             <div className="note-content">
-                                <strong>How AI Smart Fill stays private:</strong> Aullevo sends Gemini the form's questions and the <strong>labels</strong> of your fields. Values are included only for fields marked <strong>AI SAFE</strong>. Gemini replies with <em>which</em> of your fields answers each question, and the real value is filled in <strong>locally inside your browser</strong>. SENSITIVE values and your documents are never sent.
+                                <strong>How AI Smart Fill stays private:</strong> Aullevo sends your chosen AI provider the form's questions (with their helper text) and the <strong>labels</strong> of your fields. Values are included only for fields marked <strong>AI SAFE</strong>. The AI replies with <em>which</em> of your fields answers each question, and the real value is filled in <strong>locally inside your browser</strong>. SENSITIVE values and your documents are never sent.
                             </div>
                         </div>
 
                         <h3>Coming Soon: Resume Scanner</h3>
                         <div className="docs-note" style={{ margin: '1.5rem 0', borderLeftColor: 'var(--accent-glow)', background: 'var(--bg-badge-live)' }}>
                             <div className="note-content">
-                                ✨ <strong>In development:</strong> Upload a PDF or DOCX resume and have Aullevo pull your details straight into your profile. Until then, you can fill your profile by hand or bulk-import fields with JSON (Pro).
+                                ✨ <strong>In development:</strong> Upload a PDF or DOCX resume and have Aullevo pull your details straight into your profile. Until then, the fastest way is <strong>JSON quick setup</strong>: copy your profile as JSON, ask Gemini, Claude, or ChatGPT to fill it from your resume, and import the result (see <a href="#profiles-vault" className="external-link" onClick={(e) => scrollTo('profiles-vault', e)}>Profiles &amp; Documents</a>).
                             </div>
                         </div>
                     </section>
@@ -202,10 +205,10 @@ const Documentation: React.FC = () => {
                     <section id="free-vs-premium" className="docs-section">
                         <h2>3. Free vs. Pro</h2>
                         <p>
-                            Aullevo is <strong>free to use</strong>: the full form engine, all profile types, the encrypted vault, and Multi-link batch fill are included. AI Smart Fill uses your own free Gemini API key, so there are no AI fees from us.
+                            Aullevo is <strong>free to use</strong>: the full form engine, all profile types, the encrypted vault, and Multi-link batch fill are included. AI Smart Fill uses your own API key with the provider you choose (Gemini has a free tier), so there are no AI fees from us.
                         </p>
                         <p>
-                            <strong>Aullevo Pro</strong> is for people who fill a lot of forms: unlimited AI fills, unlimited active profiles, automatic document uploads, Auto-Pagination for multi-page forms, and more control.
+                            <strong>Aullevo Pro</strong> is for people who fill a lot of forms: unlimited AI fills, unlimited active profiles, automatic document uploads, Auto-Pagination for multi-page forms, Voice mode, and more control.
                         </p>
 
                         <h3>Plan Comparison</h3>
@@ -215,7 +218,7 @@ const Documentation: React.FC = () => {
                                     <tr>
                                         <th>Feature</th>
                                         <th><span className="tier-badge free">Free</span></th>
-                                        <th><span className="tier-badge pro">Pro ($2.50 / 30 days)</span></th>
+                                        <th><span className="tier-badge pro">Pro (from $2.50)</span></th>
                                         <th>What It Means</th>
                                     </tr>
                                 </thead>
@@ -228,13 +231,13 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>AI Smart Fill</strong></td>
-                                        <td>10 fills per week</td>
+                                        <td>6 fills per 1-minute ad (2 hours)</td>
                                         <td><strong>Unlimited</strong></td>
-                                        <td>Uses your own free Gemini API key. Free resets every Monday.</td>
+                                        <td>Uses your own API key (Gemini, OpenAI, or Anthropic) or your own OpenAI-compatible server. Each page the AI helps fill uses one fill.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Active Profiles</strong></td>
-                                        <td>2 at a time</td>
+                                        <td>3 at a time (more for 2 hours with a 30-second ad)</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>All profile types and custom profiles are available on both plans.</td>
                                     </tr>
@@ -246,33 +249,45 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>Auto-Pagination</strong></td>
-                                        <td>—</td>
+                                        <td>4 hours per 1-minute ad</td>
                                         <td><strong>✓ Fill, Next &amp; Submit</strong></td>
                                         <td>Fills every page of a multi-step form and submits it. Pauses when a required field is empty.</td>
                                     </tr>
                                     <tr>
+                                        <td><strong>Voice Mode</strong></td>
+                                        <td>2 sessions per 1-minute ad (2 hours)</td>
+                                        <td><strong>✓ Talk to Fill</strong></td>
+                                        <td>Fill pages or single questions by voice, dictate your own answers, hands-free live conversation.</td>
+                                    </tr>
+                                    <tr>
                                         <td><strong>Typing Speed</strong></td>
-                                        <td>Instant, Natural</td>
+                                        <td>Instant, Natural (+ Slow &amp; Custom for 4 hours with a 20-second ad)</td>
                                         <td><strong>+ Slow &amp; Custom</strong></td>
                                         <td>A slower, human pace for sites that expect real keystrokes.</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>JSON Import &amp; Export</strong></td>
-                                        <td>View only</td>
-                                        <td><strong>✓ Import, Copy &amp; Download</strong></td>
-                                        <td>Back up your profile or bulk-add fields.</td>
+                                        <td><strong>JSON Quick Setup</strong></td>
+                                        <td>Copy &amp; 3 imports every 2 weeks (+10 for 5 hours with a 1-minute ad)</td>
+                                        <td><strong>✓ Unlimited imports + Download</strong></td>
+                                        <td>Set up a profile from your resume with an AI chatbot, or back it up as a <code>.json</code> file (Pro). Free resets every other Monday.</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Custom Fields, AI Memories, Multi-link, Encrypted Vault</strong></td>
+                                        <td><strong>Multi-link Queue</strong></td>
+                                        <td>3 links (10 for 5 hours with a 1-minute ad)</td>
+                                        <td><strong>Unlimited</strong></td>
+                                        <td>Open and fill several applications in one batch.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Custom Fields, AI Memories, Encrypted Vault, Guided Tour, 34 Languages</strong></td>
                                         <td>✓</td>
                                         <td><strong>✓</strong></td>
-                                        <td>Included on every plan.</td>
+                                        <td>Included on every plan. Ads are optional and only shown on the Aullevo website when you choose to unlock a feature; Pro has no ads.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Price</strong></td>
                                         <td>Free</td>
-                                        <td><strong>$2.50 or ₱154.29</strong></td>
-                                        <td>30 days of Pro per payment. No auto-renewal: renew whenever you like.</td>
+                                        <td><strong>$2.50 / 30 days (₱154.29)<br />$20 / year (₱1,234.32)<br />$50 lifetime (₱3,085.80)</strong></td>
+                                        <td>Monthly and yearly add 30 or 365 days per payment, with no auto-renewal: renew whenever you like. Lifetime is paid once and never expires.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -290,7 +305,7 @@ const Documentation: React.FC = () => {
                             <div className="process-step">
                                 <div className="step-point">2</div>
                                 <div className="step-text">
-                                    <strong>Pay with PayPal, Card, GCash, or Maya</strong>
+                                    <strong>{PAYPAL_ENABLED ? 'Pay with PayPal, Card, GCash, or Maya' : 'Pay with GCash, Maya, or QR Ph'}</strong>
                                     GCash, Maya, and QR Ph open a secure PayMongo checkout linked to your account.
                                 </div>
                             </div>
@@ -298,7 +313,7 @@ const Documentation: React.FC = () => {
                                 <div className="step-point">3</div>
                                 <div className="step-text">
                                     <strong>Pro turns on</strong>
-                                    GCash, Maya, and QR Ph activate Pro automatically as soon as PayMongo confirms the payment. PayPal and card payments are verified and activated within 24 hours. Your Account page shows the status.
+                                    GCash, Maya, and QR Ph activate Pro automatically as soon as PayMongo confirms the payment.{PAYPAL_ENABLED && ' PayPal and card payments are verified and activated within 24 hours.'} Your Account page shows the status.
                                 </div>
                             </div>
                             <div className="process-step">
@@ -394,6 +409,7 @@ const Documentation: React.FC = () => {
                                     <li><strong>Works Offline:</strong> Keyword matching needs no internet, account, or AI key.</li>
                                     <li><strong>No Sign-Up on Forms:</strong> Works on any public form link without creating accounts.</li>
                                     <li><strong>Hard-to-Reach Fields:</strong> Fills inputs inside Shadow DOM components and iframes where browser autofill gives up.</li>
+                                    <li><strong>Speaks Your Language:</strong> The whole extension is available in 34 languages and follows your browser automatically.</li>
                                 </ul>
                             </div>
 
@@ -403,11 +419,10 @@ const Documentation: React.FC = () => {
                                     Cons (Limitations)
                                 </h4>
                                 <ul className="docs-list">
-                                    <li><strong>AI Needs a Key:</strong> AI Smart Fill requires your own free Gemini API key and adds a few seconds.</li>
-                                    <li><strong>Manual Installation:</strong> Until the Chrome Web Store listing is live, you load it with "Developer mode".</li>
+                                    <li><strong>AI Needs a Key:</strong> AI Smart Fill needs your own API key (Gemini has a free tier) or your own AI server, and adds a few seconds.</li>
                                     <li><strong>CAPTCHAs Stay Manual:</strong> Aullevo never solves or bypasses CAPTCHAs; you complete them yourself.</li>
                                     <li><strong>Multi-Page Forms Need Pro:</strong> On Free, press your shortcut again on each new page. Pro's Auto-Pagination clicks Next and Submit for you.</li>
-                                    <li><strong>Forgotten Passphrase:</strong> Your vault can't be recovered without it, so keep a JSON backup.</li>
+                                    <li><strong>Forgotten Passphrase:</strong> Your vault can't be recovered without it, so keep a JSON backup (Copy JSON on Free, or Download on Pro).</li>
                                 </ul>
                             </div>
                         </div>
@@ -415,7 +430,7 @@ const Documentation: React.FC = () => {
 
                     <section id="installation" className="docs-section">
                         <h2>6. Installation & Setup</h2>
-                        <p>Choose the installation path that matches your preference. For most users, we recommend the Standard installation.</p>
+                        <p>Choose the installation path that matches your preference: download the ZIP from this website, or add Aullevo from the <strong>Chrome Web Store</strong> (just search <strong>Aullevo</strong>) if you'd rather not download a file.</p>
 
                         <div className="docs-tabs-header">
                             <button
@@ -423,7 +438,14 @@ const Documentation: React.FC = () => {
                                 className={`docs-tab-btn ${installMethod === 'standard' ? 'active' : ''}`}
                                 onClick={() => setInstallMethod('standard')}
                             >
-                                Standard Installation
+                                Standard Installation (ZIP)
+                            </button>
+                            <button
+                                type="button"
+                                className={`docs-tab-btn ${installMethod === 'store' ? 'active' : ''}`}
+                                onClick={() => setInstallMethod('store')}
+                            >
+                                Chrome Web Store
                             </button>
                             <button
                                 type="button"
@@ -434,7 +456,45 @@ const Documentation: React.FC = () => {
                             </button>
                         </div>
 
-                        {installMethod === 'standard' ? (
+                        {installMethod === 'store' ? (
+                            <div className="process-timeline" style={{ marginTop: '1.5rem' }}>
+                                <div className="process-step">
+                                    <div className="step-point">1</div>
+                                    <div className="step-text">
+                                        <strong>Open the Chrome Web Store</strong>
+                                        Go to the <a
+                                            href={CHROME_WEB_STORE_URL}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="external-link"
+                                            style={{ fontWeight: 600, color: 'var(--primary)' }}
+                                            onClick={() => logEvent('open_chrome_web_store', { method: 'docs_install' })}
+                                        >Chrome Web Store</a> and type <strong>Aullevo</strong> in the search bar.
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">2</div>
+                                    <div className="step-text">
+                                        <strong>Add to Chrome</strong>
+                                        Open the Aullevo listing and click <strong>"Add to Chrome"</strong>, then <strong>"Add extension"</strong>. Brave and Edge can install from the Chrome Web Store too (Edge asks you to allow extensions from other stores first). No ZIP, no Developer mode, and updates arrive automatically.
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">3</div>
+                                    <div className="step-text">
+                                        <strong>Pin It (Optional)</strong>
+                                        Click the puzzle-piece icon in the toolbar and pin Aullevo so it's always one click away.
+                                    </div>
+                                </div>
+                                <div className="process-step">
+                                    <div className="step-point">4</div>
+                                    <div className="step-text">
+                                        <strong>Open Aullevo & Create Your Vault</strong>
+                                        Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel, then choose a passphrase and follow the guided tour. <strong>If you forget your passphrase, your data can't be recovered.</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : installMethod === 'standard' ? (
                             <div className="process-timeline" style={{ marginTop: '1.5rem' }}>
                                 <div className="process-step">
                                     <div className="step-point">1</div>
@@ -487,6 +547,13 @@ const Documentation: React.FC = () => {
                                         Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel, then choose a passphrase. It encrypts everything you save, and you'll enter it once each time you start your browser. <strong>If you forget it, your data can't be recovered.</strong>
                                     </div>
                                 </div>
+                                <div className="process-step">
+                                    <div className="step-point">6</div>
+                                    <div className="step-text">
+                                        <strong>Follow the Guided Tour</strong>
+                                        A short walkthrough opens and explains every tab and button, in your browser's language. Press <strong>Skip tour</strong> anytime, or replay it later from <kbd>Settings</kbd> → <strong>Guided Tour</strong>.
+                                    </div>
+                                </div>
                             </div>
                         ) : (
                             <div className="code-block">
@@ -512,48 +579,77 @@ const Documentation: React.FC = () => {
                                     <span className="comment"># 5. Click "Load unpacked" and select the 'dist' subfolder</span>
                                     <br />
                                     <span className="comment"># 6. Press Alt+Q and create your vault passphrase</span>
+                                    <br />
+                                    <span className="comment"># 7. Follow the guided tour (replay it from Settings → Guided Tour)</span>
                                 </code></pre>
                             </div>
                         )}
                     </section>
 
                     <section id="api-key" className="docs-section">
-                        <h2>7. Creating a Gemini API Key</h2>
-                        <p>AI Smart Fill is optional. It connects directly from your browser to Google's Gemini models using your own API key, and Google offers a free tier for Gemini Flash models.</p>
+                        <h2>7. Choosing an AI Provider &amp; API Key</h2>
+                        <p>AI Smart Fill is optional. It connects directly from your browser to the AI provider you choose, using your own API key. Pick one in <kbd>Settings</kbd> → <strong>AI Engine</strong> → <strong>AI Provider</strong>:</p>
+
+                        <div className="docs-table-wrapper">
+                            <table className="docs-table">
+                                <thead>
+                                    <tr>
+                                        <th>Provider</th>
+                                        <th>Where to get a key</th>
+                                        <th>Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Gemini (Google)</strong></td>
+                                        <td><a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="external-link">Google AI Studio</a></td>
+                                        <td>The default. Google offers a free tier for Gemini Flash models.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ChatGPT (OpenAI)</strong></td>
+                                        <td><a href="https://platform.openai.com/api-keys" target="_blank" rel="noreferrer" className="external-link">OpenAI Platform</a></td>
+                                        <td>GPT-5.4 nano, GPT-5.4 mini, or GPT-5.5. Billed by OpenAI.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Claude (Anthropic)</strong></td>
+                                        <td><a href="https://platform.claude.com/settings/keys" target="_blank" rel="noreferrer" className="external-link">Claude Console</a></td>
+                                        <td>Claude Haiku 5.5, Sonnet 5.5, or Opus 5.5. Billed by Anthropic.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Custom (OpenAI-compatible)</strong></td>
+                                        <td>Your server's dashboard</td>
+                                        <td>Any server that speaks the OpenAI chat API: OpenRouter, Groq, Mistral, DeepSeek, or a model on your own computer with Ollama or LM Studio. Enter its <strong>Server URL</strong>; local servers don't need a key.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
                         <div className="process-timeline">
                             <div className="process-step">
                                 <div className="step-point">1</div>
                                 <div className="step-text">
-                                    <strong>Access Google AI Studio</strong>
-                                    Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" className="external-link">Google AI Studio</a> and sign in with your Google Account.
+                                    <strong>Create an API Key</strong>
+                                    Open the provider's key page above (or click <strong>Get API key</strong> next to the key box in Aullevo), sign in, and create a new key.
                                 </div>
                             </div>
                             <div className="process-step">
                                 <div className="step-point">2</div>
-                                <div className="step-text">
-                                    <strong>Create API Key</strong>
-                                    Click <strong>"Create API key"</strong>. If prompted, agree to the Terms of Service. You can create the key in a new or existing project.
-                                </div>
-                            </div>
-                            <div className="process-step">
-                                <div className="step-point">3</div>
                                 <div className="step-text">
                                     <strong>Copy the Key</strong>
                                     Copy the long string of characters. <strong>Keep it secret</strong> and don't share it with anyone.
                                 </div>
                             </div>
                             <div className="process-step">
-                                <div className="step-point">4</div>
+                                <div className="step-point">3</div>
                                 <div className="step-text">
                                     <strong>Add to Aullevo</strong>
-                                    In the side panel, open <kbd>Settings</kbd>, turn on <strong>AI Smart Fill</strong>, and paste your key into <strong>Gemini API Key</strong>. It is saved inside your encrypted vault.
+                                    In the side panel, open <kbd>Settings</kbd>, turn on <strong>AI Smart Fill</strong>, choose your <strong>AI Provider</strong> and <strong>AI Model</strong>, and paste your key into the <strong>API Key</strong> box. Each provider keeps its own key inside your encrypted vault, so you can switch providers anytime.
                                 </div>
                             </div>
                         </div>
                         <div className="docs-note" style={{ marginTop: '1.5rem' }}>
                             <div className="note-content">
-                                <strong>Note:</strong> Your use of the Gemini API is governed by Google's terms. Depending on your Google account and tier, Google may use submitted data to improve its services. Mark anything you don't want shared as SENSITIVE.
+                                <strong>Note:</strong> Only the provider you select receives data, and it processes it under its own terms. Depending on your Google account and tier, Google may use Gemini API data to improve its services. Any usage costs are billed to your own account with that provider. Mark anything you don't want shared as SENSITIVE.
                             </div>
                         </div>
                     </section>
@@ -578,14 +674,67 @@ const Documentation: React.FC = () => {
                             <div className="docs-minicard">
                                 <div className="minicard-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 4h12l4 4v12H4z" /><line x1="8" y1="12" x2="16" y2="12" /><line x1="8" y1="16" x2="13" y2="16" /></svg></div>
                                 <h4>AI Memories</h4>
-                                <p>In <strong>Settings → AI Memories</strong>, save short facts (e.g. "Work style: remote only") that AI Smart Fill can use for open-ended questions. Memories are not encrypted and enabled ones are sent to Gemini, so keep secrets out of them.</p>
+                                <p>In <strong>Settings → AI Memories</strong>, save short facts (e.g. "Work style: remote only") that AI Smart Fill can use for open-ended questions. Memories are not encrypted and enabled ones are sent to your AI provider, so keep secrets out of them.</p>
                             </div>
                         </div>
                         <p>Need more room? Click the <strong>⤢ Open full page</strong> button in the side panel header to edit profiles and settings in a full browser tab.</p>
+
+                        <h3>JSON Quick Setup</h3>
+                        <p>The fastest way to fill a whole profile. Click the <strong>{'</>'}</strong> (JSON) button in the side panel header:</p>
+                        <div className="process-timeline">
+                            <div className="process-step">
+                                <div className="step-point">1</div>
+                                <div className="step-text">
+                                    <strong>Copy the JSON</strong>
+                                    Click <strong>Copy JSON</strong>. It holds every field of your active profile.
+                                </div>
+                            </div>
+                            <div className="process-step">
+                                <div className="step-point">2</div>
+                                <div className="step-text">
+                                    <strong>Let an AI chatbot fill it</strong>
+                                    Paste it into Gemini, Claude, or ChatGPT together with your resume or any other document, and ask it to fill in the values while keeping the same structure.
+                                </div>
+                            </div>
+                            <div className="process-step">
+                                <div className="step-point">3</div>
+                                <div className="step-text">
+                                    <strong>Paste it back and Import</strong>
+                                    Paste the result into the same window (or use <strong>Upload File</strong> for a <code>.json</code> file) and click <strong>Import</strong>. Check the values before you fill your first form.
+                                </div>
+                            </div>
+                        </div>
+                        <p>Free includes 3 imports every 2 weeks (resets every other Monday). Pro has unlimited imports and can <strong>Download</strong> the profile as a <code>.json</code> backup file.</p>
+                    </section>
+
+                    <section id="language-tour" className="docs-section">
+                        <h2>9. Languages &amp; Guided Tour</h2>
+
+                        <h3>34 Languages</h3>
+                        <p>
+                            Aullevo follows your browser's language automatically. To pick another, click the <strong>globe</strong> button in the side panel header (it is also on the passphrase screen) or open <kbd>Settings</kbd> → <strong>Language</strong>. Every screen changes, including the guided tour and the floating button and badges on web pages. English is always at the top of the list, and after a change a bar offers to switch straight back. The extension's name and shortcut descriptions in Chrome follow your browser's language.
+                        </p>
+                        <p>
+                            Available languages: English, Arabic, Bengali, Chinese (Simplified), Chinese (Traditional), Czech, Danish, Dutch, Filipino, Finnish, French, German, Greek, Hebrew, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Malay, Norwegian, Persian, Polish, Portuguese (Brazil), Portuguese (Portugal), Romanian, Russian, Spanish, Swedish, Thai, Turkish, Ukrainian, and Vietnamese. Arabic, Hebrew, and Persian display right-to-left.
+                        </p>
+                        <div className="docs-note" style={{ margin: '1.5rem 0' }}>
+                            <div className="note-content">
+                                <strong>The language only changes Aullevo itself.</strong> Your saved answers are filled in exactly as you typed them, whatever language the form or the extension uses.
+                            </div>
+                        </div>
+
+                        <h3>Guided Tour</h3>
+                        <p>
+                            The first time you unlock Aullevo, a step-by-step tour highlights each part of the side panel: Autofill, the header buttons (including the new Voice mode button), Profiles, Multi-link, and Settings. If you're in Voice mode, the panel shows the classic tabs during the tour and switches back when it ends. It also checks your keyboard shortcuts and tells you if Chrome skipped one because another extension already uses it.
+                        </p>
+                        <ul className="docs-list">
+                            <li><strong>Shows again until you're set up:</strong> while none of your profiles has any data, the tour reopens with the panel. Choose <strong>Don't show again</strong> to stop that.</li>
+                            <li><strong>Replay anytime:</strong> <kbd>Settings</kbd> → <strong>Guided Tour</strong> → <strong>Replay</strong>.</li>
+                        </ul>
                     </section>
 
                     <section id="filling-process" className="docs-section">
-                        <h2>9. How Filling Works</h2>
+                        <h2>10. How Filling Works</h2>
                         <p>Once your profile is set up, filling a form takes a single shortcut.</p>
 
                         <div className="process-timeline">
@@ -607,7 +756,7 @@ const Documentation: React.FC = () => {
                                 <div className="step-point">3</div>
                                 <div className="step-text">
                                     <strong>Fill</strong>
-                                    Press <kbd>Alt+Shift+L</kbd> or click <strong>Fill</strong>. Keyword matching fills confident matches instantly; with AI Smart Fill on, Gemini answers the rest and the keyword engine fills anything AI skips.
+                                    Press <kbd>Alt+Shift+L</kbd> or click <strong>Fill</strong>. Keyword matching fills confident matches instantly; with AI Smart Fill on, your chosen AI answers the rest and the keyword engine fills anything AI skips.
                                 </div>
                             </div>
                             <div className="process-step">
@@ -629,6 +778,20 @@ const Documentation: React.FC = () => {
                             <li><strong>Patient with slow sites:</strong> waits up to 20 seconds for each new page to load.</li>
                         </ul>
 
+                        <h3 id="voice-mode">Voice Mode (Pro, new in v0.6.4)</h3>
+                        <p>Click the <strong>sound-wave button</strong> in the side panel's header to swap the tabs for the agent orb. It uses the same profiles and settings, and the same button brings the classic view back. Voice mode needs your own <a href="https://elevenlabs.io/app/settings/api-keys" target="_blank" rel="noopener noreferrer" className="external-link">ElevenLabs API key</a>: open <strong>Voice settings</strong> at the bottom of the panel, paste it, and press <strong>Save</strong>. The key needs <strong>Speech to Text</strong> and <strong>Text to Speech</strong> access (add <strong>Voices → Read</strong> to see your own voices too). The first time you tap the mic, a tab opens so Chrome can ask for microphone permission.</p>
+                        <ul className="docs-list">
+                            <li><strong>Fill:</strong> "fill this page", "fill all pages" (Pro), "stop", "next", "submit", "what's left?"</li>
+                            <li><strong>Fill one question:</strong> "fill the email", "fill this one" (the field you clicked), "fill the first question", "fill question 3", "fill my birthday". Your AI provider reads what you said together with the form's questions and picks the exact ones you mean, however you phrase it, with &quot;uh&quot;s, lead-ins or Taglish. It never fills the whole form for a targeted command.</li>
+                            <li><strong>Your own answer:</strong> "answer the gym question with: I jog every morning", "for the nickname, say Xen", "answer this with remote only". Your words are typed into that one question instead of a saved value.</li>
+                            <li><strong>The page:</strong> "highlight the fields", "clear the highlights", "rescan".</li>
+                            <li><strong>Profiles:</strong> "use my job profile", "which profile am I using?", "create a profile called Work", "set my phone to …", "add a field called Nickname with value …", "turn off this profile".</li>
+                            <li><strong>Multi-link:</strong> "add this page to my links", "fill my links".</li>
+                            <li><strong>The panel:</strong> "open settings", "classic mode", "open the full page", "turn AI on/off", "dark mode", "speak Tagalog", "help".</li>
+                            <li><strong>Talking:</strong> turn on <strong>Live conversation</strong> to keep giving commands without tapping. "Stop talking" cuts the agent off and keeps listening; "end conversation" finishes. You can also tap the orb or press <kbd>Esc</kbd>.</li>
+                        </ul>
+                        <p>The agent speaks with ElevenLabs <strong>v4 Turbo</strong> (switching to Flash v2.5 automatically if your plan doesn't include it). Pick a voice in Voice settings, or paste any voice ID from the ElevenLabs Voice Library. Voice commands and replies are in English or Tagalog for now. Turn off <strong>Talk back</strong> if you only want to hear replies to what you say, not fill updates, and use the palette button on the orb to pick one of 8 color themes (Solar, Aurora, Mint, Sunset, Nebula, Glacier, Voltage, Ember).</p>
+
                         <h3>Keyboard Shortcuts</h3>
                         <div className="docs-table-wrapper">
                             <table className="docs-table">
@@ -639,12 +802,12 @@ const Documentation: React.FC = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <p>You can change these at <code>chrome://extensions/shortcuts</code>.</p>
+                        <p>You can change these at <code>chrome://extensions/shortcuts</code>. Chrome skips a shortcut that the browser or another extension already uses; the <strong>Keyboard shortcuts</strong> step of the guided tour shows which ones are active and links to that page.</p>
                     </section>
 
                     <section id="privacy" className="docs-section">
-                        <h2>10. Privacy & Security</h2>
-                        <p>Aullevo is local-first: your profile data is encrypted on your device and never uploaded to Aullevo.</p>
+                        <h2>11. Privacy & Security</h2>
+                        <p>Aullevo is local-first: your profile data is encrypted on your device and never uploaded to Aullevo. Each account signed in on the same browser gets its own separately encrypted vault, AI Memories, and link queue; <strong>Settings → Data on this device</strong> removes accounts you no longer use.</p>
 
                         <div className="docs-table-wrapper">
                             <table className="docs-table">
@@ -667,9 +830,14 @@ const Documentation: React.FC = () => {
                                         <td><code>AES-256-GCM</code></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Gemini API Key</strong></td>
+                                        <td><strong>AI Provider API Keys</strong><br />(Gemini, OpenAI, Anthropic, or your server)</td>
+                                        <td>Inside the same encrypted vault, one per provider</td>
+                                        <td><code>AES-256-GCM</code>; each sent only to its own provider</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ElevenLabs API Key</strong></td>
                                         <td>Inside the same encrypted vault</td>
-                                        <td><code>AES-256-GCM</code>; sent only to Google</td>
+                                        <td><code>AES-256-GCM</code>; sent only to ElevenLabs (Voice mode)</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Unlock Key</strong></td>
@@ -684,11 +852,11 @@ const Documentation: React.FC = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <p>There is no analytics or tracking inside the extension. When AI Smart Fill is on, only the form's questions, your field labels, the values of AI SAFE fields, and your enabled AI Memories are sent directly to Google Gemini. Read the full <a href="/privacy" className="external-link">Privacy Policy</a>.</p>
+                        <p>There is no analytics or tracking inside the extension. When AI Smart Fill is on, only the form's questions and their helper text, your field labels, the values of AI SAFE fields, and your enabled AI Memories are sent directly to the AI provider you selected (Google Gemini, OpenAI, Anthropic, or your own server). In Voice mode, your spoken commands and the agent's replies go to ElevenLabs, and what you said plus the page's questions (never your saved values) go to that same AI provider so it can understand each command. Read the full <a href="/privacy" className="external-link">Privacy Policy</a>.</p>
                     </section>
 
                     <section id="capabilities-limitations" className="docs-section">
-                        <h2>11. Edge Cases & Limits</h2>
+                        <h2>12. Edge Cases & Limits</h2>
                         <p>No autofill tool works on 100% of the web. Here is what Aullevo handles well and where you may need to step in:</p>
 
                         <h3>1. Shadow DOM &amp; iFrames</h3>
@@ -708,7 +876,13 @@ const Documentation: React.FC = () => {
                             <p>⚠️ <strong>The Limitation:</strong> If the same generic question repeats with no label (e.g. "Comment" five times), Aullevo can't tell the boxes apart. Add custom fields with clear labels and context hints to guide it.</p>
                         </div>
 
-                        <h3>4. What Aullevo Does NOT Do</h3>
+                        <h3>4. Local Files &amp; Strict Browser Settings</h3>
+                        <div className="docs-card">
+                            <p>✅ <strong>What it CAN Do:</strong> Aullevo keeps filling when Brave Shields blocks a site's scripts, and fills forms saved as local files once you turn on <strong>Allow access to file URLs</strong> for Aullevo on the extensions page.</p>
+                            <p>⚠️ <strong>The Limitation:</strong> Browser pages such as <code>chrome://</code> settings and the Chrome Web Store can't be filled; browsers don't let any extension run there.</p>
+                        </div>
+
+                        <h3>5. What Aullevo Does NOT Do</h3>
                         <div className="docs-table-wrapper" style={{ marginTop: '1rem' }}>
                             <table className="docs-table">
                                 <tbody>

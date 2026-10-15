@@ -5,6 +5,7 @@ import { signInWithPopup, onAuthStateChanged, signOut, type User } from 'firebas
 import { doc, getDoc, setDoc, onSnapshot, collection, query, where } from 'firebase/firestore';
 import DonateButton from './DonateButton';
 import SEO from '../components/SEO';
+import { PLANS, formatUsd, isPlanId, type PlanId } from '../config/plans';
 
 const evaluateProStatus = (data: any): { isActive: boolean; expiresAt: string | null; isExpired: boolean } => {
     if (!data) return { isActive: false, expiresAt: null, isExpired: false };
@@ -25,8 +26,12 @@ const evaluateProStatus = (data: any): { isActive: boolean; expiresAt: string | 
     return { isActive: true, expiresAt: null, isExpired: false };
 };
 
+// Which plan the last payment was for (older docs say 'pro' = the 30-day plan)
+const readPlan = (data: { subscriptionPlan?: unknown } | undefined): PlanId =>
+    (isPlanId(data?.subscriptionPlan) ? data.subscriptionPlan : 'monthly');
+
 const DAY_MS = 24 * 60 * 60 * 1000;
-const PRO_PERIOD_DAYS = 30;
+const PRO_PRICE_SUMMARY = `${formatUsd(PLANS.monthly)} / 30 days, ${formatUsd(PLANS.yearly)} / year, or ${formatUsd(PLANS.lifetime)} once for lifetime`;
 
 type PlanState = 'pro' | 'pending' | 'expired' | 'free';
 // Where PayMongo sent the buyer back to (?payment=paymongo | cancelled)
@@ -51,12 +56,14 @@ const EXTENSION_STATUS_LABELS: Record<ExtensionStatus, string> = {
 };
 
 const PRO_FEATURES = [
-    { title: 'Unlimited AI Smart Fill', description: 'No weekly cap on Gemini-powered answers. Free includes 10 per week.' },
-    { title: 'Unlimited active profiles', description: 'Keep job, school, government, and personal profiles on at once. Free allows 2.' },
+    { title: 'No ads, everything unlocked', description: 'Free users watch short ads to unlock features for a few hours. Pro never shows an ad.' },
+    { title: 'Unlimited Voice mode', description: 'Talk to Aullevo to fill pages or single questions, dictate answers, and manage profiles hands-free (your ElevenLabs key). Free gets 2 sessions per ad.' },
+    { title: 'Unlimited AI Smart Fill', description: 'No limit on AI answers (Gemini, ChatGPT, Claude, or your own server). Free gets 6 fills per ad.' },
+    { title: 'Unlimited active profiles & links', description: 'Keep every profile on at once and queue as many Multi-link applications as you like. Free allows 3 of each.' },
     { title: 'Automatic document uploads', description: 'Your resume, cover letter, and IDs go to the right upload fields.' },
-    { title: 'Every typing speed', description: 'Slow and custom typing speeds, not just the default.' },
-    { title: 'JSON import & export', description: 'Back up your profiles or move them to another browser.' },
-    { title: 'Auto-Pagination', description: 'Fills every page of multi-step forms, clicks Next, and submits for you.' }
+    { title: 'Every typing speed', description: 'Slow and custom typing speeds, any time.' },
+    { title: 'Unlimited JSON imports & download', description: 'Import as often as you like (Free allows 3 every 2 weeks, plus 10 per ad) and download profiles as backup files.' },
+    { title: 'Auto-Pagination', description: 'Fills every page of multi-step forms, clicks Next, and submits for you. Free gets 4 hours per ad.' }
 ];
 
 const formatDate = (iso: string) =>
@@ -90,6 +97,7 @@ const Login: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [isPro, setIsPro] = useState(false);
     const [proExpiresAt, setProExpiresAt] = useState<string | null>(null);
+    const [planId, setPlanId] = useState<PlanId>('monthly');
     // Real extension status, reported back by the Aullevo extension's content script
     const [extensionStatus, setExtensionStatus] = useState<ExtensionStatus>('not-detected');
     const [extensionError, setExtensionError] = useState<string | null>(null);
@@ -172,6 +180,7 @@ const Login: React.FC = () => {
                             const { isActive, expiresAt } = evaluateProStatus(userSnap.data());
                             setIsPro(isActive);
                             setProExpiresAt(expiresAt);
+                            setPlanId(readPlan(userSnap.data()));
                             try {
                                 localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
                                 if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
@@ -213,6 +222,7 @@ const Login: React.FC = () => {
                             const { isActive, expiresAt } = evaluateProStatus(docSnap.data());
                             setIsPro(isActive);
                             setProExpiresAt(expiresAt);
+                            setPlanId(readPlan(docSnap.data()));
                             try {
                                 localStorage.setItem('aullevo_is_pro', isActive ? 'true' : 'false');
                                 if (expiresAt) localStorage.setItem('aullevo_pro_expires_at', expiresAt);
@@ -298,7 +308,10 @@ const Login: React.FC = () => {
     const daysLeft = proExpiresAt
         ? Math.max(0, Math.ceil((new Date(proExpiresAt).getTime() - Date.now()) / DAY_MS))
         : null;
-    const periodProgress = daysLeft === null ? 100 : Math.min(100, (daysLeft / PRO_PERIOD_DAYS) * 100);
+    // Pro with no expiry = lifetime (bought, or granted by hand)
+    const isLifetime = isPro && !proExpiresAt;
+    const currentPlan = PLANS[isLifetime ? 'lifetime' : planId];
+    const periodProgress = daysLeft === null ? 100 : Math.min(100, (daysLeft / (currentPlan.days ?? 30)) * 100);
 
     return (
         <div className="login-page-container">
@@ -352,16 +365,20 @@ const Login: React.FC = () => {
 
                                 <div className="plan-summary">
                                     <div>
-                                        <p className="plan-name">{isPro ? 'Aullevo Pro' : 'Aullevo Free'}</p>
+                                        <p className="plan-name">{isPro ? `Aullevo Pro · ${currentPlan.name}` : 'Aullevo Free'}</p>
                                         <p className="plan-price">
-                                            {isPro ? '$2.50 per 30 days · No auto-renewal' : 'Pro is $2.50 for 30 days · No auto-renewal'}
+                                            {isLifetime
+                                                ? 'Lifetime access · Paid once, never expires'
+                                                : isPro
+                                                    ? `${formatUsd(currentPlan)} ${currentPlan.period} · No auto-renewal`
+                                                    : `Pro is ${PRO_PRICE_SUMMARY}`}
                                         </p>
                                     </div>
-                                    {planState === 'pro' && (
-                                        <DonateButton className="account-cta account-cta--quiet">Extend 30 days</DonateButton>
+                                    {planState === 'pro' && !isLifetime && (
+                                        <DonateButton className="account-cta account-cta--quiet" defaultPlan={planId}>Extend or upgrade</DonateButton>
                                     )}
                                     {(planState === 'free' || planState === 'expired') && (
-                                        <DonateButton className="account-cta">
+                                        <DonateButton className="account-cta" defaultPlan={planState === 'expired' ? planId : undefined}>
                                             {planState === 'expired' ? 'Renew Pro' : 'Upgrade to Pro'}
                                         </DonateButton>
                                     )}
@@ -495,7 +512,7 @@ const Login: React.FC = () => {
                     <div className="login-promo-panel">
                         <div className="promo-badge">Aullevo Pro</div>
                         <h3>Your entire form-filling engine, unlocked.</h3>
-                        <p>Sign in to upgrade to Pro ($2.50 for 30 days), check your plan, and connect the extension for unlimited AI fills, document uploads, and more.</p>
+                        <p>Sign in to upgrade to Pro ({PRO_PRICE_SUMMARY}), check your plan, and connect the extension for unlimited AI fills, document uploads, and more.</p>
 
                         <div className="promo-feature-list">
                             <div className="promo-feature-item">
@@ -530,8 +547,8 @@ const Login: React.FC = () => {
                                     </svg>
                                 </div>
                                 <div className="promo-feature-text">
-                                    <strong>Flexible Monthly Access</strong>
-                                    <span>Cancel or renew anytime at only $2.50/month with zero long-term commitments.</span>
+                                    <strong>Monthly, Yearly, or Lifetime</strong>
+                                    <span>{formatUsd(PLANS.monthly)} for 30 days, {formatUsd(PLANS.yearly)} for a year, or {formatUsd(PLANS.lifetime)} once for lifetime. Nothing renews automatically.</span>
                                 </div>
                             </div>
                         </div>
