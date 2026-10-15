@@ -97,7 +97,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            Effective Date: October 11, 2026
+                            Effective Date: October 15, 2026
                         </span>
                     </div>
 
@@ -652,7 +652,7 @@ const PrivacyPolicy: React.FC = () => {
                                         </tr>
                                         <tr>
                                             <td><strong>Google Ad Manager / Google AdSense</strong></td>
-                                            <td>Optional rewarded ads on the website's /rewards page (Free-plan unlocks). Google may use cookies or similar identifiers to show and measure ads, subject to your ad and consent choices.</td>
+                                            <td>Advertising on the website: the AdSense code loads on every page of aullevo.com, and the optional rewarded ads on /rewards (Free-plan unlocks) come from Google. Google may use cookies or similar identifiers to show and measure ads, subject to your ad and consent choices.</td>
                                             <td><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="legal-link">How Google uses data in ads</a></td>
                                         </tr>
                                         <tr>
@@ -678,7 +678,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>Our website (aullevo.com)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
                             </p>
                             <p>
-                                <strong>Rewarded ads (website only):</strong> When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Google may set cookies or use similar identifiers on that page to show the ad, limit how often you see it, measure it, and prevent fraud, and, where you have agreed to it, to personalize ads. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can manage Google ad personalization at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">adssettings.google.com</a>. Ads are not loaded on any other page, and never inside the extension.
+                                <strong>Google advertising (website only):</strong> Our website uses Google AdSense, and its code is loaded on every page of aullevo.com. When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this and other sites, and Google may also use cookies or similar identifiers to limit how often you see an ad, measure it, and prevent fraud. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can opt out of personalized advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="legal-link">aboutads.info</a>, and read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="legal-link">how Google uses information from sites that use its services</a>. The extension never loads ads or ad code.
                             </p>
                             <p>
                                 <strong>Sponsor cards:</strong> Until video ads are available, the same countdown shows sponsor and affiliate cards that we host ourselves (no ad network, no ad cookies). We count how often each card is shown and clicked with our website analytics, without your name or email. Clicking a card opens the other company's website, which handles your data under its own privacy policy; affiliate links may tell that company the visit came from Aullevo.
