@@ -312,11 +312,11 @@ const featuresList = [
     },
     // Privacy
     {
-        title: 'Passphrase-Encrypted Vault',
+        title: 'Encrypted Vault, No Passphrase',
         badge: 'Privacy',
         color: 'blue',
         icon: <ShieldLockIcon />,
-        desc: 'Profiles, documents, and your API key are encrypted with AES-256-GCM using a key derived from your passphrase. The key lives only in memory and is cleared when you close the browser or press Lock.',
+        desc: 'Profiles, documents, and your API keys are encrypted with AES-256-GCM and kept only in your browser, with a separate key for each account and for guest use. Nothing to remember: Aullevo opens straight to Autofill.',
         pill: 'Encrypted on Device'
     },
     {

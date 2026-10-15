@@ -69,7 +69,7 @@ const About: React.FC = () => {
                                     </svg>
                                 </div>
                                 <h3>Encrypted on Your Device</h3>
-                                <p>Your profiles, documents, and API key are encrypted with AES-256-GCM using your own passphrase and stored only in your browser. Aullevo has no server that stores your profile data.</p>
+                                <p>Your profiles, documents, and API keys are encrypted with AES-256-GCM and stored only in your browser, with a separate key for each account. Aullevo has no server that stores your profile data.</p>
                             </div>
                         </div>
                     </div>
@@ -93,7 +93,7 @@ const About: React.FC = () => {
                             <ul>
                                 <li>Values of fields marked SENSITIVE (email, phone, address, IDs, medical, and financial fields start as SENSITIVE)</li>
                                 <li>Your uploaded documents (resume, IDs, certificates)</li>
-                                <li>Your passphrase and encryption key</li>
+                                <li>Your encryption key</li>
                                 <li>Anything at all while AI Smart Fill is turned off</li>
                             </ul>
                         </div>
@@ -278,15 +278,15 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Passphrase Encryption:</strong>{' '}
-                                                Profiles, documents, and your AI provider keys are encrypted with <strong>AES-256-GCM</strong> using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored.
+                                                <strong className="arch-spec-label">Local Encryption:</strong>{' '}
+                                                Profiles, documents, and your AI provider keys are encrypted with <strong>AES-256-GCM</strong> using a random key Aullevo creates for each account (and for guest use) on the device. No passphrase to remember: the side panel opens straight to Autofill.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Memory-Only Key:</strong>{' '}
-                                                While unlocked, the key is held in <code>chrome.storage.session</code>, which is in memory, unreadable by web pages, and cleared when you close the browser or press Lock.
+                                                <strong className="arch-spec-label">One Key per Account:</strong>{' '}
+                                                Each account (and guest use) has its own key in the extension's storage, which web pages can't read. Signing in with another account switches to that account's own data.
                                             </div>
                                         </li>
                                         <li className="arch-spec-item">

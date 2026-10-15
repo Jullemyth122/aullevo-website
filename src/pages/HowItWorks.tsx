@@ -9,7 +9,7 @@ const HowItWorks: React.FC = () => {
         {
             num: "01",
             title: 'Install & Create Your Vault',
-            desc: 'Add Aullevo from the Chrome Web Store (just search "Aullevo"), or download the ZIP and load it into Chrome, Brave, or Edge. Open the side panel with Alt+Q and choose a passphrase. It encrypts everything you save, so only you can open your profiles. A guided tour then walks you through every tab, in your browser\'s language (34 are supported). No account needed to start.',
+            desc: 'Add Aullevo from the Chrome Web Store (just search "Aullevo"), or download the ZIP and load it into Chrome, Brave, or Edge. Open the side panel with Alt+Q: it goes straight to Autofill, and everything you save is encrypted in your browser. A guided tour then walks you through every tab, in your browser\'s language (34 are supported). No account needed to start.',
             icon: (
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

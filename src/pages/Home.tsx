@@ -214,7 +214,7 @@ const Home: React.FC = () => {
         {
             icon: <ShieldIcon />,
             title: 'Private by Design',
-            desc: 'Your profiles are encrypted on your device with your own passphrase. Mark any field SENSITIVE and its value never reaches the AI. We never sell or collect your profile data.',
+            desc: 'Your profiles are encrypted on your device, separately for each account. Mark any field SENSITIVE and its value never reaches the AI. We never sell or collect your profile data.',
             color: 'yellow',
             metric: 'Encrypted on device'
         },
@@ -899,7 +899,7 @@ const Home: React.FC = () => {
                                 </h4>
                                 <ul style={{ listStyleType: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                                     <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Massive Time Savings:</strong> Fills forms in seconds.</li>
-                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Local Encryption:</strong> AES-256 with your own passphrase, on your device.</li>
+                                    <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Local Encryption:</strong> AES-256, kept on your device, per account.</li>
                                     <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Works Offline:</strong> Keyword matching needs no internet or AI key.</li>
                                     <li style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: '1.5' }}><strong>Unauthenticated forms:</strong> Works on forms without signing up.</li>
                                 </ul>

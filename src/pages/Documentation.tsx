@@ -108,7 +108,7 @@ const Documentation: React.FC = () => {
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>
                             </div>
                             <div className="note-content">
-                                <strong>Privacy First:</strong> Your profiles are encrypted on your device with your own passphrase and never uploaded to Aullevo. AI Smart Fill is optional, uses your own API key with the AI provider you pick, and never sees fields you mark SENSITIVE.
+                                <strong>Privacy First:</strong> Your profiles are encrypted on your device and never uploaded to Aullevo. AI Smart Fill is optional, uses your own API key with the AI provider you pick, and never sees fields you mark SENSITIVE.
                             </div>
                         </div>
                     </section>
@@ -408,7 +408,7 @@ const Documentation: React.FC = () => {
                                 </h4>
                                 <ul className="docs-list">
                                     <li><strong>Big Time Savings:</strong> Fill long applications, government pages, and school surveys in a fraction of the time.</li>
-                                    <li><strong>Encrypted on Your Device:</strong> AES-256-GCM encryption with your own passphrase; profiles are never uploaded.</li>
+                                    <li><strong>Encrypted on Your Device:</strong> AES-256-GCM encryption with a separate key for each account; profiles are never uploaded.</li>
                                     <li><strong>Works Offline:</strong> Keyword matching needs no internet, account, or AI key.</li>
                                     <li><strong>No Sign-Up on Forms:</strong> Works on any public form link without creating accounts.</li>
                                     <li><strong>Hard-to-Reach Fields:</strong> Fills inputs inside Shadow DOM components and iframes where browser autofill gives up.</li>
@@ -425,7 +425,7 @@ const Documentation: React.FC = () => {
                                     <li><strong>AI Needs a Key:</strong> AI Smart Fill needs your own API key (Gemini has a free tier) or your own AI server, and adds a few seconds.</li>
                                     <li><strong>CAPTCHAs Stay Manual:</strong> Aullevo never solves or bypasses CAPTCHAs; you complete them yourself.</li>
                                     <li><strong>Multi-Page Forms Need Pro:</strong> On Free, press your shortcut again on each new page. Pro's Auto-Pagination clicks Next and Submit for you.</li>
-                                    <li><strong>Forgotten Passphrase:</strong> Your vault can't be recovered without it, so keep a JSON backup (Copy JSON on Free, or Download on Pro).</li>
+                                    <li><strong>Backups:</strong> Your profiles live only in this browser. Keep a JSON backup (Copy JSON on Free, or Download on Pro) in case you reinstall the browser or move to a new computer.</li>
                                 </ul>
                             </div>
                         </div>
@@ -493,7 +493,7 @@ const Documentation: React.FC = () => {
                                     <div className="step-point">4</div>
                                     <div className="step-text">
                                         <strong>Open Aullevo & Create Your Vault</strong>
-                                        Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel, then choose a passphrase and follow the guided tour. <strong>If you forget your passphrase, your data can't be recovered.</strong>
+                                        Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel. It opens straight to Autofill; a short guided tour shows you around.
                                     </div>
                                 </div>
                             </div>
@@ -547,7 +547,7 @@ const Documentation: React.FC = () => {
                                     <div className="step-point">5</div>
                                     <div className="step-text">
                                         <strong>Open Aullevo & Create Your Vault</strong>
-                                        Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel, then choose a passphrase. It encrypts everything you save, and you'll enter it once each time you start your browser. <strong>If you forget it, your data can't be recovered.</strong>
+                                        Press <kbd>Alt+Q</kbd> (or click the Aullevo icon) to open the side panel. There is no passphrase: everything you save is encrypted in this browser, with a separate key for each account (and for guest use).
                                     </div>
                                 </div>
                                 <div className="process-step">
@@ -581,7 +581,7 @@ const Documentation: React.FC = () => {
                                     <br />
                                     <span className="comment"># 5. Click "Load unpacked" and select the 'dist' subfolder</span>
                                     <br />
-                                    <span className="comment"># 6. Press Alt+Q and create your vault passphrase</span>
+                                    <span className="comment"># 6. Press Alt+Q: the side panel opens straight to Autofill</span>
                                     <br />
                                     <span className="comment"># 7. Follow the guided tour (replay it from Settings → Guided Tour)</span>
                                 </code></pre>
@@ -715,7 +715,7 @@ const Documentation: React.FC = () => {
 
                         <h3>34 Languages</h3>
                         <p>
-                            Aullevo follows your browser's language automatically. To pick another, click the <strong>globe</strong> button in the side panel header (it is also on the passphrase screen) or open <kbd>Settings</kbd> → <strong>Language</strong>. Every screen changes, including the guided tour and the floating button and badges on web pages. English is always at the top of the list, and after a change a bar offers to switch straight back. The extension's name and shortcut descriptions in Chrome follow your browser's language.
+                            Aullevo follows your browser's language automatically. To pick another, click the <strong>globe</strong> button in the side panel header (it is also on the first screen) or open <kbd>Settings</kbd> → <strong>Language</strong>. Every screen changes, including the guided tour and the floating button and badges on web pages. English is always at the top of the list, and after a change a bar offers to switch straight back. The extension's name and shortcut descriptions in Chrome follow your browser's language.
                         </p>
                         <p>
                             Available languages: English, Arabic, Bengali, Chinese (Simplified), Chinese (Traditional), Czech, Danish, Dutch, Filipino, Finnish, French, German, Greek, Hebrew, Hindi, Hungarian, Indonesian, Italian, Japanese, Korean, Malay, Norwegian, Persian, Polish, Portuguese (Brazil), Portuguese (Portugal), Romanian, Russian, Spanish, Swedish, Thai, Turkish, Ukrainian, and Vietnamese. Arabic, Hebrew, and Persian display right-to-left.
@@ -825,7 +825,7 @@ const Documentation: React.FC = () => {
                                     <tr>
                                         <td><strong>Profiles &amp; Custom Fields</strong></td>
                                         <td>Your browser (<code>chrome.storage.local</code>)</td>
-                                        <td><code>AES-256-GCM</code>, key from your passphrase (PBKDF2-SHA256)</td>
+                                        <td><code>AES-256-GCM</code>, a random key per account, kept on the device</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Documents</strong></td>
@@ -843,9 +843,9 @@ const Documentation: React.FC = () => {
                                         <td><code>AES-256-GCM</code>; sent only to ElevenLabs (Voice mode)</td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Unlock Key</strong></td>
-                                        <td>Browser memory (<code>chrome.storage.session</code>)</td>
-                                        <td>Cleared when the browser closes or you press Lock</td>
+                                        <td><strong>Encryption Key</strong></td>
+                                        <td>Extension storage (<code>chrome.storage.local</code>), one per account</td>
+                                        <td>Not readable by websites; removed with that account's data</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Account &amp; Plan</strong></td>

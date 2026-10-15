@@ -128,7 +128,7 @@ const PrivacyPolicy: React.FC = () => {
                             </svg>
                         </div>
                         <h3>Encrypted on Your Device</h3>
-                        <p>Your profiles, documents, and AI provider and ElevenLabs API keys are encrypted with your own passphrase (AES-256-GCM) and stored only in your browser. They are never uploaded to Aullevo.</p>
+                        <p>Your profiles, documents, and AI provider and ElevenLabs API keys are encrypted (AES-256-GCM) and stored only in your browser, separately for each account and for guest use. They are never uploaded to Aullevo.</p>
                     </div>
 
                     <div className="legal-summary-card">
@@ -225,7 +225,7 @@ const PrivacyPolicy: React.FC = () => {
                                 Many autofill tools keep your personal records on their own cloud servers. Aullevo does not:
                             </p>
                             <ul>
-                                <li><strong>Your profile data stays on your device.</strong> Profiles, custom fields, and documents are stored in your browser's extension storage (<code>chrome.storage.local</code>), encrypted with your passphrase.</li>
+                                <li><strong>Your profile data stays on your device.</strong> Profiles, custom fields, and documents are stored in your browser's extension storage (<code>chrome.storage.local</code>), encrypted with a key Aullevo creates for your account (or for guest use) on this device.</li>
                                 <li><strong>No server copy of your profiles.</strong> We do not operate any database that stores your profiles, documents, form answers, or browsing activity.</li>
                                 <li><strong>Each account's data is kept apart.</strong> If more than one account uses Aullevo in the same browser, each gets its own separately encrypted profiles, documents, API keys, AI Memories, and link queue. Switching accounts locks the previous one, and no account can see another's data. Display settings belong to the browser; Free-plan ad unlocks belong to your account (see Section 5).</li>
                                 <li><strong>Matching happens locally.</strong> The engine that matches your saved fields to form questions runs inside your browser and works offline.</li>
@@ -249,7 +249,7 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Encrypted Vault</h4>
-                                    <p>Your profiles, documents, and API keys are encrypted with AES-256-GCM using a key derived from your passphrase (PBKDF2-SHA256, 600,000 iterations). Your passphrase is never stored. If you forget it, the data cannot be recovered, by you or by us.</p>
+                                    <p>Your profiles, documents, and API keys are encrypted with AES-256-GCM. Aullevo creates a random key for each account that signs in, and one for guest use, and keeps it in the same browser, so there is no passphrase to remember and Aullevo opens straight away. Because the key stays on the device, the encryption keeps each account's data apart and away from websites and other extensions, but anyone who can use your browser profile can open Aullevo and see your saved data: on a shared computer, use your own browser profile or operating-system account. (Versions before 0.6.5 used a passphrase; the first time you open such a vault, Aullevo asks for it once and then converts it.)</p>
                                 </div>
                             </div>
 
@@ -271,13 +271,13 @@ const PrivacyPolicy: React.FC = () => {
                                         <tr>
                                             <td><strong>Profiles &amp; Custom Fields</strong><br />(Identity, contact, job, academic, government, medical, financial, and custom answers you enter)</td>
                                             <td><code>chrome.storage.local</code> (encrypted vault)</td>
-                                            <td>AES-256-GCM with your passphrase</td>
+                                            <td>AES-256-GCM, key kept on this device</td>
                                             <td><strong>NO</strong>, stays on your device</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Documents</strong><br />(Resumes, cover letters, IDs, certificates you upload)</td>
                                             <td>Inside the encrypted vault</td>
-                                            <td>AES-256-GCM with your passphrase</td>
+                                            <td>AES-256-GCM, key kept on this device</td>
                                             <td><strong>NO</strong>, only attached to forms you fill</td>
                                         </tr>
                                         <tr>
@@ -293,9 +293,9 @@ const PrivacyPolicy: React.FC = () => {
                                             <td><strong>NO</strong></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Unlock Key</strong></td>
-                                            <td><code>chrome.storage.session</code> (memory only)</td>
-                                            <td>Not readable by websites; cleared when you close the browser or press Lock</td>
+                                            <td><strong>Encryption Key</strong></td>
+                                            <td><code>chrome.storage.local</code>, one per account and for guest use</td>
+                                            <td>Not readable by websites; deleted with that account's data</td>
                                             <td><strong>NO</strong></td>
                                         </tr>
                                         <tr>
@@ -365,7 +365,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li>Values of fields marked SENSITIVE, including which checkbox options were ticked from them</li>
                                 <li>Values a website filled in by itself, including checkboxes the website ticked</li>
                                 <li>Your uploaded documents</li>
-                                <li>Your passphrase or encryption key</li>
+                                <li>Your encryption key</li>
                                 <li>Your browsing history, cookies, or other page content beyond the form's questions and their helper text</li>
                             </ul>
 
@@ -552,7 +552,7 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li><strong>Edit or Delete:</strong> Change or remove any field, profile, document, or queued link from the extension at any time.</li>
                                 <li><strong>Export:</strong> Pro users can copy or download their profile fields as a JSON file from the extension.</li>
-                                <li><strong>Reset Everything:</strong> On the unlock screen, &quot;Forgot passphrase?&quot; permanently deletes the encrypted vault, AI Memories, and link queue of the account in use (or of your local profiles when no account is connected). Other accounts on the device are not affected.</li>
+                                <li><strong>Reset Everything:</strong> Settings → Data on this device permanently deletes an account's data from the device; on an old passphrase vault, &quot;Forgot it? Start over&quot; permanently deletes the encrypted vault, AI Memories, and link queue of the account in use (or of your local profiles when no account is connected). Other accounts on the device are not affected.</li>
                                 <li><strong>Disconnect:</strong> The Disconnect button in Settings removes the account snapshot from the extension and locks that account's data.</li>
                                 <li><strong>Other Accounts:</strong> Settings → Data on this device lists every account with Aullevo data in this browser and lets you permanently delete the ones you no longer use.</li>
                                 <li><strong>Uninstall:</strong> Uninstalling Aullevo deletes all data the extension stored in your browser. We hold no copy of your profiles.</li>
@@ -571,7 +571,7 @@ const PrivacyPolicy: React.FC = () => {
                             </p>
                             <ul>
                                 <li><strong>AES-256-GCM Vault Encryption:</strong> Profile data, documents, and your API keys are encrypted before being written to storage, with a fresh random value for every save.</li>
-                                <li><strong>Passphrase-Derived Key:</strong> PBKDF2-SHA256 with 600,000 iterations turns your passphrase into the encryption key. The unlocked key lives only in memory and is never readable by websites.</li>
+                                <li><strong>Per-Account Keys:</strong> each account and guest use gets its own random 256-bit key, stored in the extension's local storage, which websites cannot read. Switching accounts switches to that account's own data.</li>
                                 <li><strong>HTTPS in Transit:</strong> Connections to Google Gemini, OpenAI, Anthropic, ElevenLabs, Firebase, PayPal, and PayMongo are encrypted with HTTPS. A custom AI server uses whatever address you enter (a local server on your own computer may use plain HTTP).</li>
                                 <li><strong>Protected Plan Status:</strong> Database rules prevent anyone from changing their own plan. Pro is only activated by Aullevo after a payment is verified.</li>
                                 <li><strong>No Remote Code:</strong> The extension runs only code packaged with it, as required by Manifest V3.</li>
