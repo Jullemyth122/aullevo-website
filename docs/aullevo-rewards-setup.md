@@ -62,7 +62,7 @@ Google AdSense / Ad Exchange. AdSense alone only shows display ads and has no "r
    the domain. Google serves it on the page automatically.
 7. **Vercel env (Production):** `VITE_REWARDED_AD_UNIT=/NETWORK_CODE/aullevo_rewarded`, then **redeploy** (Vite bakes
    `VITE_` variables in at build time). The page switches from the test ad to real ads; the server then accepts a reward
-   after Google's "granted" event (at least 10 seconds after the ad starts).
+   after Google's "granted" event (at least 15 seconds after the ad starts).
 8. **Check:** open `/rewards` while signed in as a Free account and watch one ad. If Google has no ad to show, the page
    says so ("No ad is available right now"); new ad units often take a day or two to start filling.
 

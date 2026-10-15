@@ -69,6 +69,10 @@ export const isRewardFeature = (value: unknown): value is RewardFeature =>
 // Google Ad Manager rewarded ad unit, e.g. "/1234567/aullevo_rewarded". Empty = test ads (no earnings).
 export const REWARDED_AD_UNIT: string = (import.meta.env.VITE_REWARDED_AD_UNIT ?? '').trim();
 
+// The server refuses a real ad's reward claimed sooner than this after the ad started (MIN_LIVE_AD_SECONDS in
+// api/_rewards-core.ts); a shorter ad waits out the rest before claiming
+export const MIN_LIVE_AD_MS = 15_000;
+
 // "1-minute", "30-second" (as in "a 1-minute ad")
 export const adLength = (seconds: number) => seconds >= 60 && seconds % 60 === 0 ? `${seconds / 60}-minute` : `${seconds}-second`;
 

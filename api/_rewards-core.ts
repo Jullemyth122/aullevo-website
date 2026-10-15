@@ -50,7 +50,7 @@ export const VOICE_SESSION_MS = 10 * 60 * 1000;
 // Safety net against bots farming ads (a person never gets near it); protects the ad account from abuse flags
 export const DAILY_AD_LIMIT = 100;
 // Real (Google) ads decide their own length; the server still refuses a reward claimed this fast
-export const MIN_LIVE_AD_SECONDS = 10;
+export const MIN_LIVE_AD_SECONDS = 15;
 // A started ad must be finished within this time
 export const PENDING_AD_MAX_MS = 15 * 60 * 1000;
 

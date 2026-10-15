@@ -20,7 +20,7 @@ function freeUsedUp(feature: RewardFeature, doc: RewardsDoc = {}): RewardsDoc {
 
 function watch(doc: RewardsDoc, feature: RewardFeature, at = T0, live = false) {
   const started = startAd(doc, feature, at, `n-${feature}-${at}`);
-  const seconds = live ? 12 : REWARD_RULES[feature].adSeconds;
+  const seconds = live ? 16 : REWARD_RULES[feature].adSeconds;
   return grantAd(started.doc, started.pending.nonce, at + seconds * 1000, live);
 }
 
@@ -171,11 +171,12 @@ test('an ad after it ran out starts fresh (old leftovers are gone)', () => {
   assert.equal(later.unlock.until, T0 + 3 * HOUR + MIN + 2 * HOUR);
 });
 
-test('the test ad must run its full length; a real ad at least 10 s', () => {
+test('the test ad must run its full length; a real ad at least 15 s', () => {
   const s = startAd({}, 'json', T0, 'n1');
   assert.equal(code(() => grantAd(s.doc, 'n1', T0 + 30_000, false)), 'too-early');
   assert.equal(code(() => grantAd(s.doc, 'n1', T0 + 5_000, true)), 'too-early');
-  assert.equal(code(() => grantAd(s.doc, 'n1', T0 + 12_000, true)), 'ok');
+  assert.equal(code(() => grantAd(s.doc, 'n1', T0 + 12_000, true)), 'too-early');
+  assert.equal(code(() => grantAd(s.doc, 'n1', T0 + 16_000, true)), 'ok');
 });
 
 test('an ad can be claimed once, only with its own id, and not after 15 minutes', () => {

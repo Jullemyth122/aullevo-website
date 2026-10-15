@@ -6,7 +6,7 @@ import { auth, db, googleProvider } from '../config/firebase';
 import SEO from '../components/SEO';
 import { logEvent } from '../utils/analytics';
 import {
-    REWARDS, REWARD_ORDER, REWARDED_AD_UNIT, adLength, adLengthShort, isRewardFeature, rewardsApi,
+    MIN_LIVE_AD_MS, REWARDS, REWARD_ORDER, REWARDED_AD_UNIT, adLength, adLengthShort, isRewardFeature, rewardsApi,
     type RewardFeature, type RewardsStatus, type Unlock
 } from '../config/rewards';
 
@@ -179,6 +179,7 @@ const Rewards: React.FC = () => {
     const [error, setError] = useState('');
     const [adSeconds, setAdSeconds] = useState(0);
     const nonceRef = useRef('');
+    const startedAtRef = useRef(0);
     const [now, setNow] = useState(() => Date.now());
 
     useEffect(() => {
@@ -236,6 +237,9 @@ const Rewards: React.FC = () => {
         if (!auth.currentUser) return;
         setPhase('granting');
         try {
+            // A real ad shorter than the server's minimum: wait out the rest (with a margin) before claiming
+            const wait = startedAtRef.current + MIN_LIVE_AD_MS + 1000 - Date.now();
+            if (REWARDED_AD_UNIT && wait > 0) await new Promise(r => setTimeout(r, wait));
             const result = await rewardsApi<RewardsStatus & { feature: RewardFeature; unlock: Unlock }>('grant', await auth.currentUser.getIdToken(), { nonce: nonceRef.current });
             setStatus(result);
             setPhase('done');
@@ -255,6 +259,7 @@ const Rewards: React.FC = () => {
         try {
             const started = await rewardsApi<{ nonce: string; adSeconds: number; live: boolean }>('start', await user.getIdToken(), { feature });
             nonceRef.current = started.nonce;
+            startedAtRef.current = Date.now();
             if (REWARDED_AD_UNIT && started.live) {
                 setPhase('playing');
                 const outcome = await showRewardedAd(REWARDED_AD_UNIT);
