@@ -226,7 +226,7 @@ const featuresList = [
         color: 'blue',
         icon: <BrainIcon />,
         desc: 'For questions keywords cannot answer, the AI you choose (Google Gemini, ChatGPT, Claude, or any OpenAI-compatible server such as OpenRouter, Groq, or Ollama) picks the best multiple-choice option (several for checkbox questions), combines fields (like First + Last Name into Full Name), follows format instructions such as "Surname, Given Names", and drafts short answers. Uses your own API key; Gemini has a free tier.',
-        pill: 'Free: 6 / Day (+10 per Ad) · Pro: Unlimited'
+        pill: 'Free: 6 / Day · 2 Ads: Unlimited for 5 h · Pro: Unlimited'
     },
     {
         title: 'Privacy Controls for AI',
@@ -259,7 +259,7 @@ const featuresList = [
         color: 'blue',
         icon: <MicIcon />,
         desc: 'Switch the side panel to the agent orb and just say it: "fill this page", "highlight the fields", "use my job profile", "create a profile called Work", "set my phone to…", "fill my links", "open settings". The agent answers in a natural ElevenLabs voice. English and Tagalog.',
-        pill: 'Free: 3 Sessions / Day · Your ElevenLabs Key'
+        pill: 'Free: 3 Sessions / Day · 2 Ads: Unlimited for 5 h · Your ElevenLabs Key'
     },
     {
         title: 'Fill Exactly What You Name',
@@ -267,7 +267,7 @@ const featuresList = [
         color: 'yellow',
         icon: <TargetIcon />,
         desc: 'Say "fill the email", "fill this one", "fill my birthday" or "the one about market risk", and only that question is filled. Your AI provider reads what you said with the form\'s questions (never your saved values) and picks the exact ones. Dictate your own answer too: "answer the gym question with: I jog every morning".',
-        pill: 'Pro · Targeted Fills'
+        pill: 'Voice Mode · Targeted Fills'
     },
     {
         title: 'Live, Hands-Free Conversation',
@@ -275,7 +275,7 @@ const featuresList = [
         color: 'blue',
         icon: <WaveIcon />,
         desc: 'Turn on Live conversation and give one command after another without touching the mouse. Say "stop talking" to cut the agent off, "stop" to cancel a fill, "next" or "submit" to move on, and "end conversation" when you\'re done.',
-        pill: 'Pro · Interrupt Anytime'
+        pill: 'Voice Mode · Interrupt Anytime'
     },
     // Profiles & Files
     {
@@ -284,7 +284,7 @@ const featuresList = [
         color: 'yellow',
         icon: <UserGroupIcon />,
         desc: 'Start from Job, Medical, Government, Survey, Academic, Financial, or Custom profiles, or create your own. Add unlimited custom fields with context hints that help matching and AI understand your data.',
-        pill: 'Free: 3 Active (6 with an Ad) · Pro: Unlimited'
+        pill: 'Free: 3 Active · 2 Ads: Unlimited for 5 h · Pro: Unlimited'
     },
     {
         title: 'Document Upload into Forms',
@@ -292,7 +292,7 @@ const featuresList = [
         color: 'blue',
         icon: <FileUploadIcon />,
         desc: 'Save your resume, cover letter, IDs, and certificates once. Aullevo attaches the right document to each file input or drag-and-drop zone by reading its label.',
-        pill: 'Auto-Attach Files'
+        pill: 'Pro, or 5 h with 2 Ads · Auto-Attach Files'
     },
     {
         title: 'JSON Quick Setup',
@@ -300,7 +300,7 @@ const featuresList = [
         color: 'yellow',
         icon: <RepeatIcon />,
         desc: 'Copy your profile as JSON, give it to Gemini, Claude, or ChatGPT together with your resume, and paste the filled-in result back. Your whole profile is set up in a minute. Pro adds unlimited imports and a JSON file download for backups.',
-        pill: 'Free: 4 Imports / Day · Pro: Unlimited'
+        pill: 'Free: 4 Imports / Day · 2 Ads: Unlimited for 5 h · Pro: Unlimited'
     },
     {
         title: 'Auto-Pagination for Multi-Page Forms',
@@ -308,7 +308,7 @@ const featuresList = [
         color: 'blue',
         icon: <PagesIcon />,
         desc: 'Fills a page, clicks Next or Continue, and repeats until it presses Submit on the last page. It pauses when a required field is empty, fixes answers a form rejects (like "5 years" in a number-only box), and clicks through steps like "Apply anyway".',
-        pill: 'Fill · Next · Submit'
+        pill: 'Free: 2 h / Day · 2 Ads: 5 h · Fill · Next · Submit'
     },
     // Privacy
     {

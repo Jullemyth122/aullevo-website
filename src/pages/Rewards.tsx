@@ -6,40 +6,23 @@ import { auth, db, googleProvider } from '../config/firebase';
 import SEO from '../components/SEO';
 import { logEvent } from '../utils/analytics';
 import {
-    MIN_LIVE_AD_MS, REWARDS, REWARD_ORDER, REWARDED_AD_UNIT, adLength, adLengthShort, isRewardFeature, rewardsApi,
-    type RewardFeature, type RewardsStatus, type Unlock
+    FREE_ALLOWANCE, MIN_LIVE_AD_MS, PASS_ADS, PASS_EXTRAS, PASS_HOURS, REWARDED_AD_UNIT, isRewardFeature, rewardsApi,
+    type RewardsStatus
 } from '../config/rewards';
 
-// The extension opens /rewards?feature=ai when a Free user has used the day's free allowance. The user watches a
-// short ad here, /api/rewards opens the unlock for their account, and the extension picks it up
-// (AULLEVO_REWARD_GRANTED). The server refuses an ad while free uses are left.
+// The extension opens /rewards?feature=ai when a Free user hits a limit. The user watches 2 short ads here (the
+// pass), /api/rewards unlocks everything on their account for 5 hours, and the extension picks it up
+// (AULLEVO_REWARD_GRANTED). Ads can be watched any time; passes stack.
 
 type Phase = 'idle' | 'starting' | 'playing' | 'granting' | 'done';
 type AdOutcome = 'granted' | 'closed' | 'no-fill' | 'unsupported';
 
 const timeOf = (ms: number) => new Date(ms).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
 
-function unlockText(feature: RewardFeature, unlock: Unlock | undefined, now: number): string | null {
-    if (!unlock || unlock.until <= now) return null;
-    const info = REWARDS[feature];
-    if (info.uses !== undefined) {
-        const left = unlock.remaining ?? 0;
-        return left > 0 ? `${left} left until ${timeOf(unlock.until)}` : `All used (unlock ends ${timeOf(unlock.until)})`;
-    }
-    return `${unlock.free ? 'Free hours run' : 'Unlocked'} until ${timeOf(unlock.until)}`;
-}
-
-/** Today's free allowance: "2 of 3 free today" / "Free today: running until 3:00 PM". Null when it's used up. */
-function freeText(feature: RewardFeature, status: RewardsStatus, now: number): string | null {
-    const info = REWARDS[feature];
-    const left = status.free?.[feature] ?? 0;
-    if (info.freeUses) return left > 0 ? `${left} of ${info.freeUses} free left today. An ad unlocks more once they're used.` : null;
-    if (info.freeHours) {
-        const u = status.unlocks[feature];
-        if (u?.free && u.until > now) return `Your free ${info.freeHours} hours are running until ${timeOf(u.until)}. An ad unlocks more once they end.`;
-        if (left > 0) return `Today's free ${info.freeHours} hours start the first time you use it in Aullevo. An ad unlocks more once they end.`;
-    }
-    return null;
+// "4h 12m" / "35m"
+function hoursLeft(ms: number): string {
+    const m = Math.max(0, Math.round(ms / 60000));
+    return m >= 60 ? `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m` : `${m}m`;
 }
 
 // Tells the Aullevo extension who is signed in (it links its own token from this) — same message as the Login page
@@ -124,7 +107,7 @@ async function showRewardedAd(adUnit: string): Promise<AdOutcome> {
 /* ── Test ad: until Google rewarded video ads are connected (VITE_REWARDED_AD_UNIT), a countdown stands in ── */
 
 /** The countdown before a reward; it only runs while this tab is visible. */
-const TestAd: React.FC<{ seconds: number; feature: RewardFeature; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
+const TestAd: React.FC<{ seconds: number; feature: string; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
     const [left, setLeft] = useState(seconds);
     const finished = useRef(false);
 
@@ -167,9 +150,10 @@ const TestAd: React.FC<{ seconds: number; feature: RewardFeature; onFinished: ()
 };
 
 const Rewards: React.FC = () => {
-    const [params, setParams] = useSearchParams();
+    const [params] = useSearchParams();
     const requested = params.get('feature');
-    const [feature, setFeature] = useState<RewardFeature>(isRewardFeature(requested) ? requested : 'ai');
+    // Where the user hit a limit in the extension (for analytics); the pass unlocks everything either way
+    const feature = isRewardFeature(requested) ? requested : 'pass';
     const fromExtension = params.get('source') === 'extension';
 
     const [user, setUser] = useState<User | null>(null);
@@ -181,6 +165,8 @@ const Rewards: React.FC = () => {
     const nonceRef = useRef('');
     const startedAtRef = useRef(0);
     const [now, setNow] = useState(() => Date.now());
+    // The free list starts open beside the pass on wide screens, folded under it on phones
+    const [listOpen, setListOpen] = useState(() => typeof window === 'undefined' || window.matchMedia('(min-width: 861px)').matches);
 
     useEffect(() => {
         const id = window.setInterval(() => setNow(Date.now()), 15000);
@@ -223,16 +209,6 @@ const Rewards: React.FC = () => {
         return () => window.removeEventListener('message', onMessage);
     }, []);
 
-    const choose = (f: RewardFeature) => {
-        if (phase !== 'idle' && phase !== 'done') return;
-        setFeature(f);
-        setPhase('idle');
-        setError('');
-        const next = new URLSearchParams(params);
-        next.set('feature', f);
-        setParams(next, { replace: true });
-    };
-
     const grant = useCallback(async () => {
         if (!auth.currentUser) return;
         setPhase('granting');
@@ -240,16 +216,22 @@ const Rewards: React.FC = () => {
             // A real ad shorter than the server's minimum: wait out the rest (with a margin) before claiming
             const wait = startedAtRef.current + MIN_LIVE_AD_MS + 1000 - Date.now();
             if (REWARDED_AD_UNIT && wait > 0) await new Promise(r => setTimeout(r, wait));
-            const result = await rewardsApi<RewardsStatus & { feature: RewardFeature; unlock: Unlock }>('grant', await auth.currentUser.getIdToken(), { nonce: nonceRef.current });
+            const result = await rewardsApi<RewardsStatus & { completed: boolean }>('grant', await auth.currentUser.getIdToken(), { nonce: nonceRef.current });
             setStatus(result);
+            if (!result.completed) {
+                // Half a pass: the next ad completes it (it needs its own click: browsers only play ads after one)
+                setPhase('idle');
+                return;
+            }
             setPhase('done');
+            logEvent('rewards_pass_unlocked', { feature });
             // The extension refreshes its unlocks (and closes this tab if it opened it)
-            window.postMessage({ type: 'AULLEVO_REWARD_GRANTED', feature: result.feature, unlock: result.unlock }, window.location.origin);
+            window.postMessage({ type: 'AULLEVO_REWARD_GRANTED', feature: 'pass', unlock: result.pass }, window.location.origin);
         } catch (err) {
             setError(err instanceof Error ? err.message : String(err));
             setPhase('idle');
         }
-    }, []);
+    }, [feature]);
 
     const watch = async () => {
         if (!user) return;
@@ -257,7 +239,7 @@ const Rewards: React.FC = () => {
         setAdSeconds(0);
         setPhase('starting');
         try {
-            const started = await rewardsApi<{ nonce: string; adSeconds: number; live: boolean }>('start', await user.getIdToken(), { feature });
+            const started = await rewardsApi<{ nonce: string; adSeconds: number; live: boolean }>('start', await user.getIdToken());
             nonceRef.current = started.nonce;
             startedAtRef.current = Date.now();
             if (REWARDED_AD_UNIT && started.live) {
@@ -285,75 +267,91 @@ const Rewards: React.FC = () => {
         }
     };
 
-    const info = REWARDS[feature];
-    const current = status ? unlockText(feature, status.unlocks[feature], Math.max(now, status.now)) : null;
+    const at = Math.max(now, status?.now ?? 0);
+    const pass = status?.pass && status.pass.until > at ? status.pass : null;
+    const adsDone = status?.passAds ?? 0;
     const outOfAds = Boolean(status && status.adsToday >= status.dailyLimit);
-    const freeNow = status && !status.pro ? freeText(feature, status, Math.max(now, status.now)) : null;
+    const nextAd = adsDone + 1;
 
     return (
         <div className="rewards-page">
-            <SEO title="Unlock with a short ad | Aullevo" description="Aullevo Free includes AI Smart Fill, auto-pagination, voice and more every day; when the day's free uses run out, short ads unlock more." canonicalPath="/rewards" />
+            <SEO title="Unlock everything with 2 short ads | Aullevo" description={`Aullevo Free includes AI Smart Fill, auto-pagination, voice and more every day. Watch ${PASS_ADS} short ads to unlock everything for ${PASS_HOURS} hours.`} canonicalPath="/rewards" />
             <header className="rewards-head">
                 <span className="rewards-eyebrow">Aullevo Free</span>
-                <h1>Unlock with a short ad</h1>
-                <p>Aullevo Free gives you part of every feature each day. When today's free uses run out, a short ad unlocks more for a few hours, and every extra ad adds more uses and time. Pro skips the ads and keeps everything unlocked.</p>
+                <h1>{PASS_ADS} short ads, everything for {PASS_HOURS} hours</h1>
+                <p>Aullevo Free gives you part of every feature each day. Watch {PASS_ADS} short ads any time to unlock every feature for {PASS_HOURS} hours, with no limits, resume uploads included. Watch {PASS_ADS} more to add another {PASS_HOURS} hours. The ads keep Aullevo running: thank you! Pro skips the ads.</p>
             </header>
 
             <div className="rewards-layout">
-                <section className="rewards-main glass-card" aria-labelledby="rewards-feature">
-                    <span className="rewards-label">You’re unlocking</span>
-                    <h2 id="rewards-feature">{info.title}</h2>
-                    <p className="rewards-gives">Watch a {adLength(info.adSeconds)} ad to get <strong>{info.gives}</strong>.</p>
-                    <p className="rewards-detail">{info.detail} Free: {info.free}.</p>
+                <section className="rewards-main glass-card" aria-labelledby="rewards-pass">
+                    <span className="rewards-label">The {PASS_HOURS}-hour pass</span>
+                    <h2 id="rewards-pass">Everything unlocked for {PASS_HOURS} hours</h2>
+                    <p className="rewards-gives">Watch <strong>{PASS_ADS} short ads</strong> in a row to get <strong>unlimited use of every feature for {PASS_HOURS} hours</strong>.</p>
+                    <p className="rewards-detail">Unlimited AI Smart Fill, voice agent, auto-pagination, JSON imports, profiles and Multi-link, plus resume and document uploads into forms and JSON export.</p>
 
                     {!authReady ? <div className="spinner" aria-label="Loading" /> : !user ? (
                         <div className="rewards-actions">
-                            <p className="rewards-note">Unlocks are saved to your Aullevo account, so sign in first (the same Google account you use in the extension).</p>
+                            <p className="rewards-note">The pass is saved to your Aullevo account, so sign in first (the same Google account you use in the extension).</p>
                             <button type="button" className="rewards-btn" onClick={signIn}>Sign in with Google</button>
                         </div>
                     ) : status?.pro ? (
                         <div className="rewards-done">
                             <strong>You’re on Pro.</strong> Everything is already unlocked, no ads needed.
                         </div>
-                    ) : phase === 'done' ? (
+                    ) : phase === 'done' && pass ? (
                         <div className="rewards-done" role="status">
-                            <strong>Unlocked!</strong> {unlockText(feature, status?.unlocks[feature], Math.max(now, status?.now ?? 0))}.{' '}
-                            {fromExtension ? 'You can go back to Aullevo; it’s ready.' : 'Open Aullevo to use it.'}
-                            <button type="button" className="rewards-btn rewards-btn--quiet" onClick={() => setPhase('idle')}>Watch another</button>
+                            <strong>Everything is unlocked until {timeOf(pass.until)}!</strong>{' '}
+                            {fromExtension ? 'You can go back to Aullevo; it’s ready.' : 'Open Aullevo to use it.'}{' '}
+                            Thank you for supporting Aullevo.
+                            <button type="button" className="rewards-btn rewards-btn--quiet" onClick={() => setPhase('idle')}>Add {PASS_HOURS} more hours</button>
                         </div>
                     ) : (
                         <div className="rewards-actions">
-                            {freeNow && <p className="rewards-current">{freeNow}</p>}
-                            {current && !freeNow && <p className="rewards-current">Currently: {current}. Watching another ad adds to it.</p>}
-                            <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds || Boolean(freeNow)}>
-                                {phase === 'starting' ? 'Starting…' : phase === 'granting' ? 'Unlocking…' : `▶ Watch ad (${adLengthShort(info.adSeconds)})`}
+                            {pass && <p className="rewards-current">Your pass runs until {timeOf(pass.until)} ({hoursLeft(pass.until - at)} left). {PASS_ADS} more ads add {PASS_HOURS} hours.</p>}
+                            <div className="rewards-steps" aria-label={`Ad ${Math.min(nextAd, PASS_ADS)} of ${PASS_ADS}`}>
+                                {Array.from({ length: PASS_ADS }, (_, i) => (
+                                    <span key={i} className={`rewards-step ${i < adsDone ? 'is-done' : i === adsDone ? 'is-next' : ''}`}>
+                                        {i < adsDone ? '✓' : i + 1}
+                                    </span>
+                                ))}
+                            </div>
+                            {adsDone > 0 && <p className="rewards-current">Ad {adsDone} of {PASS_ADS} done. One more unlocks everything (within the hour).</p>}
+                            <button type="button" className="rewards-btn" onClick={watch} disabled={phase !== 'idle' || outOfAds}>
+                                {phase === 'starting' ? 'Starting…' : phase === 'granting' ? 'Checking…' : `▶ Watch ad ${nextAd} of ${PASS_ADS}`}
                             </button>
                             {status && <p className="rewards-note">Ads watched today: {status.adsToday}.</p>}
                         </div>
                     )}
                     {error && <p className="rewards-error" role="alert">{error}</p>}
-                    <p className="rewards-pro">Tired of ads? <Link to="/login">Upgrade to Pro</Link> for unlimited use of everything, including the voice agent.</p>
+                    <p className="rewards-pro">Tired of ads? <Link to="/login">Upgrade to Pro</Link> for unlimited use of everything, no ads, no time limit.</p>
                 </section>
 
-                <aside className="rewards-list" aria-label="Everything you can unlock">
-                    <h3>Everything you can unlock</h3>
+                {/* Folds like the extension's Settings; open on wide screens, where it sits beside the pass */}
+                <details className="rewards-list" open={listOpen} onToggle={(e) => setListOpen(e.currentTarget.open)}>
+                    <summary>
+                        <h3>Free every day, no ads</h3>
+                        <span className="rewards-list__hint">{pass ? `Everything unlimited until ${timeOf(pass.until)}` : `${FREE_ALLOWANCE.length + 1} features`}</span>
+                    </summary>
                     <ul>
-                        {REWARD_ORDER.map((f) => {
-                            const r = REWARDS[f];
-                            const active = status ? unlockText(f, status.unlocks[f], Math.max(now, status.now)) : null;
-                            return (
-                                <li key={f}>
-                                    <button type="button" className={`rewards-item ${f === feature ? 'is-current' : ''}`} onClick={() => choose(f)} aria-pressed={f === feature}>
-                                        <b>{r.title}</b>
-                                        <span>Free: {r.free} · {adLength(r.adSeconds)} ad → {r.gives}</span>
-                                        {active && <em>{active}</em>}
-                                    </button>
-                                </li>
-                            );
-                        })}
+                        {FREE_ALLOWANCE.map((f) => (
+                            <li key={f.id}>
+                                <div className="rewards-item">
+                                    <b>{f.title}</b>
+                                    <span>{f.free}</span>
+                                    {pass && <em>Unlimited until {timeOf(pass.until)}</em>}
+                                </div>
+                            </li>
+                        ))}
+                        <li>
+                            <div className="rewards-item">
+                                <b>{PASS_EXTRAS.join(' · ')}</b>
+                                <span>With the pass or Pro</span>
+                                {pass && <em>Unlocked until {timeOf(pass.until)}</em>}
+                            </div>
+                        </li>
                     </ul>
-                    <p className="rewards-note">Daily free uses reset at {status ? timeOf(status.freeResetsAt) : 'midnight UTC'}. Keyword fill is always free and unlimited. Document uploads need Pro.</p>
-                </aside>
+                    <p className="rewards-note">Daily free uses reset at {status ? timeOf(status.freeResetsAt) : 'midnight UTC'}. Keyword fill is always free and unlimited.</p>
+                </details>
             </div>
 
             {phase === 'playing' && adSeconds > 0 && <TestAd seconds={adSeconds} feature={feature} onFinished={grant} />}

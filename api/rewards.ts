@@ -3,11 +3,12 @@
  *
  *   POST /api/rewards?action=link     (Bearer Firebase ID token) → the extension's own long-lived token + status
  *   POST /api/rewards?action=status   (Bearer ID token or extension token) → Pro flag + running unlocks
- *   POST /api/rewards?action=start    (Bearer ID token, body {feature}) → starts an ad on aullevo-web/rewards
- *   POST /api/rewards?action=grant    (Bearer ID token, body {nonce}) → the ad finished: opens the unlock
- *   POST /api/rewards?action=consume  (Bearer ID token or extension token, body {feature}) → uses one AI fill,
- *                                     JSON import or voice session (an ad's first, then the day's free ones);
- *                                     auto-pagination / typing: starts the day's free window when none runs
+ *   POST /api/rewards?action=start    (Bearer ID token) → starts an ad toward the pass on aullevo-web/rewards
+ *   POST /api/rewards?action=grant    (Bearer ID token, body {nonce}) → the ad finished: the 2nd in a row opens
+ *                                     the pass (everything for 5 hours)
+ *   POST /api/rewards?action=consume  (Bearer ID token or extension token, body {feature}) → a running pass allows
+ *                                     everything; else uses one AI fill, JSON import or voice session (the day's
+ *                                     free ones); auto-pagination / typing: starts the day's free window
  *   GET  /api/rewards                 → health check (which env vars are set, never their values)
  *
  * Unlocks are written only here, with the Admin SDK (firestore.rules: rewards/{uid} is read-only for its owner),
@@ -24,7 +25,7 @@ import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 import {
-  REWARD_RULES, RewardError, consume, grantAd, isExtToken, isRewardFeature, publicState, signExtToken, startAd, verifyExtToken,
+  PASS_AD_SECONDS, RewardError, consume, grantAd, isExtToken, isRewardFeature, publicState, signExtToken, startAd, verifyExtToken,
   type RewardsDoc,
 } from './_rewards-core.js';
 
@@ -143,16 +144,16 @@ async function handleStatus(request: Request) {
   return json(await status(await requireUid(request)));
 }
 
+// Every ad counts toward the pass (2 ads: everything for 5 hours); a `feature` in the body is only remembered
+// for the reply (the extension opens /rewards?feature=ai where the user hit a limit)
 async function handleStart(request: Request) {
   const uid = await requireUid(request, true);
-  const { feature } = await readBody(request);
-  if (!isRewardFeature(feature)) throw new HttpError(400, 'Unknown feature');
   if (await isProAccount(uid)) throw new HttpError(400, 'Your Pro plan already unlocks everything.');
   const pending = await withRewards(uid, (doc, now) => {
-    const started = startAd(doc, feature, now, randomUUID());
+    const started = startAd(doc, now, randomUUID());
     return { doc: started.doc, result: started.pending };
   });
-  return json({ nonce: pending.nonce, feature, adSeconds: REWARD_RULES[feature].adSeconds, live: liveAds() });
+  return json({ nonce: pending.nonce, adSeconds: PASS_AD_SECONDS, live: liveAds() });
 }
 
 async function handleGrant(request: Request) {
@@ -161,9 +162,9 @@ async function handleGrant(request: Request) {
   if (typeof nonce !== 'string' || nonce.length > 100) throw new HttpError(400, 'Missing ad id');
   const granted = await withRewards(uid, (doc, now) => {
     const g = grantAd(doc, nonce, now, liveAds());
-    return { doc: g.doc, result: { feature: g.feature, unlock: g.unlock, state: publicState(g.doc, now) } };
+    return { doc: g.doc, result: { completed: g.completed, state: publicState(g.doc, now) } };
   });
-  return json({ ok: true, feature: granted.feature, unlock: granted.unlock, pro: false, live: liveAds(), ...granted.state });
+  return json({ ok: true, completed: granted.completed, pro: false, live: liveAds(), ...granted.state });
 }
 
 async function handleConsume(request: Request) {

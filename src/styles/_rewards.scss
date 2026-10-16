@@ -1,4 +1,4 @@
-// /rewards: Free users watch a short ad to unlock a feature for a few hours
+// /rewards: Free users watch 2 short ads to unlock everything for 5 hours (the pass)
 .rewards-page {
   max-width: 1080px;
   margin: 0 auto;
@@ -89,6 +89,53 @@
   background: rgba(16, 185, 129, 0.12);
 }
 
+// The pass: one dot per ad, done ones ticked
+.rewards-steps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rewards-step {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  border: 1px solid var(--glass-border);
+  background: var(--bg-card);
+
+  &.is-next {
+    color: #fff;
+    border-color: var(--aullevo-blue-bright);
+    background: rgba(37, 99, 235, 0.25);
+  }
+
+  &.is-done {
+    color: #052e1c;
+    border-color: #34d399;
+    background: #34d399;
+  }
+
+  & + & {
+    position: relative;
+    margin-left: 18px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      width: 22px;
+      height: 2px;
+      margin-right: 6px;
+      background: var(--glass-border);
+    }
+  }
+}
+
 .rewards-current {
   margin: 0;
   font-size: 0.92rem;
@@ -158,13 +205,70 @@
     font-size: 1rem;
   }
 
-  ul {
+  // The whole title row opens and closes the list (a <details>), with a chevron like the extension's Settings
+  > summary {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
     list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 8px;
+    user-select: none;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--bg-card);
+    transition: border-color 0.2s;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      margin-left: 4px;
+      border-right: 2px solid var(--text-muted);
+      border-bottom: 2px solid var(--text-muted);
+      transform: rotate(-45deg);
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      border-color: var(--glass-border-hover);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--aullevo-blue-glow);
+      outline-offset: 3px;
+    }
+
+    h3 {
+      margin-right: auto;
+    }
   }
+
+  &[open] > summary::after {
+    transform: rotate(45deg);
+  }
+}
+
+.rewards-list__hint {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.rewards-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
 }
 
 .rewards-item {
@@ -178,8 +282,11 @@
   border-radius: 12px;
   border: 1px solid var(--glass-border);
   background: var(--bg-card);
-  cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+
+  &:is(button) {
+    cursor: pointer;
+  }
 
   b {
     font-size: 0.95rem;

@@ -50,7 +50,7 @@ const Documentation: React.FC = () => {
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.5</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.6</span>
                     </div>
                     <h1 className="docs-title">User Guide</h1>
                     <p className="docs-subtitle">Everything you need to install, set up, and get the most out of Aullevo.</p>
@@ -208,7 +208,7 @@ const Documentation: React.FC = () => {
                             Aullevo is <strong>free to use</strong>: the full form engine, all profile types, the encrypted vault, and Multi-link batch fill are included. AI Smart Fill uses your own API key with the provider you choose (Gemini has a free tier), so there are no AI fees from us.
                         </p>
                         <p>
-                            <strong>Every day, Free includes</strong> 6 AI fills, 3 voice sessions, 2 hours of Auto-Pagination, 2 hours of Slow and custom typing speeds, and 4 JSON imports (with a connected Aullevo account; reset at midnight UTC, JSON imports at your local midnight). When a feature's free uses run out, a short ad on the Aullevo website unlocks more for a few hours, and each extra ad adds more uses and time. Ads are never shown before that, and never inside the extension. When an unlock ends, nothing is deleted: extra profiles and links are paused until the next ad or Pro.
+                            <strong>Every day, Free includes</strong> 6 AI fills, 3 voice sessions, 2 hours of Auto-Pagination, 2 hours of Slow and custom typing speeds, and 4 JSON imports (with a connected Aullevo account; reset at midnight UTC, JSON imports at your local midnight). Any time you want more, watch <strong>2 short ads</strong> on the Aullevo website: everything is unlocked for <strong>5 hours</strong>, with no limits, document uploads included. Two more ads add another 5 hours. Ads are never shown inside the extension, and the ads keep Aullevo running. When a pass ends, nothing is deleted: extra profiles and links are paused until the next pass or Pro.
                         </p>
                         <p>
                             <strong>Aullevo Pro</strong> is for people who fill a lot of forms: unlimited AI fills, unlimited active profiles, automatic document uploads, Auto-Pagination for multi-page forms, Voice mode, and more control.
@@ -234,49 +234,49 @@ const Documentation: React.FC = () => {
                                     </tr>
                                     <tr>
                                         <td><strong>AI Smart Fill</strong></td>
-                                        <td>6 fills a day (+10 for 2 hours per 1-minute ad)</td>
+                                        <td>6 fills a day; unlimited during a 2-ad pass (5 hours)</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>Uses your own API key (Gemini, OpenAI, or Anthropic) or your own OpenAI-compatible server. Each page the AI helps fill uses one fill.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Active Profiles</strong></td>
-                                        <td>3 at a time (6 for 2 hours with a 30-second ad)</td>
+                                        <td>3 at a time; unlimited during a 2-ad pass</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>All profile types and custom profiles are available on both plans.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Document Upload into Forms</strong></td>
-                                        <td>—</td>
+                                        <td>During a 2-ad pass (5 hours)</td>
                                         <td><strong>✓ Automatic</strong></td>
                                         <td>Resumes, cover letters, and IDs are attached to the right upload fields.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Auto-Pagination</strong></td>
-                                        <td>2 hours a day (+4 hours with a 1-minute ad)</td>
+                                        <td>2 hours a day; unlimited during a 2-ad pass</td>
                                         <td><strong>✓ Fill, Next &amp; Submit</strong></td>
                                         <td>Fills every page of a multi-step form and submits it. Pauses when a required field is empty.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Voice Mode</strong></td>
-                                        <td>3 sessions a day (+6 for 2 hours per 1-minute ad)</td>
+                                        <td>3 sessions a day; unlimited during a 2-ad pass</td>
                                         <td><strong>✓ Talk to Fill</strong></td>
                                         <td>Fill pages or single questions by voice, dictate your own answers, hands-free live conversation.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Typing Speed</strong></td>
-                                        <td>Instant, Natural; Slow &amp; Custom 2 hours a day (+4 hours with a 20-second ad)</td>
+                                        <td>Instant, Natural; Slow &amp; Custom 2 hours a day, or during a 2-ad pass</td>
                                         <td><strong>+ Slow &amp; Custom</strong></td>
                                         <td>A slower, human pace for sites that expect real keystrokes.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>JSON Quick Setup</strong></td>
-                                        <td>Copy &amp; 4 imports a day (+10 for 5 hours per 1-minute ad)</td>
+                                        <td>Copy &amp; 4 imports a day; unlimited imports + Download during a 2-ad pass</td>
                                         <td><strong>✓ Unlimited imports + Download</strong></td>
-                                        <td>Set up a profile from your resume with an AI chatbot, or back it up as a <code>.json</code> file (Pro). Free imports reset every day.</td>
+                                        <td>Set up a profile from your resume with an AI chatbot, or back it up as a <code>.json</code> file (Pro, or during a 2-ad pass). Free imports reset every day.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Multi-link Queue</strong></td>
-                                        <td>5 links (10 for 5 hours with a 1-minute ad)</td>
+                                        <td>5 links; unlimited during a 2-ad pass</td>
                                         <td><strong>Unlimited</strong></td>
                                         <td>Open and fill several applications in one batch.</td>
                                     </tr>
@@ -284,7 +284,7 @@ const Documentation: React.FC = () => {
                                         <td><strong>Custom Fields, AI Memories, Encrypted Vault, Guided Tour, 34 Languages</strong></td>
                                         <td>✓</td>
                                         <td><strong>✓</strong></td>
-                                        <td>Included on every plan. Daily free allowances reset at midnight UTC. Ads are only offered once a day's free allowance is used, and only on the Aullevo website; Pro has no ads.</td>
+                                        <td>Included on every plan. Daily free allowances reset at midnight UTC. 2 short ads on the Aullevo website unlock everything for 5 hours (passes add up); Pro has no ads.</td>
                                     </tr>
                                     <tr>
                                         <td><strong>Price</strong></td>
@@ -340,7 +340,7 @@ const Documentation: React.FC = () => {
                                 <span className="use-case-badge">Job Seekers & Applicants</span>
                                 <div className="use-case-header">
                                     <h4>High-Volume Job Applications</h4>
-                                    <span className="tier-badge pro">Pro: Document Upload</span>
+                                    <span className="tier-badge pro">Pro or 2-ad pass: Document Upload</span>
                                 </div>
                                 <div className="use-case-problem">
                                     <strong>The Scenario:</strong> Applying to dozens of roles every week on company career portals, each asking for the same contact details, links, and a resume upload.
@@ -707,7 +707,7 @@ const Documentation: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <p>Free includes 4 imports a day (10 more for 5 hours with a short ad). Pro has unlimited imports and can <strong>Download</strong> the profile as a <code>.json</code> backup file.</p>
+                        <p>Free includes 4 imports a day. Pro, or a 5-hour pass from 2 short ads, gives unlimited imports and can <strong>Download</strong> the profile as a <code>.json</code> backup file.</p>
                     </section>
 
                     <section id="language-tour" className="docs-section">

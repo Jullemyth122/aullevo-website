@@ -1,30 +1,34 @@
-# Free-plan ad unlocks: setup and going live
+# Free-plan ads: the 5-hour pass, setup and going live
 
-Free accounts get a small allowance every day. Once a feature's free uses are gone, the extension offers a short ad on
-**aullevo.com/rewards**, and the server unlocks more on the account for a few hours (each ad adds to what runs). The server refuses an
-ad while free uses are left. Pro accounts never see ads. Until a Google ad unit is configured, the page shows a **test
-ad** (a countdown that runs only while the tab is visible), so everything works end to end but earns nothing.
+Free accounts get a small allowance every day. On top of it, **2 short ads** on **aullevo.com/rewards** unlock
+**everything for 5 hours**, without limits, including document uploads into forms and JSON export (otherwise Pro only).
+The pass can be watched any time (also while free uses are left); the second ad must follow within an hour of the
+first. Passes stack: 2 more ads add 5 more hours. Pro accounts never see ads. Until a Google ad unit is configured, the
+page shows a **test ad** (a 30-second countdown that runs only while the tab is visible), so everything works end to
+end but earns nothing.
 
-| Feature | Free every day | Ad | One ad gives |
-|---|---|---|---|
-| AI Smart Fill | 6 fills (server) | 1 min | 10 AI fills, +2 hours (each AI-filled page uses one, also during auto-pagination) |
-| Auto-pagination | 2 hours from the first use (server) | 1 min | 4 hours |
-| Voice agent | 3 sessions (server) | 1 min | 6 voice sessions, +2 hours (10 minutes each) |
-| Typing speeds | 2 hours from the first use (server) | 20 s | Slow and custom speeds for 4 hours |
-| JSON imports | 4 (counted in the extension) | 1 min | 10 imports for 5 hours |
-| Multi-link queue | 5 links | 1 min | up to 10 links for 5 hours |
-| Active profiles | 3 | 30 s | up to 6 active profiles for 2 hours |
+| Feature | Free every day | During a pass (2 ads, 5 hours) |
+|---|---|---|
+| AI Smart Fill | 6 fills (server) | unlimited |
+| Auto-pagination | 2 hours from the first use (server) | unlimited |
+| Voice agent | 3 sessions of 10 minutes (server) | unlimited sessions |
+| Typing speeds | Slow and custom: 2 hours from the first use (server) | unlimited |
+| JSON imports | 4 (counted in the extension) | unlimited, plus JSON export |
+| Multi-link queue | 5 links | unlimited |
+| Active profiles | 3 | unlimited |
+| Document uploads into forms | none (Pro) | yes |
 
-The server's daily allowance resets at midnight UTC; an ad's uses are spent before the free ones (they expire sooner).
-Ads stack: each one adds its uses and hours to the running unlock. A safety net of 100 ads per account per day stops bots.
-When an unlock ends nothing is deleted; extra profiles and links are paused in the extension. The rules live in `api/_rewards-core.ts` (server, authoritative), `src/config/rewards.ts`
+The server's daily allowance resets at midnight UTC. A safety net of 100 ads per account per day stops bots. Unlocks
+watched under the old per-feature ads (before 2026-10-16) keep working until they end, and while a pass runs the server
+also reports every feature as unlocked, so older extensions (v0.6.5) keep working. When a pass ends nothing is deleted;
+extra profiles and links are paused in the extension. The rules live in `api/_rewards-core.ts` (server, authoritative), `src/config/rewards.ts`
 (website text) and the extension's `src/services/rewards.ts`; keep the three in sync.
 
 ## How it fits together
 
-- `api/rewards.ts` (Vercel Function) — `link`, `status`, `start`, `grant`, `consume`. Unlocks are stored in Firestore
+- `api/rewards.ts` (Vercel Function) — `link`, `status`, `start`, `grant` (the 2nd ad in a row opens the pass), `consume`. Passes and the daily allowance are stored in Firestore
   `rewards/{uid}`, written only by this function (Admin SDK). Tests: `npm run test:rewards`.
-- `src/pages/Rewards.tsx` — the ad page. The extension opens `/rewards?feature=ai&source=extension`; after the ad the page
+- `src/pages/Rewards.tsx` — the ad page. The extension opens `/rewards?feature=ai&source=extension`; after the second ad the page
   posts `AULLEVO_REWARD_GRANTED`, the extension refreshes its unlocks and closes the tab.
 - The extension signs in to the API with its own token (180 days), issued when the account connects (`action=link`),
   because Firebase ID tokens expire after an hour.
@@ -67,10 +71,10 @@ Google AdSense / Ad Exchange. AdSense alone only shows display ads and has no "r
    says so ("No ad is available right now"); new ad units often take a day or two to start filling.
 
 Notes:
-- Google decides the ad and its length (usually 15–30 seconds), not us. The 1-minute / 30-second / 20-second lengths
-  apply to the test ad.
+- Google decides the ad and its length (usually 15–30 seconds), not us. The 30-second length
+  applies to the test ad.
 - Never click or watch your own ads repeatedly, and don't ask users to click ads: Google can disable the account for
-  invalid traffic. The 24-ads-a-day cap helps.
+  invalid traffic. The 100-ads-a-day cap is only a bot safety net.
 - Earnings depend heavily on where users are; rewarded video pays more than banners, but Pro subscriptions will
   usually earn more per user.
 

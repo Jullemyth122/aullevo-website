@@ -105,10 +105,10 @@ const PrivacyPolicy: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>October 15, 2026</strong></span>
+                            <span>Last Updated: <strong>October 16, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
-                            <span>Product: <strong>Aullevo Browser Extension (v0.6.5) &amp; Aullevo Web</strong></span>
+                            <span>Product: <strong>Aullevo Browser Extension (v0.6.6) &amp; Aullevo Web</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Direct Inquiries: <strong>{CONTACT_EMAIL}</strong></span>
@@ -436,7 +436,7 @@ const PrivacyPolicy: React.FC = () => {
                             <ul>
                                 <li>When you sign in with Google, Firebase Authentication (operated by Google) provides us your <strong>name, email address, profile photo, and account ID</strong>.</li>
                                 <li>We store an account record in our Firebase database containing that information, the date you joined, and your <strong>plan status and plan expiry date</strong>.</li>
-                                <li><strong>Free-plan usage and ad unlocks:</strong> we store on your account how much of each day's free allowance you have used (AI fills, voice sessions, and when your free auto-pagination and typing-speed hours started), and, when you watch a short ad on our website, which feature is unlocked, until when, how many uses are left, how many ads you watched today, and timestamps. This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import from an ad, or voice session, or the start of a free auto-pagination or typing-speed window) so the limits work across your devices. Free JSON imports are counted only on your device.</li>
+                                <li><strong>Free-plan usage and ad unlocks:</strong> we store on your account how much of each day's free allowance you have used (AI fills, voice sessions, and when your free auto-pagination and typing-speed hours started), and, when you watch short ads on our website, how many ads you watched toward your 5-hour pass, until when your pass runs, how many ads you watched today, and timestamps (plus any per-feature unlock from before passes, until it ends). This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import from an ad, or voice session, or the start of a free auto-pagination or typing-speed window) so the limits work across your devices. Free JSON imports are counted only on your device.</li>
                                 <li>When you connect the extension, Aullevo Web gives it a short-lived sign-in token so the extension can read <em>your own</em> account record and confirm your plan. Your profiles are never uploaded.</li>
                             </ul>
 
@@ -652,7 +652,7 @@ const PrivacyPolicy: React.FC = () => {
                                         </tr>
                                         <tr>
                                             <td><strong>Google Ad Manager / Google AdSense</strong></td>
-                                            <td>Advertising on the website: the AdSense code loads on every page of aullevo.com, and the optional rewarded ads on /rewards (Free-plan unlocks) come from Google. Google may use cookies or similar identifiers to show and measure ads, subject to your ad and consent choices.</td>
+                                            <td>Advertising on the website: the AdSense code loads on every page of aullevo.com, and the optional rewarded ads on /rewards (the Free plan's 5-hour pass) come from Google. Google may use cookies or similar identifiers to show and measure ads, subject to your ad and consent choices.</td>
                                             <td><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="legal-link">How Google uses data in ads</a></td>
                                         </tr>
                                         <tr>
@@ -678,7 +678,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>Our website (aullevo.com)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
                             </p>
                             <p>
-                                <strong>Google advertising (website only):</strong> Our website uses Google AdSense, and its code is loaded on every page of aullevo.com. When you choose to watch an ad on our <code>/rewards</code> page to unlock a Free-plan feature, the ad is served by Google (Google Ad Manager / AdSense). Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this and other sites, and Google may also use cookies or similar identifiers to limit how often you see an ad, measure it, and prevent fraud. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can opt out of personalized advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="legal-link">aboutads.info</a>, and read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="legal-link">how Google uses information from sites that use its services</a>. The extension never loads ads or ad code.
+                                <strong>Google advertising (website only):</strong> Our website uses Google AdSense, and its code is loaded on every page of aullevo.com. When you choose to watch ads on our <code>/rewards</code> page for the Free plan's 5-hour pass (2 short ads), the ad is served by Google (Google Ad Manager / AdSense). Third-party vendors, including Google, use cookies to serve ads based on your prior visits to this website or other websites. Google's use of advertising cookies enables it and its partners to serve ads to you based on your visits to this and other sites, and Google may also use cookies or similar identifiers to limit how often you see an ad, measure it, and prevent fraud. Where the law requires it (for example in the EEA, the UK, and Switzerland) you are asked for consent first, and you can choose non-personalized ads. You can opt out of personalized advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="legal-link">aboutads.info</a>, and read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="legal-link">how Google uses information from sites that use its services</a>. The extension never loads ads or ad code.
                             </p>
                             <p>
                                 We do not use Facebook Pixel or other cross-site advertising trackers, and we never share your profile data or form answers with ad networks.
@@ -698,7 +698,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li><strong>Right to Access:</strong> Your profile data is always visible in the extension. For your account and payment records, email us.</li>
                                 <li><strong>Right to Rectification:</strong> Edit profile data in the extension; ask us to correct account records.</li>
                                 <li><strong>Right to Erasure:</strong> Reset your vault or uninstall to erase extension data instantly. Email us to delete your account record (subject to payment-record retention in Section 9).</li>
-                                <li><strong>Right to Data Portability:</strong> Export profile fields as JSON (Pro), or request a copy of your account record.</li>
+                                <li><strong>Right to Data Portability:</strong> Export profile fields as JSON (Pro, or during the 5-hour pass from 2 short ads), or request a copy of your account record.</li>
                                 <li><strong>Right to Object &amp; Non-Discrimination:</strong> You can turn AI Smart Fill off at any time, and we will never treat you differently for exercising your rights.</li>
                             </ul>
                         </section>

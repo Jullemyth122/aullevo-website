@@ -14,7 +14,7 @@ import { CHROME_WEB_STORE_URL } from '../config/store';
 import { logEvent } from '../utils/analytics';
 
 // Bump this whenever a new extension ZIP is uploaded to /public
-const EXTENSION_VERSION = 'v0.6.5';
+const EXTENSION_VERSION = 'v0.6.6';
 
 // Inline SVG icon components — no emojis
 const ShieldIcon = () => (
@@ -202,7 +202,7 @@ const Home: React.FC = () => {
             title: 'Documents Attached for You',
             desc: 'Save your resume, cover letter, portfolio, and IDs once. Aullevo reads each upload field\'s label and attaches the right document automatically.',
             color: 'yellow',
-            metric: 'Pro feature'
+            metric: 'Pro, or 5 hours with 2 short ads'
         },
         {
             icon: <SlidersIcon />,

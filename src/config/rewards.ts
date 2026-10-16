@@ -1,70 +1,33 @@
-// The Free plan as shown on the site: an allowance every day, and short ads that unlock more once it is used
-// (each ad adds to what is running). The server decides what is granted (api/_rewards-core.ts); keep these numbers in sync with REWARD_RULES
-// there and in the extension (src/services/rewards.ts).
+// The Free plan as shown on the site: an allowance every day, and the pass: 2 short ads unlock everything for
+// 5 hours (passes stack). The server decides what is granted (api/_rewards-core.ts); keep these numbers in sync
+// with FREE_RULES / PASS_* there and in the extension (src/services/rewards.ts).
 export type RewardFeature = 'ai' | 'profiles' | 'paginate' | 'typing' | 'json' | 'links' | 'voice';
 
-export interface RewardInfo {
+export const PASS_ADS = 2;
+export const PASS_HOURS = 5;
+
+export interface FreeInfo {
     id: RewardFeature;
     title: string;
-    adSeconds: number;
-    hours: number;
-    uses?: number;
-    freeUses?: number;  // free every day, counted on the server
-    freeHours?: number; // one free window a day, from the first use
-    free: string;    // "6 AI Smart Fills every day"
-    gives: string;   // "10 AI Smart Fills for 2 hours"
-    detail: string;
+    free: string;    // what Free gives every day: "6 AI Smart Fills every day"
 }
 
-export const REWARDS: Record<RewardFeature, RewardInfo> = {
-    ai: {
-        id: 'ai', title: 'AI Smart Fill', adSeconds: 60, hours: 2, uses: 10, freeUses: 6,
-        free: '6 AI Smart Fills every day',
-        gives: '10 AI Smart Fills for 2 hours',
-        detail: 'AI answers the questions keyword fill can’t. Each page the AI helps fill counts as one fill, also during auto-pagination.'
-    },
-    profiles: {
-        id: 'profiles', title: 'More active profiles', adSeconds: 30, hours: 2,
-        free: '3 active profiles',
-        gives: 'up to 6 active profiles for 2 hours',
-        detail: 'Free keeps 3 profiles ON at once. Turn on up to 6 for the next 2 hours.'
-    },
-    paginate: {
-        id: 'paginate', title: 'Auto-pagination', adSeconds: 60, hours: 4, freeHours: 2,
-        free: '2 hours every day, from the first use',
-        gives: 'auto-pagination for 4 hours',
-        detail: 'Aullevo fills every page of multi-step forms and clicks Next for you.'
-    },
-    typing: {
-        id: 'typing', title: 'Typing speeds', adSeconds: 20, hours: 4, freeHours: 2,
-        free: '2 hours every day, from the first use',
-        gives: 'Slow and custom typing speeds for 4 hours',
-        detail: 'Type answers more slowly, like a person would.'
-    },
-    json: {
-        id: 'json', title: 'JSON imports', adSeconds: 60, hours: 5, uses: 10,
-        free: '4 imports every day',
-        gives: '10 JSON imports for 5 hours',
-        detail: 'Set up a profile from your resume in a minute. Free counts imports in the extension.'
-    },
-    links: {
-        id: 'links', title: 'Multi-link queue', adSeconds: 60, hours: 5,
-        free: '5 links in the queue',
-        gives: 'up to 10 links in Multi-link for 5 hours',
-        detail: 'Free holds 5 links. Queue up to 10 applications and fill them in one batch.'
-    },
-    voice: {
-        id: 'voice', title: 'Voice agent', adSeconds: 60, hours: 2, uses: 6, freeUses: 3,
-        free: '3 voice sessions every day',
-        gives: '6 voice sessions for 2 hours',
-        detail: 'Talk to Aullevo to fill pages and answer questions. One session lasts up to 10 minutes.'
-    }
-};
+// What Free gives every day; the pass lifts every limit for 5 hours
+export const FREE_ALLOWANCE: FreeInfo[] = [
+    { id: 'ai', title: 'AI Smart Fill', free: '6 AI Smart Fills every day' },
+    { id: 'paginate', title: 'Auto-pagination', free: '2 hours every day, from the first use' },
+    { id: 'voice', title: 'Voice agent', free: '3 voice sessions every day' },
+    { id: 'profiles', title: 'Active profiles', free: '3 at once' },
+    { id: 'links', title: 'Multi-link queue', free: '5 links' },
+    { id: 'json', title: 'JSON imports', free: '4 every day' },
+    { id: 'typing', title: 'Typing speeds', free: 'Slow and custom: 2 hours every day' },
+];
 
-export const REWARD_ORDER: RewardFeature[] = ['ai', 'paginate', 'voice', 'profiles', 'links', 'json', 'typing'];
+// Only with Pro or a running pass
+export const PASS_EXTRAS = ['Resume and document uploads into forms', 'JSON export'];
 
 export const isRewardFeature = (value: unknown): value is RewardFeature =>
-    typeof value === 'string' && Object.prototype.hasOwnProperty.call(REWARDS, value);
+    typeof value === 'string' && FREE_ALLOWANCE.some(f => f.id === value);
 
 // Google Ad Manager rewarded ad unit, e.g. "/1234567/aullevo_rewarded". Empty = test ads (no earnings).
 export const REWARDED_AD_UNIT: string = (import.meta.env.VITE_REWARDED_AD_UNIT ?? '').trim();
@@ -73,18 +36,16 @@ export const REWARDED_AD_UNIT: string = (import.meta.env.VITE_REWARDED_AD_UNIT ?
 // api/_rewards-core.ts); a shorter ad waits out the rest before claiming
 export const MIN_LIVE_AD_MS = 15_000;
 
-// "1-minute", "30-second" (as in "a 1-minute ad")
-export const adLength = (seconds: number) => seconds >= 60 && seconds % 60 === 0 ? `${seconds / 60}-minute` : `${seconds}-second`;
-
-// "1 min", "30 s" (button labels)
-export const adLengthShort = (seconds: number) => seconds >= 60 && seconds % 60 === 0 ? `${seconds / 60} min` : `${seconds} s`;
-
 export interface Unlock { until: number; remaining?: number; free?: boolean }
 export interface RewardsStatus {
     pro: boolean;
     live: boolean;
     now: number;
     unlocks: Partial<Record<RewardFeature, Unlock>>;
+    pass: { until: number } | null;
+    passAds: number;       // ads already watched toward the next pass
+    passAdsNeeded: number;
+    passHours: number;
     adsToday: number;
     dailyLimit: number;
     free: Partial<Record<RewardFeature, number>>; // free uses (or free windows) left today
