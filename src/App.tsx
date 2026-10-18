@@ -11,6 +11,8 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Admin from './pages/Admin';
 import Rewards from './pages/Rewards';
+import Contact from './pages/Contact';
+import Advertising from './pages/Advertising';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/main.scss';
 
@@ -29,6 +31,8 @@ const App: React.FC = () => {
         { path: 'login', element: <Login /> },
         { path: 'privacy', element: <PrivacyPolicy /> },
         { path: 'terms', element: <TermsOfService /> },
+        { path: 'contact', element: <Contact /> },
+        { path: 'advertising', element: <Advertising /> },
         { path: 'admin', element: <Admin /> },
         { path: 'rewards', element: <Rewards /> },
       ],

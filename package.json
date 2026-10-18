@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/build-policy-pages.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
     "setup:payments": "node scripts/setup-payments.mjs",

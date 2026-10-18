@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
+import { SUPPORT_EMAIL } from '../config/contact';
 
 const TermsOfService: React.FC = () => {
-    const [activeSection, setActiveSection] = useState<string>('agreement');
+    const [activeSection, setActiveSection] = useState<string>('');
     const tocRef = useRef<HTMLDivElement>(null);
 
     const sections = [
@@ -87,13 +88,13 @@ const TermsOfService: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>October 16, 2026</strong></span>
+                            <span>Last Updated: <strong>October 19, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Applicability: <strong>All Aullevo Extensions &amp; Services</strong></span>
                         </div>
                         <div className="legal-meta-item">
-                            <span>Inquiries: <strong>mythicalxenon12@gmail.com</strong></span>
+                            <span>Inquiries: <strong>{SUPPORT_EMAIL}</strong></span>
                         </div>
                     </div>
                 </div>
@@ -199,7 +200,12 @@ const TermsOfService: React.FC = () => {
                                 <li><strong>During the pass</strong> every feature can be used without limits, including AI Smart Fill, Voice mode, auto-pagination, typing speeds, JSON imports, active profiles and Multi-link links, as well as automatic document uploads into forms and JSON file download.</li>
                                 <li><strong>Passes add up:</strong> two more ads before a pass ends add another 5 hours to it.</li>
                                 <li>Watching ads is optional; you never have to watch one.</li>
+                                <li>You can close a rewarded ad without completing it and continue using your Free allowance. An unfinished ad does not count toward a pass.</li>
+                                <li>Clicking an ad is never required and does not earn a pass. Ordinary display ads are not part of the rewarded flow.</li>
                             </ul>
+                            <p>
+                                <strong>Test promotions:</strong> When live rewarded ads are not connected, the rewards page may offer a labelled Aullevo test promotion. It is not a paid Google advertisement and generates no Google advertising revenue; completing the test can still grant the stated pass. See <a href="/advertising" className="legal-link">Advertising &amp; Optional Rewards</a> for details.
+                            </p>
                             <p>
                                 Passes are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. When a pass ends, nothing you saved is deleted: profiles or links beyond the Free limits are kept and paused until another pass or Pro. We may limit unusually high numbers of ads per account to prevent abuse. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain passes; we may remove passes or suspend ads on accounts that do. We may change these rules (the number of ads, durations, and limits) with notice on this page.
                             </p>
@@ -304,7 +310,7 @@ const TermsOfService: React.FC = () => {
                                 For questions or inquiries concerning these Terms of Service, please reach out to:
                             </p>
                             <ul>
-                                <li><strong>Email:</strong> <a href="mailto:xenexashura@gmail.com" className="legal-link">xenexashura@gmail.com</a></li>
+                                <li><strong>Email:</strong> <a href={`mailto:${SUPPORT_EMAIL}`} className="legal-link">{SUPPORT_EMAIL}</a></li>
                                 <li><strong>Website:</strong> <a href="https://aullevo.com" className="legal-link">https://aullevo.com</a></li>
                             </ul>
 
@@ -314,7 +320,7 @@ const TermsOfService: React.FC = () => {
                                     <p>Read how your data is encrypted on your device and what we collect for accounts and payments.</p>
                                 </div>
                                 <div className="legal-action-buttons">
-                                    <Link to="/privacy" className="btn btn-primary" style={{ fontSize: '0.9rem', padding: '0.6rem 1.25rem' }}>
+                                    <Link reloadDocument to="/privacy" className="btn btn-primary" style={{ fontSize: '0.9rem', padding: '0.6rem 1.25rem' }}>
                                         Read Privacy Policy
                                     </Link>
                                 </div>

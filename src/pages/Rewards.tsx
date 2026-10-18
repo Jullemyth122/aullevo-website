@@ -107,7 +107,7 @@ async function showRewardedAd(adUnit: string): Promise<AdOutcome> {
 /* ── Test ad: until Google rewarded video ads are connected (VITE_REWARDED_AD_UNIT), a countdown stands in ── */
 
 /** The countdown before a reward; it only runs while this tab is visible. */
-const TestAd: React.FC<{ seconds: number; feature: string; onFinished: () => void }> = ({ seconds, feature, onFinished }) => {
+const TestAd: React.FC<{ seconds: number; feature: string; onFinished: () => void; onCancel: () => void }> = ({ seconds, feature, onFinished, onCancel }) => {
     const [left, setLeft] = useState(seconds);
     const finished = useRef(false);
 
@@ -129,9 +129,9 @@ const TestAd: React.FC<{ seconds: number; feature: string; onFinished: () => voi
 
     const progress = 1 - left / seconds;
     return (
-        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Ad break">
+        <div className="rewards-ad" role="dialog" aria-modal="true" aria-label="Aullevo test promotion">
             <div className="rewards-ad__frame">
-                <span className="rewards-ad__tag">Ad break</span>
+                <span className="rewards-ad__tag">Aullevo test promotion · Not a paid Google ad</span>
                 <div className="rewards-ad__screen">
                     <img src="/logo.png" alt="" className="rewards-ad__logo" />
                     <p className="rewards-ad__title">Skip the ads with Aullevo Pro</p>
@@ -144,6 +144,7 @@ const TestAd: React.FC<{ seconds: number; feature: string; onFinished: () => voi
                 <div className="rewards-ad__bar" aria-hidden="true"><i style={{ width: `${progress * 100}%` }} /></div>
                 <p className="rewards-ad__count" aria-live="polite">{left > 0 ? `Reward in ${left}s` : 'Unlocking…'}</p>
                 <p className="rewards-ad__note">Keep this tab open: the timer pauses while you're away.</p>
+                <button type="button" className="rewards-btn rewards-btn--quiet" onClick={onCancel}>Close without a reward</button>
             </div>
         </div>
     );
@@ -279,7 +280,7 @@ const Rewards: React.FC = () => {
             <header className="rewards-head">
                 <span className="rewards-eyebrow">Aullevo Free</span>
                 <h1>{PASS_ADS} short ads, everything for {PASS_HOURS} hours</h1>
-                <p>Aullevo Free gives you part of every feature each day. Watch {PASS_ADS} short ads any time to unlock every feature for {PASS_HOURS} hours, with no limits, resume uploads included. Watch {PASS_ADS} more to add another {PASS_HOURS} hours. The ads keep Aullevo running: thank you! Pro skips the ads.</p>
+                <p>Aullevo Free gives you part of every feature each day. Choose {PASS_ADS} short rewarded ads to unlock every feature for {PASS_HOURS} hours, with no limits, resume uploads included. Complete {PASS_ADS} more to add another {PASS_HOURS} hours. Pro skips the rewarded flow.</p>
             </header>
 
             <div className="rewards-layout">
@@ -288,6 +289,8 @@ const Rewards: React.FC = () => {
                     <h2 id="rewards-pass">Everything unlocked for {PASS_HOURS} hours</h2>
                     <p className="rewards-gives">Watch <strong>{PASS_ADS} short ads</strong> in a row to get <strong>unlimited use of every feature for {PASS_HOURS} hours</strong>.</p>
                     <p className="rewards-detail">Unlimited AI Smart Fill, voice agent, auto-pagination, JSON imports, profiles and Multi-link, plus resume and document uploads into forms and JSON export.</p>
+                    {(!REWARDED_AD_UNIT || status?.live === false) && <p className="rewards-note"><strong>Test promotions:</strong> live rewarded ads are not connected. These Aullevo demonstrations can unlock the pass but earn no Google advertising revenue.</p>}
+                    <p className="rewards-note">Watching is optional. You can close an ad and keep using your Free allowance. Clicking an ad never earns a reward. <a href="/advertising">How ads and rewards work</a>.</p>
 
                     {!authReady ? <div className="spinner" aria-label="Loading" /> : !user ? (
                         <div className="rewards-actions">
@@ -354,7 +357,7 @@ const Rewards: React.FC = () => {
                 </details>
             </div>
 
-            {phase === 'playing' && adSeconds > 0 && <TestAd seconds={adSeconds} feature={feature} onFinished={grant} />}
+            {phase === 'playing' && adSeconds > 0 && <TestAd seconds={adSeconds} feature={feature} onFinished={grant} onCancel={() => { setAdSeconds(0); setPhase('idle'); }} />}
         </div>
     );
 };

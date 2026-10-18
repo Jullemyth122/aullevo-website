@@ -1,3 +1,8 @@
 # Firebase / Google service account keys (never upload)
 *firebase-adminsdk*.json
 serviceAccount*.json
+.env
+.env.*
+dist
+dist-ssr
+repack-temp
