@@ -813,3 +813,16 @@ html.policy-document-root { scroll-behavior: auto; }
   }
 }
 
+
+/* Guides (/guides) reuse the legal page typography */
+.guides-list { list-style: none; padding: 0; margin: 0; }
+.guides-list > li h2 { font-size: 1.35rem; }
+.guide-meta { color: var(--text-muted); font-size: 0.9rem; }
+.guide-article ol, .guide-article ul { padding-left: 1.4rem; }
+.guide-article li { margin-bottom: 0.5rem; }
+.guide-tip {
+  border-left: 3px solid var(--border-glass);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: rgba(127, 127, 127, 0.08);
+}

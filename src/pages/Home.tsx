@@ -202,7 +202,7 @@ const Home: React.FC = () => {
             title: 'Documents Attached for You',
             desc: 'Save your resume, cover letter, portfolio, and IDs once. Aullevo reads each upload field\'s label and attaches the right document automatically.',
             color: 'yellow',
-            metric: 'Pro, or 5 hours with 2 short ads'
+            metric: 'Aullevo Pro'
         },
         {
             icon: <SlidersIcon />,

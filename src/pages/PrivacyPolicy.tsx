@@ -97,7 +97,7 @@ const PrivacyPolicy: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>October 19, 2026</strong></span>
+                            <span>Last Updated: <strong>November 4, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Product: <strong>Aullevo Browser Extension (v0.6.6) &amp; Aullevo Web</strong></span>
@@ -140,7 +140,7 @@ const PrivacyPolicy: React.FC = () => {
                             </svg>
                         </div>
                         <h3>Minimal Account Data</h3>
-                        <p>An account connects your Free allowances, optional reward passes, and Pro plan. We store your Google name, email, photo, usage and plan status, and payment records, never your saved form profiles.</p>
+                        <p>An account connects your Free allowances and Pro plan. We store your Google name, email, photo, usage and plan status, and payment records, never your saved form profiles.</p>
                     </div>
 
                     <div className="legal-summary-card">
@@ -202,7 +202,7 @@ const PrivacyPolicy: React.FC = () => {
                                 </div>
                                 <div className="callout-body">
                                     <h4>Single Purpose Commitment</h4>
-                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell your saved form data or build advertising profiles from it. The extension never shows ads. Free users may choose to complete two rewarded ads, or labelled test promotions when live ads are not connected, on our website for a 5-hour pass (Section 12).</p>
+                                    <p>Aullevo has one purpose: helping you fill web forms, questionnaires, and applications with information you choose to save. We do not sell your saved form data or build advertising profiles from it. The extension never shows ads, and no feature is unlocked by viewing or clicking ads.</p>
                                 </div>
                             </div>
                         </section>
@@ -421,15 +421,15 @@ const PrivacyPolicy: React.FC = () => {
                                 Accounts, Payments &amp; Website
                             </h2>
                             <p>
-                                You can use basic extension features without an account. An account on Aullevo Web connects your daily Free allowances, optional reward passes, and Aullevo Pro purchases.
+                                You can use basic extension features without an account. An account on Aullevo Web connects your daily Free allowances and Aullevo Pro purchases.
                             </p>
 
                             <h3>Account (Google Sign-In)</h3>
                             <ul>
                                 <li>When you sign in with Google, Firebase Authentication (operated by Google) provides us your <strong>name, email address, profile photo, and account ID</strong>.</li>
                                 <li>We store an account record in our Firebase database containing that information, the date you joined, and your <strong>plan status and plan expiry date</strong>.</li>
-                                <li><strong>Free-plan usage and ad unlocks:</strong> we store on your account how much of each day's free allowance you have used (AI fills, voice sessions, and when your free auto-pagination and typing-speed hours started), and, when you watch short ads on our website, how many ads you watched toward your 5-hour pass, until when your pass runs, how many ads you watched today, and timestamps (plus any per-feature unlock from before passes, until it ends). This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill, JSON import from an ad, or voice session, or the start of a free auto-pagination or typing-speed window) so the limits work across your devices. Free JSON imports are counted only on your device.</li>
-                                <li>When you connect the extension, Aullevo Web uses your sign-in to link it to <em>your own</em> account. The extension stores an account-link token to request your plan, Free allowances, and reward passes. Treat it as a credential. Your saved form profiles are never uploaded to Aullevo.</li>
+                                <li><strong>Free-plan usage:</strong> we store on your account how much of each day's free allowance you have used (AI fills, voice sessions, and when your free auto-pagination and typing-speed hours started), plus the end time of any reward pass granted before November 4, 2026, until it expires. This record contains no profile data or form answers. The extension asks our server about it and reports each use (one AI fill or voice session, or the start of a free auto-pagination or typing-speed window) so the limits work across your devices. Free JSON imports are counted only on your device.</li>
+                                <li>When you connect the extension, Aullevo Web uses your sign-in to link it to <em>your own</em> account. The extension stores an account-link token to request your plan and Free allowances. Treat it as a credential. Your saved form profiles are never uploaded to Aullevo.</li>
                             </ul>
 
                             <h3>Payments</h3>
@@ -509,9 +509,9 @@ const PrivacyPolicy: React.FC = () => {
                             <ol>
                                 <li><strong>Single Purpose:</strong> Aullevo exists to fill web forms with information you save.</li>
                                 <li><strong>No Sale of Data:</strong> We do not sell, rent, or trade user data to anyone.</li>
-                                <li><strong>Limited Transfers:</strong> Extension features use the AI provider you select, ElevenLabs when you use Voice mode, and Firebase for accounts, plans, and reward passes, as described above. The website also uses payment, hosting, analytics, font, and advertising providers described in Section 11. Website advertising is not limited to the rewards page; it does not receive your saved extension profiles or form answers from Aullevo.</li>
+                                <li><strong>Limited Transfers:</strong> Extension features use the AI provider you select, ElevenLabs when you use Voice mode, and Firebase for accounts and plans, as described above. The website also uses payment, hosting, analytics, font, and advertising providers described in Section 11. Website advertising does not receive your saved extension profiles or form answers from Aullevo.</li>
                                 <li><strong>No Creditworthiness or Lending Use:</strong> Data is never used to assess credit or lending eligibility.</li>
-                                <li><strong>No Advertising Profiles from Your Saved Form Data:</strong> We do not build advertising profiles or track you across websites through the extension. Aullevo does not share your saved profiles or form answers with ad networks. Website advertising, including optional rewarded ads, is described separately in Section 12.</li>
+                                <li><strong>No Advertising Profiles from Your Saved Form Data:</strong> We do not build advertising profiles or track you across websites through the extension. Aullevo does not share your saved profiles or form answers with ad networks. Website advertising is described separately in Section 12.</li>
                             </ol>
                         </section>
 
@@ -643,8 +643,8 @@ const PrivacyPolicy: React.FC = () => {
                                             <td><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="legal-link">Google Privacy Policy</a></td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Google Ad Manager / Google AdSense</strong></td>
-                                            <td>Advertising on the main website and optional Google Ad Manager rewarded ads when live advertising is connected. Google may use cookies, IP addresses, or similar identifiers to serve and measure ads and prevent fraud, subject to applicable consent choices. Our privacy, terms, contact, and advertising-information pages do not load advertising or analytics scripts. Test promotions are Aullevo demonstrations, not paid Google ads.</td>
+                                            <td><strong>Google AdSense</strong></td>
+                                            <td>Advertising on the main website. Google may use cookies, IP addresses, or similar identifiers to serve and measure ads and prevent fraud, subject to applicable consent choices. Our privacy, terms, contact, and advertising-information pages do not load advertising or analytics scripts.</td>
                                             <td><a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="legal-link">How Google uses data in ads</a></td>
                                         </tr>
                                         <tr>
@@ -670,7 +670,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>Our website (aullevo.com)</strong> uses Google Analytics, Google Tag Manager, and Vercel Web Analytics to measure visits, page views, and extension downloads. The Google tools may set cookies or similar identifiers; Vercel Web Analytics does not use cookies. The website also stores your sign-in state (Firebase), theme preference, and plan status in your browser's local storage. You can block or delete cookies in your browser settings; the website will still work.
                             </p>
                             <p>
-                                <strong>Google advertising (website only):</strong> The main website includes Google AdSense code. When live rewarded advertising is connected, optional ads on <code>/rewards</code> are served through Google Ad Manager. Third-party vendors, including Google, may place and read cookies, use web beacons, and process IP addresses or other identifiers for ad delivery, measurement, frequency limits, and fraud prevention. Google's advertising cookies allow it and its partners to serve ads based on your visits to this and other websites. The extension never loads advertising code, and Aullevo does not send your saved form profiles, form answers, or AI provider API keys to advertising networks.
+                                <strong>Google advertising (website only):</strong> The main website includes Google AdSense code. Third-party vendors, including Google, may place and read cookies, use web beacons, and process IP addresses or other identifiers for ad delivery, measurement, frequency limits, and fraud prevention. Google's advertising cookies allow it and its partners to serve ads based on your visits to this and other websites. The extension never loads advertising code, and Aullevo does not send your saved form profiles, form answers, or AI provider API keys to advertising networks.
                             </p>
                             <p>
                                 <strong>Your choices:</strong> Personalized Google advertising for visitors in the EEA, UK, and Switzerland requires a Google-certified consent platform. If a Google consent message is displayed, use its controls to accept, decline, or manage the available purposes. On the main website, the footer's <strong>Privacy &amp; cookie settings</strong> link reopens Google's consent controls when they are available, and otherwise opens this disclosure. You can also manage personalized advertising at <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="legal-link">Google Ads Settings</a> and <a href="https://www.aboutads.info/choices" target="_blank" rel="noopener noreferrer" className="legal-link">aboutads.info</a>. Read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" className="legal-link">how Google uses information from sites that use its services</a>.
@@ -679,7 +679,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <strong>Policy and support pages:</strong> Our privacy, terms, contact, and advertising-information pages are readable without JavaScript and do not load Google advertising tags, consent-message tags, Google Analytics, Tag Manager, or Vercel Analytics. Your browser still contacts our hosting provider to retrieve these pages and their styles and images. Other website pages use the services described above.
                             </p>
                             <p>
-                                <strong>Reward demonstrations:</strong> A clearly labelled Aullevo test promotion may appear when live rewarded ads are not connected. It generates no Google advertising revenue. Clicking an ordinary ad never earns a pass. See our <a href="/advertising" className="legal-link">advertising and rewards explanation</a>.
+                                <strong>No rewards for ads:</strong> Aullevo does not offer rewards, payments, or feature unlocks for viewing or clicking ads. See our <a href="/advertising" className="legal-link">advertising explanation</a>.
                             </p>
                             <p>
                                 We do not use Facebook Pixel or other cross-site advertising trackers, and we never share your profile data or form answers with ad networks.
@@ -699,7 +699,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li><strong>Right to Access:</strong> Your profile data is always visible in the extension. For your account and payment records, email us.</li>
                                 <li><strong>Right to Rectification:</strong> Edit profile data in the extension; ask us to correct account records.</li>
                                 <li><strong>Right to Erasure:</strong> Reset your vault or uninstall to erase extension data instantly. Email us to delete your account record (subject to payment-record retention in Section 9).</li>
-                                <li><strong>Right to Data Portability:</strong> Export profile fields as JSON (Pro, or during the 5-hour pass from 2 short ads), or request a copy of your account record.</li>
+                                <li><strong>Right to Data Portability:</strong> Export profile fields as JSON (Pro), or request a copy of your account record.</li>
                                 <li><strong>Right to Object &amp; Non-Discrimination:</strong> You can turn AI Smart Fill off at any time, and we will never treat you differently for exercising your rights.</li>
                             </ul>
                         </section>

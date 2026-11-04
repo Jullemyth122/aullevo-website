@@ -88,7 +88,7 @@ const TermsOfService: React.FC = () => {
 
                     <div className="legal-meta">
                         <div className="legal-meta-item">
-                            <span>Last Updated: <strong>October 19, 2026</strong></span>
+                            <span>Last Updated: <strong>November 4, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Applicability: <strong>All Aullevo Extensions &amp; Services</strong></span>
@@ -165,7 +165,7 @@ const TermsOfService: React.FC = () => {
                                 <strong>Always Review Before Submitting:</strong> Aullevo assists in autofilling form fields, but you remain solely responsible for reviewing and verifying the accuracy of all submitted information before clicking submit on any third-party website or portal.
                             </p>
                             <p>
-                                <strong>Auto-Pagination (Pro; Free: 2 hours a day, or during a 5-hour pass):</strong> If you turn on Auto-Pagination, Aullevo clicks Next / Continue and presses Submit on your behalf for the forms you start filling. By turning it on, you authorize those submissions and remain responsible for them. Keep your profile accurate before using it, and turn it off for any form you want to review before it is sent. Aullevo pauses when a field marked as required is empty or when a form reports an error, but it cannot guarantee that every submitted answer is correct or complete.
+                                <strong>Auto-Pagination (Pro; Free: 2 hours a day):</strong> If you turn on Auto-Pagination, Aullevo clicks Next / Continue and presses Submit on your behalf for the forms you start filling. By turning it on, you authorize those submissions and remain responsible for them. Keep your profile accurate before using it, and turn it off for any form you want to review before it is sent. Aullevo pauses when a field marked as required is empty or when a form reports an error, but it cannot guarantee that every submitted answer is correct or complete.
                             </p>
                             <p>
                                 Aullevo is not responsible for any inaccuracies, omitted data, application rejections, or form submission errors resulting from automated input.
@@ -194,23 +194,10 @@ const TermsOfService: React.FC = () => {
                                 <strong>Free Plan:</strong> Aullevo is free to use. The Free plan always includes keyword autofill, 3 active profiles, and a Multi-link queue of 5 links. With an Aullevo account it also includes, <strong>every day</strong>: 6 AI Smart Fills, 3 voice sessions, 2 hours of auto-pagination and 2 hours of Slow and custom typing speeds (each starting the first time you use it that day), and 4 JSON imports. Daily allowances reset at midnight UTC and do not carry over.
                             </p>
                             <p>
-                                <strong>Ads (Free Plan):</strong> Each day the Free plan includes a free allowance (6 AI Smart Fills, 3 voice sessions of up to 10 minutes, 2 hours of auto-pagination, 2 hours of Slow and custom typing speeds, 4 JSON imports, 5 Multi-link links and 3 active profiles). At any time you may watch two short ads in a row on the Aullevo website while signed in (the second within an hour of the first) to get a 5-hour pass:
-                            </p>
-                            <ul>
-                                <li><strong>During the pass</strong> every feature can be used without limits, including AI Smart Fill, Voice mode, auto-pagination, typing speeds, JSON imports, active profiles and Multi-link links, as well as automatic document uploads into forms and JSON file download.</li>
-                                <li><strong>Passes add up:</strong> two more ads before a pass ends add another 5 hours to it.</li>
-                                <li>Watching ads is optional; you never have to watch one.</li>
-                                <li>You can close a rewarded ad without completing it and continue using your Free allowance. An unfinished ad does not count toward a pass.</li>
-                                <li>Clicking an ad is never required and does not earn a pass. Ordinary display ads are not part of the rewarded flow.</li>
-                            </ul>
-                            <p>
-                                <strong>Test promotions:</strong> When live rewarded ads are not connected, the rewards page may offer a labelled Aullevo test promotion. It is not a paid Google advertisement and generates no Google advertising revenue; completing the test can still grant the stated pass. See <a href="/advertising" className="legal-link">Advertising &amp; Optional Rewards</a> for details.
+                                <strong>Earlier reward passes:</strong> Aullevo no longer offers passes for watching ads, and no feature is unlocked by viewing or clicking ads. A pass granted before November 4, 2026 keeps working until its stated end time; it is not transferable and has no cash value. When it ends, nothing you saved is deleted: profiles or links beyond the Free limits are kept and paused until you upgrade to Pro.
                             </p>
                             <p>
-                                Passes are saved to your Aullevo account, expire at the stated time, are not transferable, and have no cash value. When a pass ends, nothing you saved is deleted: profiles or links beyond the Free limits are kept and paused until another pass or Pro. We may limit unusually high numbers of ads per account to prevent abuse. Ads are provided by third-party ad networks (such as Google); the ad shown, its exact length, and whether an ad is available are decided by the ad network. You agree not to use bots, scripts, multiple accounts, or tools that fake ad views or completion to obtain passes; we may remove passes or suspend ads on accounts that do. We may change these rules (the number of ads, durations, and limits) with notice on this page.
-                            </p>
-                            <p>
-                                <strong>Aullevo Pro:</strong> Pro removes these limits at all times with no ads, including unlimited AI Smart Fill, auto-pagination, Voice mode, active profiles, Multi-link links, typing speeds and JSON imports, and adds automatic document uploads and JSON file download. Features may change as Aullevo improves.
+                                <strong>Aullevo Pro:</strong> Pro removes these limits at all times, including unlimited AI Smart Fill, auto-pagination, Voice mode, active profiles, Multi-link links, typing speeds and JSON imports, and adds automatic document uploads and JSON file download. Features may change as Aullevo improves.
                             </p>
                             <ul>
                                 <li><strong>Price &amp; Term:</strong> Pro comes in three plans, paid in USD via PayPal or card, or in pesos via GCash, Maya, or QR Ph: <strong>Monthly</strong> ($2.50 or ₱154.29) gives 30 days, <strong>Yearly</strong> ($20 or ₱1,234.32) gives 365 days, and <strong>Lifetime</strong> ($50 or ₱3,085.80) is a one-time payment for Pro on that account for as long as Aullevo Pro is offered. Monthly and yearly time is added on top of any Pro time you have left. Pro does <strong>not</strong> renew automatically; you choose whether to pay again.</li>

@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         return () => { document.body.style.overflow = ''; };
     }, [isMenuOpen]);
 
-    const navItems = ['Features', 'How It Works', 'About'];
+    const navItems = ['Features', 'How It Works', 'Guides', 'About'];
     const getPath = (item: string) => `/${item.toLowerCase().replace(/ /g, '-')}`;
     const isActive = (item: string) => location.pathname.includes(item.toLowerCase().replace(/ /g, '-'));
 

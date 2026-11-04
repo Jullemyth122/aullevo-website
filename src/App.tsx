@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Features from './pages/Features';
@@ -10,9 +10,9 @@ import Login from './pages/Login';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Admin from './pages/Admin';
-import Rewards from './pages/Rewards';
 import Contact from './pages/Contact';
 import Advertising from './pages/Advertising';
+import { GuidesIndex, GuideArticle } from './pages/Guides';
 import { ThemeProvider } from './context/ThemeContext';
 import './styles/main.scss';
 
@@ -33,8 +33,11 @@ const App: React.FC = () => {
         { path: 'terms', element: <TermsOfService /> },
         { path: 'contact', element: <Contact /> },
         { path: 'advertising', element: <Advertising /> },
+        { path: 'guides', element: <GuidesIndex /> },
+        { path: 'guides/:slug', element: <GuideArticle /> },
         { path: 'admin', element: <Admin /> },
-        { path: 'rewards', element: <Rewards /> },
+        // Ad-based passes have ended; old links from the extension land on the plans page
+        { path: 'rewards', element: <Navigate to="/login" replace /> },
       ],
     },
   ])

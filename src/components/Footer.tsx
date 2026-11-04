@@ -28,6 +28,13 @@ const Footer: React.FC = () => {
                         <Link to="/features">Features</Link>
                         <Link to="/how-it-works">How It Works</Link>
                         <Link to="/docs">Documentation</Link>
+                        <Link to="/guides">Guides</Link>
+                        <a
+                            href={CHROME_WEB_STORE_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={() => logEvent('open_chrome_web_store', { method: 'footer_link' })}
+                        >Chrome Web Store</a>
                         <a
                             href="/aullevo-extension.zip"
                             download="aullevo-extension.zip"
@@ -35,13 +42,7 @@ const Footer: React.FC = () => {
                                 method: 'footer_link',
                                 file_name: 'aullevo-extension.zip'
                             })}
-                        >Download Extension</a>
-                        <a
-                            href={CHROME_WEB_STORE_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => logEvent('open_chrome_web_store', { method: 'footer_link' })}
-                        >Chrome Web Store</a>
+                        >Download ZIP (manual install)</a>
                         <Link to="/docs#free-vs-premium">Free vs. Pro</Link>
                     </div>
                     <div className="footer-col">
@@ -55,7 +56,7 @@ const Footer: React.FC = () => {
                         <h4>Legal</h4>
                         <Link reloadDocument to="/privacy">Privacy Policy</Link>
                         <Link reloadDocument to="/terms">Terms of Service</Link>
-                        <Link reloadDocument to="/advertising">Advertising &amp; Rewards</Link>
+                        <Link reloadDocument to="/advertising">Advertising</Link>
                         <PrivacyChoicesLink />
                         <Link to="/docs#privacy">Security Docs</Link>
                     </div>

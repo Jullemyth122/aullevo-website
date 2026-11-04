@@ -251,7 +251,7 @@ const About: React.FC = () => {
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
                                                 <strong className="arch-spec-label">Plan Limits:</strong>{' '}
-                                                Free users get 6 AI fills every day, and 2 short ads unlock everything, AI included, without limits for 5 hours. Pro removes the limit, with no ads.
+                                                Free users get 6 AI fills every day. Pro removes the limit.
                                             </div>
                                         </li>
                                     </ul>
@@ -334,7 +334,7 @@ const About: React.FC = () => {
                                         <li className="arch-spec-item">
                                             <span className="arch-spec-bullet" />
                                             <div className="arch-spec-text">
-                                                <strong className="arch-spec-label">Auto-Pagination (Pro, Free 2 h a day, or 5 h with 2 short ads):</strong>{' '}
+                                                <strong className="arch-spec-label">Auto-Pagination (Pro; Free 2 h a day):</strong>{' '}
                                                 Fills each page of a multi-step form, clicks Next, and submits on the last page. It pauses on empty required fields and corrects answers a form rejects.
                                             </div>
                                         </li>

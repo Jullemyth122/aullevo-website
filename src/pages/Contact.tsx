@@ -30,7 +30,7 @@ export default function Contact() {
                 </section>
                 <section className="legal-section" id="report">
                     <h2>Report a content or advertising issue</h2>
-                    <p>Send support the page URL, a description, and the approximate time of the issue. To report a misleading or inappropriate ad, use its own reporting control when available; you do not need to click the advertised website. Read <a className="legal-link" href="/advertising">how advertising and optional rewards work</a>.</p>
+                    <p>Send support the page URL, a description, and the approximate time of the issue. To report a misleading or inappropriate ad, use its own reporting control when available; you do not need to click the advertised website. Read <a className="legal-link" href="/advertising">how advertising works</a>.</p>
                 </section>
             </main>
         </div>

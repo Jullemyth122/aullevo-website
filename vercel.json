@@ -1,23 +1,155 @@
 {
+  "redirects": [
+    {
+      "source": "/rewards",
+      "destination": "/login",
+      "permanent": false
+    }
+  ],
   "rewrites": [
-    { "source": "/privacy", "destination": "/privacy.html" },
-    { "source": "/privacy/", "destination": "/privacy.html" },
-    { "source": "/terms", "destination": "/terms.html" },
-    { "source": "/terms/", "destination": "/terms.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/contact/", "destination": "/contact.html" },
-    { "source": "/advertising", "destination": "/advertising.html" },
-    { "source": "/advertising/", "destination": "/advertising.html" },
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/privacy/",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/terms/",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/contact/",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/advertising",
+      "destination": "/advertising.html"
+    },
+    {
+      "source": "/advertising/",
+      "destination": "/advertising.html"
+    },
+    {
+      "source": "/features",
+      "destination": "/features.html"
+    },
+    {
+      "source": "/features/",
+      "destination": "/features.html"
+    },
+    {
+      "source": "/how-it-works",
+      "destination": "/how-it-works.html"
+    },
+    {
+      "source": "/how-it-works/",
+      "destination": "/how-it-works.html"
+    },
+    {
+      "source": "/docs",
+      "destination": "/docs.html"
+    },
+    {
+      "source": "/docs/",
+      "destination": "/docs.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/about/",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/guides",
+      "destination": "/guides.html"
+    },
+    {
+      "source": "/guides/",
+      "destination": "/guides.html"
+    },
+    {
+      "source": "/guides/fill-workday-applications-faster",
+      "destination": "/guides/fill-workday-applications-faster.html"
+    },
+    {
+      "source": "/guides/fill-workday-applications-faster/",
+      "destination": "/guides/fill-workday-applications-faster.html"
+    },
+    {
+      "source": "/guides/autofill-safety-government-tax-forms",
+      "destination": "/guides/autofill-safety-government-tax-forms.html"
+    },
+    {
+      "source": "/guides/autofill-safety-government-tax-forms/",
+      "destination": "/guides/autofill-safety-government-tax-forms.html"
+    },
+    {
+      "source": "/guides/browser-autofill-vs-form-filler-extension",
+      "destination": "/guides/browser-autofill-vs-form-filler-extension.html"
+    },
+    {
+      "source": "/guides/browser-autofill-vs-form-filler-extension/",
+      "destination": "/guides/browser-autofill-vs-form-filler-extension.html"
+    },
+    {
+      "source": "/guides/reusable-application-profile-from-resume",
+      "destination": "/guides/reusable-application-profile-from-resume.html"
+    },
+    {
+      "source": "/guides/reusable-application-profile-from-resume/",
+      "destination": "/guides/reusable-application-profile-from-resume.html"
+    },
+    {
+      "source": "/guides/online-application-checklist",
+      "destination": "/guides/online-application-checklist.html"
+    },
+    {
+      "source": "/guides/online-application-checklist/",
+      "destination": "/guides/online-application-checklist.html"
+    },
+    {
+      "source": "/((?!api/).*)",
+      "destination": "/app.html"
+    }
   ],
   "headers": [
-    { "source": "/ads.txt", "headers": [
-      { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
-      { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
-    ] },
-    { "source": "/robots.txt", "headers": [
-      { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
-      { "key": "Cache-Control", "value": "public, max-age=300, must-revalidate" }
-    ] }
+    {
+      "source": "/ads.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
+    }
   ]
 }

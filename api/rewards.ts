@@ -3,9 +3,8 @@
  *
  *   POST /api/rewards?action=link     (Bearer Firebase ID token) → the extension's own long-lived token + status
  *   POST /api/rewards?action=status   (Bearer ID token or extension token) → Pro flag + running unlocks
- *   POST /api/rewards?action=start    (Bearer ID token) → starts an ad toward the pass on aullevo-web/rewards
- *   POST /api/rewards?action=grant    (Bearer ID token, body {nonce}) → the ad finished: the 2nd in a row opens
- *                                     the pass (everything for 5 hours)
+ *   POST /api/rewards?action=start|grant → 410: ad-based passes ended on November 4, 2026; passes granted
+ *                                     before then keep working until they expire
  *   POST /api/rewards?action=consume  (Bearer ID token or extension token, body {feature}) → a running pass allows
  *                                     everything; else uses one AI fill, JSON import or voice session (the day's
  *                                     free ones); auto-pagination / typing: starts the day's free window
@@ -20,12 +19,11 @@
  *   VITE_REWARDED_AD_UNIT      Google Ad Manager rewarded ad unit path, e.g. /1234567/aullevo_rewarded.
  *                              Empty = test ads (a countdown that lasts the full ad length, earns nothing).
  */
-import { randomUUID } from 'node:crypto';
 import { cert, getApps, initializeApp, type App } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, type Firestore } from 'firebase-admin/firestore';
 import {
-  PASS_AD_SECONDS, RewardError, consume, grantAd, isExtToken, isRewardFeature, publicState, signExtToken, startAd, verifyExtToken,
+  RewardError, consume, isExtToken, isRewardFeature, publicState, signExtToken, verifyExtToken,
   type RewardsDoc,
 } from './_rewards-core.js';
 
@@ -144,29 +142,6 @@ async function handleStatus(request: Request) {
   return json(await status(await requireUid(request)));
 }
 
-// Every ad counts toward the pass (2 ads: everything for 5 hours); a `feature` in the body is only remembered
-// for the reply (the extension opens /rewards?feature=ai where the user hit a limit)
-async function handleStart(request: Request) {
-  const uid = await requireUid(request, true);
-  if (await isProAccount(uid)) throw new HttpError(400, 'Your Pro plan already unlocks everything.');
-  const pending = await withRewards(uid, (doc, now) => {
-    const started = startAd(doc, now, randomUUID());
-    return { doc: started.doc, result: started.pending };
-  });
-  return json({ nonce: pending.nonce, adSeconds: PASS_AD_SECONDS, live: liveAds() });
-}
-
-async function handleGrant(request: Request) {
-  const uid = await requireUid(request, true);
-  const { nonce } = await readBody(request);
-  if (typeof nonce !== 'string' || nonce.length > 100) throw new HttpError(400, 'Missing ad id');
-  const granted = await withRewards(uid, (doc, now) => {
-    const g = grantAd(doc, nonce, now, liveAds());
-    return { doc: g.doc, result: { completed: g.completed, state: publicState(g.doc, now) } };
-  });
-  return json({ ok: true, completed: granted.completed, pro: false, live: liveAds(), ...granted.state });
-}
-
 async function handleConsume(request: Request) {
   const uid = await requireUid(request);
   const { feature } = await readBody(request);
@@ -184,8 +159,11 @@ export async function POST(request: Request): Promise<Response> {
   try {
     if (action === 'link') return await handleLink(request);
     if (action === 'status') return await handleStatus(request);
-    if (action === 'start') return await handleStart(request);
-    if (action === 'grant') return await handleGrant(request);
+    // Ad-based passes ended on November 4, 2026 (AdSense does not allow rewarding ad views). Passes granted
+    // before then still count in status/consume until they expire; no new ad can start or grant one.
+    if (action === 'start' || action === 'grant') {
+      return json({ error: 'Ad unlocks have ended. Your daily Free allowance still applies, or upgrade to Pro for no limits.', code: 'ads-ended' }, 410);
+    }
     if (action === 'consume') return await handleConsume(request);
     return json({ error: 'Unknown action' }, 404);
   } catch (err) {
