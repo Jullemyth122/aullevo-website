@@ -50,7 +50,7 @@ const Documentation: React.FC = () => {
             <div className="docs-header">
                 <div className="container">
                     <div className="docs-breadcrumb">
-                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.6</span>
+                        <span>Aullevo</span> <span className="separator">/</span> <span>Documentation</span> <span className="separator">/</span> <span className="current">v0.6.7</span>
                     </div>
                     <h1 className="docs-title">User Guide</h1>
                     <p className="docs-subtitle">Everything you need to install, set up, and get the most out of Aullevo.</p>

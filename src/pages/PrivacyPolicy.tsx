@@ -89,7 +89,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <circle cx="12" cy="12" r="10" />
                                 <polyline points="12 6 12 12 16 14" />
                             </svg>
-                            Effective Date: October 15, 2026
+                            Effective Date: November 6, 2026
                         </span>
                     </div>
 
@@ -100,7 +100,7 @@ const PrivacyPolicy: React.FC = () => {
                             <span>Last Updated: <strong>November 4, 2026</strong></span>
                         </div>
                         <div className="legal-meta-item">
-                            <span>Product: <strong>Aullevo Browser Extension (v0.6.6) &amp; Aullevo Web</strong></span>
+                            <span>Product: <strong>Aullevo Browser Extension (v0.6.7) &amp; Aullevo Web</strong></span>
                         </div>
                         <div className="legal-meta-item">
                             <span>Direct Inquiries: <strong>{CONTACT_EMAIL}</strong></span>
@@ -221,6 +221,8 @@ const PrivacyPolicy: React.FC = () => {
                                 <li><strong>No server copy of your profiles.</strong> We do not operate any database that stores your profiles, documents, form answers, or browsing activity.</li>
                                 <li><strong>Each account's data is kept apart.</strong> If more than one account uses Aullevo in the same browser, each gets its own separately encrypted profiles, documents, API keys, AI Memories, and link queue. Switching accounts locks the previous one, and no account can see another's data. Display settings belong to the browser; Free-plan ad unlocks belong to your account (see Section 5).</li>
                                 <li><strong>Matching happens locally.</strong> The engine that matches your saved fields to form questions runs inside your browser and works offline.</li>
+                                <li><strong>Resume reading happens locally.</strong> When you press Read on a resume in Profiles (or upload one), Aullevo reads its text on your device to suggest values for your profile fields. Nothing from it is sent anywhere, and nothing is saved until you choose which values to keep.</li>
+                                <li><strong>Job details and fill reports stay in the tab.</strong> Aullevo reads the page's title and, when the website publishes one, its job posting (job title, company, location, employment type, description), and keeps them for that tab so an apply page knows which job it belongs to. After each fill it keeps a fill report for that tab: each question's text, whether it was filled, and where the answer came from, never the answers themselves. Both live in the extension's session storage and are cleared when the tab closes.</li>
                                 <li><strong>AI is optional.</strong> Nothing is sent to an AI service unless you turn on AI Smart Fill (see Section 4).</li>
                                 <li><strong>You decide who submits.</strong> By default you submit every form yourself. If you turn on <strong>Auto-Pagination</strong> (Pro, or Free: 2 hours a day, more with an ad), Aullevo clicks Next / Continue and <strong>presses Submit on the last page for you</strong>, which sends your answers to that website under its own privacy policy. It pauses instead when a required field is empty or the form shows an error it can't fix.</li>
                             </ul>
@@ -346,6 +348,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li>The text of the form's questions and their answer options, plus a short note on the format an input expects (for example &quot;whole number only&quot;)</li>
                                 <li>The helper text the form shows with each question (its description, example, placeholder text, and any error message currently shown), so answers follow the form's instructions (for example &quot;Format: Surname, Given Names&quot;)</li>
                                 <li>For checkbox questions, which options Aullevo already ticked from AI SAFE fields</li>
+                                <li>The page's title and, when the website publishes one, its job posting (job title, company, location, employment type, and up to 2,000 characters of the description), so answers fit the job you are applying for. On an apply page that doesn't show the job, Aullevo uses the job posting you opened just before in the same tab on the same website, kept for 3 hours and only until the tab is closed</li>
                                 <li>The labels and context hints of your enabled profile fields</li>
                                 <li>The <strong>values</strong> of enabled fields marked <strong>AI SAFE</strong> (for example your name or skills), so the AI can choose better answers</li>
                                 <li>The title and content of your <strong>enabled AI Memories</strong></li>
@@ -358,7 +361,7 @@ const PrivacyPolicy: React.FC = () => {
                                 <li>Values a website filled in by itself, including checkboxes the website ticked</li>
                                 <li>Your uploaded documents</li>
                                 <li>Your encryption key</li>
-                                <li>Your browsing history, cookies, or other page content beyond the form's questions and their helper text</li>
+                                <li>Your browsing history, cookies, or other page content beyond the form's questions, their helper text, and the page title and job posting described above</li>
                             </ul>
 
                             <div className="legal-callout callout-success">
